@@ -1,7 +1,5 @@
 package kata_7;
-
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class Welcome {
     public static String greet(String language) {
