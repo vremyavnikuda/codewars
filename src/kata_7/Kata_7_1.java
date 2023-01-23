@@ -30,10 +30,9 @@ public class Kata_7_1 {
         //true
         return true;
     }
-
 }
 
-class SolutionTest {
+class Kata_7_1_Test {
     @Test
     public void staticTests() {
         check("samurai", "ai", true);
