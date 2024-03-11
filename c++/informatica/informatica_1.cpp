@@ -1,4 +1,5 @@
 #include <iostream>
+
 /*
 Вариант а 
 условный оператор if-else if-else
@@ -16,11 +17,7 @@
 Если ни одно из этих условий не выполняется, то точка находится на оси, то есть не в четверти.
 */
 
-int main() {
-    int x, y;
-    std::cout << "Enter the x and y coordinates: ";
-    std::cin >> x >> y;
-
+void variantA(int x, int y) {
     if (x > 0 && y > 0) {
         std::cout << "The point is in the first quarter.";
     } else if (x < 0 && y > 0) {
@@ -32,8 +29,6 @@ int main() {
     } else {
         std::cout << "The point is on the axis, not in the quarter.";
     }
-
-    return 0;
 }
 
 /*
@@ -52,16 +47,24 @@ int main() {
 Если ни одно из этих условий не выполняется, то точка находится на оси, то есть не в четверти.
 */
 
-int main() {
-    int x, y;
-    std::cout << "Enter the x and y coordinates: ";
-    std::cin >> x >> y;
-
+void variantB(int x, int y) {
     std::cout << (x > 0 && y > 0 ? "The point is in the first quarter."
                 : x < 0 && y > 0 ? "The point is in the second quarter."
                 : x < 0 && y < 0 ? "The point is in the third quarter."
                 : x > 0 && y < 0 ? "The point is in the fourth quarter."
                 : "The point is on the axis, not in the quarter.");
+}
+
+int main() {
+    int x, y;
+    std::cout << "Enter the x and y coordinates: ";
+    std::cin >> x >> y;
+
+    std::cout << "Variant A: ";
+    variantA(x, y);
+
+    std::cout << "\nVariant B: ";
+    variantB(x, y);
 
     return 0;
 }
