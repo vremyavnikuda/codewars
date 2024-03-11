@@ -21,3 +21,32 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+c\+\+/task2/.idea/
+
+c\+\+/task2/cmake-build-debug/
+
+c\+\+/task1/.idea/
+
+c\+\+/task1/.vs/
+
+c\+\+/task1/Debug/
+
+c\+\+/task1/task1/.idea/
+
+c\+\+/task1/task1/Debug/
+
+c\+\+/informatica/.idea/
+
+c\+\+/informatica/cmake-build-debug/
+c++/.vscode/c_cpp_properties.json
+c++/.vscode/settings.json
+c++/.vscode/tasks.json
+c++/informatica/Документ Microsoft Word.docx
+rust_task/.idea/workspace.xml
+rust_task/target/debug/.fingerprint/rust_task-0c227a84694af954/invoked.timestamp
+rust_task/target/debug/.fingerprint/rust_task-0c227a84694af954/test-bin-rust_task.json
+rust_task/target/debug/.fingerprint/rust_task-256725db7e183649/bin-rust_task
+rust_task/target/debug/.fingerprint/rust_task-256725db7e183649/bin-rust_task.json
+rust_task/target/debug/.fingerprint/rust_task-256725db7e183649/invoked.timestamp
+rust_task/target/debug/.fingerprint/rust_task-0c227a84694af954/test-bin-rust_task
