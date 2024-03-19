@@ -5,7 +5,7 @@ func FindOdd(seq []int) int {
 	//счетчик повторяющихся элементов
 	counts := make(map[int]int)
 
-	//проходимация по массиву
+	//проходимся по массиву
 	for _, num := range seq {
 		counts[num]++
 	}

@@ -12,6 +12,5 @@ func PrinterError(s string) string {
 			errorCount++
 		}
 	}
-
 	return fmt.Sprintf("%d/%d", errorCount, total)
 }
