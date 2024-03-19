@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+// GoNotStaticMethod пример реализации статического метода в golang ->
+// так как базовой реализации не поддерживает статические методы
 type GoNotStaticMethod struct {
 	value int
 }
