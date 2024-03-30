@@ -62,3 +62,15 @@ c\+\+/block_schema/блоксхемы.docx
 *.docx
 
 *.pdf
+rust_task/.idea/discord.xml
+.vscode/settings.json
+rust_task/.idea/vcs.xml
+rust_task/.idea/inspectionProfiles/Project_Default.xml
+rust_task/target/debug/.fingerprint/rust_task-e9cfbecdc83823b9/test-bin-rust_task.json
+rust_task/target/debug/.fingerprint/rust_task-e9cfbecdc83823b9/test-bin-rust_task
+rust_task/target/debug/.fingerprint/rust_task-e9cfbecdc83823b9/invoked.timestamp
+rust_task/target/debug/.fingerprint/rust_task-622bae5c76f4d81e/invoked.timestamp
+rust_task/target/debug/.fingerprint/rust_task-622bae5c76f4d81e/bin-rust_task.json
+rust_task/target/debug/.fingerprint/rust_task-622bae5c76f4d81e/bin-rust_task
+rust_task/target/debug/.cargo-lock
+rust_task/target/.rustc_info.json
