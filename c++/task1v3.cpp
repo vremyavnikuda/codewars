@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstring>
 #include <windows.h>
-#include <locale>
 
 // Массив слов для построения кроссворда
 const char* w[] = { "apple", "banana", "", "date", "elderberry", "fig", "grape", nullptr };
@@ -58,11 +57,6 @@ void buildCrossword(int k)
 
 int main()
 {
-    // Устанавливаем локаль
-    std::locale::global(std::locale("Russian"));
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-
     // Строим кроссворд
     buildCrossword(-1);
 
