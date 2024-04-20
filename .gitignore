@@ -78,3 +78,7 @@ rust_task/target/.rustc_info.json
 .idea/
 
 c\+\+/.vscode/
+
+*.txt
+
+c\+\+/lab4/output/
