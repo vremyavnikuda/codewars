@@ -82,3 +82,5 @@ c\+\+/.vscode/
 *.txt
 
 c\+\+/lab4/output/
+
+c\+\+/cmake-build-debug/

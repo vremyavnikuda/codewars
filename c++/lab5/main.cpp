@@ -14,17 +14,38 @@ Main function
 */
 
 #include "Product.cpp"
-int main()
-{
-    Product milk("Milk", 1.5, 4.0, 6.0, 2.0, "Normal", 4.18);
 
+int main() {
+    Product milk("Milk", 1.5, 4.0, 6.0, 2.0, "Normal", 4.18);
+    milk.setTemperature(7.0);
+    milk.updateState();
+    std::cout << "Updated State: " << milk.getState() << std::endl;
     std::cout << "Product: " << milk.getName() << std::endl;
     std::cout << "Initial State: " << milk.getState() << std::endl;
 
-    milk.setTemperature(7.0);
-    milk.updateState();
+    // Test 1: Normal product
+    Product water("Water", 1.0, 20.0, 30.0, 10.0, "Normal", 4.2);
+    std::cout << "Product: " << water.getName() << std::endl;
+    std::cout << "Initial State: " << water.getState() << std::endl;
+    water.setTemperature(25.0);
+    water.updateState();
+    std::cout << "Updated State: " << water.getState() << std::endl;
 
-    std::cout << "Updated State: " << milk.getState() << std::endl;
+    // Test 2: Overheated product
+    Product juice("Juice", 1.5, 40.0, 45.0, 35.0, "Normal", 3.9);
+    std::cout << "Product: " << juice.getName() << std::endl;
+    std::cout << "Initial State: " << juice.getState() << std::endl;
+    juice.setTemperature(50.0);
+    juice.updateState();
+    std::cout << "Updated State: " << juice.getState() << std::endl;
+
+    // Test 3: Frozen product
+    Product iceCream("Ice Cream", 1.2, -10.0, -5.0, 0.0, "Normal", 2.5);
+    std::cout << "Product: " << iceCream.getName() << std::endl;
+    std::cout << "Initial State: " << iceCream.getState() << std::endl;
+    iceCream.setTemperature(-15.0);
+    iceCream.updateState();
+    std::cout << "Updated State: " << iceCream.getState() << std::endl;
 
     return 0;
 }
