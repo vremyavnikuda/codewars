@@ -2,30 +2,47 @@
 
 #include <string>
 #include <utility>
+#include <sstream>
+
 // Класс для хранения информации о продукте
 class Product
 {
 public:
     // Конструктор
-    Product(std::string name, double weight, double temperature, double maxTemp, double minTemp, const std::string &state, double heatCapacity);
+    Product(std::string name, double weight, double temperature, double maxTemp, double minTemp,
+            const std::string &state, double heatCapacity);
 
     // Setters
     void setName(const std::string &name);
+
     void setWeight(double weight);
+
     void setTemperature(double temperature);
+
     void setMaxTemperature(double maxTemp);
+
     void setMinTemperature(double minTemp);
+
     void setState(const std::string &state);
+
     void setHeatCapacity(double heatCapacity);
 
     // Getters
     std::string getName() const;
+
     double getWeight() const;
+
     double getTemperature() const;
+
     double getMaxTemperature() const;
+
     double getMinTemperature() const;
+
     std::string getState() const;
+
     double getHeatCapacity() const;
+
+    std::string getAllInfo() const;
 
     // Метод для обновления состояния на основе температуры
     void updateState();
@@ -41,8 +58,10 @@ private:
 };
 
 // Конструктор
-Product::Product(std::string name, double weight, double temperature, double maxTemp, double minTemp, const std::string &state, double heatCapacity)
-    : name(std::move(name)), weight(weight), temperature(temperature), maxTemperature(maxTemp), minTemperature(minTemp), state(state), heatCapacity(heatCapacity) {}
+Product::Product(std::string name, double weight, double temperature, double maxTemp, double minTemp,
+                 const std::string &state, double heatCapacity)
+    : name(std::move(name)), weight(weight), temperature(temperature), maxTemperature(maxTemp),
+      minTemperature(minTemp), state(state), heatCapacity(heatCapacity) {}
 
 // Метод устанавливает имя продукта
 void Product::setName(const std::string &name)
@@ -126,6 +145,20 @@ std::string Product::getState() const
 double Product::getHeatCapacity() const
 {
     return heatCapacity;
+}
+
+// Метод возвращает полную информацию о продукте
+std::string Product::getAllInfo() const
+{
+    std::stringstream ss;
+    ss << "Name: " << getName() << "\n"
+       << "Weight: " << getWeight() << "\n"
+       << "Temperature: " << getTemperature() << "\n"
+       << "Max Temperature: " << getMaxTemperature() << "\n"
+       << "Min Temperature: " << getMinTemperature() << "\n"
+       << "State: " << getState() << "\n"
+       << "Heat Capacity: " << getHeatCapacity();
+    return ss.str();
 }
 
 // Метод для обновления состояния на основе температуры

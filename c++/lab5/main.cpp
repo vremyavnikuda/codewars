@@ -45,6 +45,7 @@ int main() {
     std::cout << "Initial State: " << iceCream.getState() << std::endl;
     iceCream.setTemperature(-15.0);
     iceCream.updateState();
+    std::cout << iceCream.getAllInfo() << std::endl;
     std::cout << "Updated State: " << iceCream.getState() << std::endl;
 
     return 0;
