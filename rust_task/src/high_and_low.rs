@@ -1,4 +1,4 @@
-use std::fmt::format;
+
 
 fn high_and_low(numbers: &str) -> String {
     let mut nums : Vec <i32> = numbers.split_whitespace().map(|nums|nums.parse().unwrap()).collect();
