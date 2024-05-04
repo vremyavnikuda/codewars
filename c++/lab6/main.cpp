@@ -18,7 +18,7 @@ Main function
  * @setMaxTemperature
  * @setMinTemperature
  * @setState
- * @setHeatCapacity()
+ * @setHeatCapacity
  *
  * Getter
  * @getName
@@ -32,12 +32,11 @@ Main function
  * @getAllInfo
  * @updateState
  * */
-#include "Product.cpp"
-#include "Bag.cpp"
+#include "Bag.h"
 #include <vector>
+#include "Product.h"
 
-int main()
-{
+int main() {
     Product milk("Milk", 1.5, 4.0, 6.0, 2.0, "Normal", 4.18);
     milk.setTemperature(7.0);
     milk.updateState();
@@ -82,8 +81,9 @@ int main()
     std::cout << "Number of corrupted products in the bag: " << bag.getCorruptedProductCount() << std::endl;
 
     std::vector<Product> newProducts = {
-        Product("Cheese", 0.5, 15.0, 20.0, 5.0, "Normal", 2.8),
-        Product("Eggs", 0.3, 10.0, 15.0, 5.0, "Normal", 3.1)};
+            Product("Cheese", 0.5, 15.0, 20.0, 5.0, "Normal", 2.8),
+            Product("Eggs", 0.3, 10.0, 15.0, 5.0, "Normal", 3.1)
+            };
 
     std::cout << "Number of corrupted products if new products are added: " << bag.getCorruptedProductCountWithAddition(newProducts) << std::endl;
 

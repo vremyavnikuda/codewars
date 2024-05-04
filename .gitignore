@@ -84,3 +84,9 @@ c\+\+/.vscode/
 c\+\+/lab4/output/
 
 c\+\+/cmake-build-debug/
+
+rust_task/target/
+
+rust_task/.vscode/
+
+c\+\+/lab_6/cmake-build-debug/
