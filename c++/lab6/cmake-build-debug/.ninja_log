@@ -1,0 +1,17 @@
+# ninja log v5
+9	294	7380022819897286	CMakeFiles/lab6.dir/Product.cpp.obj	de6ee10c5ee9b32f
+6	318	7380022820133292	CMakeFiles/lab6.dir/main.cpp.obj	f4286dd0a282beb
+3	361	7380022820559255	CMakeFiles/lab6.dir/Bag.cpp.obj	afb7912c32fda600
+362	471	7380022821631805	lab6.exe	acc059841e739e06
+5	349	7380031816313031	CMakeFiles/lab6.dir/main.cpp.obj	f4286dd0a282beb
+350	429	7380031817090541	lab6.exe	acc059841e739e06
+6	347	7380145827665837	CMakeFiles/lab6.dir/main.cpp.obj	f4286dd0a282beb
+347	481	7380145828972637	lab6.exe	acc059841e739e06
+11	394	7380189573157181	CMakeFiles/lab6.dir/Product.cpp.obj	de6ee10c5ee9b32f
+8	422	7380189573437165	CMakeFiles/lab6.dir/main.cpp.obj	f4286dd0a282beb
+5	464	7380189573847156	CMakeFiles/lab6.dir/Bag.cpp.obj	afb7912c32fda600
+464	547	7380189574647228	lab6.exe	acc059841e739e06
+12	281	7380212755863010	CMakeFiles/lab6.dir/Product.cpp.obj	de6ee10c5ee9b32f
+9	320	7380212756253024	CMakeFiles/lab6.dir/main.cpp.obj	f4286dd0a282beb
+6	346	7380212756523014	CMakeFiles/lab6.dir/Bag.cpp.obj	afb7912c32fda600
+346	423	7380212757263014	lab6.exe	acc059841e739e06

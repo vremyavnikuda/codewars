@@ -33,11 +33,18 @@ Main function
  * @updateState
  * */
 #include "Product.cpp"
-#include "Bag.cpp"
-#include <vector>
 
 int main()
 {
+    /*
+    Name: Milk
+    Weight: 1.5
+    Temperature: 7
+    Max Temperature: 6
+    Min Temperature: 2
+    State: Overheated
+    Heat Capacity: 4.18
+    */
     Product milk("Milk", 1.5, 4.0, 6.0, 2.0, "Normal", 4.18);
     milk.setTemperature(7.0);
     milk.updateState();
@@ -45,6 +52,16 @@ int main()
     std::cout << "Product: " << milk.getName() << std::endl;
     std::cout << "Initial State: " << milk.getState() << std::endl;
 
+    // Test 1: Normal product
+    /*
+    Name: Water
+    Weight: 1
+    Temperature: 25
+    Max Temperature: 30
+    Min Temperature: 10
+    State: Normal
+    Heat Capacity: 4.2
+    */
     Product water("Water", 1.0, 20.0, 30.0, 10.0, "Normal", 4.2);
     std::cout << "Product: " << water.getName() << std::endl;
     std::cout << "Initial State: " << water.getState() << std::endl;
@@ -52,6 +69,16 @@ int main()
     water.updateState();
     std::cout << "Updated State: " << water.getState() << std::endl;
 
+    // Test 2: Overheated product
+    /*
+    Name: Juice
+    Weight: 1.5
+    Temperature: 50
+    Max Temperature: 45
+    Min Temperature: 35
+    State: Overheated
+    Heat Capacity: 3.9
+    */
     Product juice("Juice", 1.5, 40.0, 45.0, 35.0, "Normal", 3.9);
     std::cout << "Product: " << juice.getName() << std::endl;
     std::cout << "Initial State: " << juice.getState() << std::endl;
@@ -59,6 +86,16 @@ int main()
     juice.updateState();
     std::cout << "Updated State: " << juice.getState() << std::endl;
 
+    // Test 3: Frozen product
+    /*
+    Name: Ice Cream
+    Weight: 1.2
+    Temperature: -15
+    Max Temperature: -5
+    Min Temperature: 0
+    State: Frozen
+    Heat Capacity: 2.5
+    */
     Product iceCream("Ice Cream", 1.2, -10.0, -5.0, 0.0, "Normal", 2.5);
     std::cout << "Product: " << iceCream.getName() << std::endl;
     std::cout << "Initial State: " << iceCream.getState() << std::endl;
@@ -70,22 +107,6 @@ int main()
     std::cout << water.getAllInfo() << std::endl;
     std::cout << juice.getAllInfo() << std::endl;
     std::cout << iceCream.getAllInfo() << std::endl;
-
-    Bag bag(5.0); // Создаем сумку с максимальным весом 5.0
-    bag.addProduct(milk);
-    bag.addProduct(water);
-    bag.addProduct(juice);
-    bag.addProduct(iceCream);
-
-    std::cout << "Total weight in the bag: " << bag.getTotalWeight() << std::endl;
-    std::cout << "Number of products in the bag: " << bag.getProductCount() << std::endl;
-    std::cout << "Number of corrupted products in the bag: " << bag.getCorruptedProductCount() << std::endl;
-
-    std::vector<Product> newProducts = {
-        Product("Cheese", 0.5, 15.0, 20.0, 5.0, "Normal", 2.8),
-        Product("Eggs", 0.3, 10.0, 15.0, 5.0, "Normal", 3.1)};
-
-    std::cout << "Number of corrupted products if new products are added: " << bag.getCorruptedProductCountWithAddition(newProducts) << std::endl;
 
     return 0;
 }

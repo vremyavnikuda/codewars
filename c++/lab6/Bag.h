@@ -1,96 +1,40 @@
-#ifndef C___BAG_H
-#define C___BAG_H
+#ifndef BAG_H
+#define BAG_H
 
-#endif //C___BAG_H
-#include <iostream>
 #include <vector>
-#include <algorithm>
+#include <string>
 #include "Product.h"
 
 class Bag
 {
-public:
-    explicit Bag(double maxWeight) : maxWeight(maxWeight) {}
-
-    void addProduct(const Product &product)
-    {
-        if (getTotalWeight() + product.getWeight() <= maxWeight)
-        {
-            products.push_back(product);
-            updateProductTemperatures(product.getTemperature());
-        }
-        else
-        {
-            std::cout << "Cannot add product, bag is full." << std::endl;
-        }
-    }
-
-    void removeProduct(const Product &product)
-    {
-        auto it = std::find(products.begin(), products.end(), product);
-        if (it != products.end())
-        {
-            products.erase(it);
-        }
-        else
-        {
-            std::cout << "Product not found in the bag." << std::endl;
-        }
-    }
-
-    double getTotalWeight() const
-    {
-        double totalWeight = 0.0;
-        for (const auto &product : products)
-        {
-            totalWeight += product.getWeight();
-        }
-        return totalWeight;
-    }
-
-    int getProductCount() const
-    {
-        return static_cast<int>(products.size());
-    }
-
-    int getCorruptedProductCount() const
-    {
-        int corruptedCount = 0;
-        for (const auto &product : products)
-        {
-            if (product.getState() != "Normal")
-            {
-                corruptedCount++;
-            }
-        }
-        return corruptedCount;
-    }
-
-    int getCorruptedProductCountWithAddition(const std::vector<Product> &newProducts) const
-    {
-        int corruptedCount = getCorruptedProductCount();
-        double newTotalWeight = getTotalWeight();
-        for (const auto &product : newProducts)
-        {
-            newTotalWeight += product.getWeight();
-            if (newTotalWeight > maxWeight || product.getState() != "Normal")
-            {
-                corruptedCount++;
-            }
-        }
-        return corruptedCount;
-    }
-
 private:
-    std::vector<Product> products;
-    double maxWeight;
+    std::vector<Product> products; // Вектор продуктов в сумке
+    double maxWeight;              // Максимальный вес сумки
+    double currentWeight;          // Текущий вес сумки
 
-    void updateProductTemperatures(double newTemperature)
-    {
-        for (auto &product : products)
-        {
-            product.setTemperature(newTemperature);
-            product.updateState();
-        }
-    }
+    void updateTemperatures(); // Внутренний метод для обновления температур продуктов в сумке
+
+public:
+    // Конструктор сумки с заданным максимальным весом
+    Bag(double maxWeight);
+
+    // Добавление продукта в сумку
+    bool addProduct(const Product &product);
+
+    // Удаление продукта из сумки по названию
+    bool removeProduct(const std::string &name);
+
+    // Получение текущего веса сумки
+    double getCurrentWeight() const;
+
+    // Получение количества продуктов в сумке
+    int getProductCount() const;
+
+    // Получение количества испорченных продуктов в сумке
+    int getSpoiledProductCount() const;
+
+    // Получение количества продуктов, которые испортятся при добавлении новых продуктов
+    int getProductsToSpoilCount(const std::vector<Product> &newProducts) const;
 };
+
+#endif

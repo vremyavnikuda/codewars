@@ -2,26 +2,23 @@
 #define PRODUCT_H
 
 #include <string>
-#include <sstream>
+#include <stdexcept>
 
-// Класс для хранения информации о продукте
 class Product
 {
 public:
     // Конструктор
-    Product(std::string name, double weight, double temperature, double maxTemp, double minTemp,
-            const std::string &state, double heatCapacity);
+    Product(const std::string &name, double weight, double temperature, double maxTemp, double minTemp, double heatCapacity);
 
-    // Setters
+    // Сеттеры
     void setName(const std::string &name);
     void setWeight(double weight);
     void setTemperature(double temperature);
     void setMaxTemperature(double maxTemp);
     void setMinTemperature(double minTemp);
-    void setState(const std::string &state);
     void setHeatCapacity(double heatCapacity);
 
-    // Getters
+    // Геттеры
     std::string getName() const;
     double getWeight() const;
     double getTemperature() const;
@@ -30,20 +27,20 @@ public:
     std::string getState() const;
     double getHeatCapacity() const;
 
-    // Метод возвращает полную информацию о продукте
-    std::string getAllInfo() const;
-
-    // Метод для обновления состояния на основе температуры
-    void updateState();
+    // Методы
+    std::string getAllInfo() const;                    // Получить полную информацию о продукте
+    void updateState();                                // Обновить состояние продукта
+    void transferHeatEnergy(double energy);            // Передача тепловой энергии
+    double achievableTemperature(double energy) const; // Расчет достижимой температуры
 
 private:
-    std::string name;
-    double weight;
-    double temperature;
-    double maxTemperature;
-    double minTemperature;
-    std::string state;
-    double heatCapacity;
+    std::string name;      // Наименование продукта
+    double weight;         // Вес продукта
+    double temperature;    // Текущая температура продукта
+    double maxTemperature; // Максимальная температура продукта
+    double minTemperature; // Минимальная температура продукта
+    std::string state;     // Состояние продукта
+    double heatCapacity;   // Теплоемкость продукта
 };
 
-#endif // PRODUCT_H
+#endif

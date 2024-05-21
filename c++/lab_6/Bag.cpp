@@ -1,6 +1,4 @@
-//
-// Created by andre on 28.04.2024.
-//
+
 
 #include <algorithm>
 #include <iostream>

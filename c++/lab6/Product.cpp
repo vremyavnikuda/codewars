@@ -1,94 +1,108 @@
 #include "Product.h"
+#include <sstream>
 
 // Конструктор
-Product::Product(std::string name, double weight, double temperature, double maxTemp, double minTemp,
-                 const std::string &state, double heatCapacity)
-    : name(std::move(name)), weight(weight), temperature(temperature), maxTemperature(maxTemp),
-      minTemperature(minTemp), state(state), heatCapacity(heatCapacity) {}
+Product::Product(const std::string &name, double weight, double temperature, double maxTemp, double minTemp, double heatCapacity)
+    : name(name), weight(weight), temperature(temperature), maxTemperature(maxTemp), minTemperature(minTemp), state("Normal"), heatCapacity(heatCapacity)
+{
+    // Проверка корректности входных данных
+    if (weight <= 0 || heatCapacity <= 0)
+    {
+        throw std::invalid_argument("Weight and heat capacity must be positive values.");
+    }
+    updateState(); // Обновление состояния продукта
+}
 
-// Метод устанавливает имя продукта
+// Сеттер для имени продукта
 void Product::setName(const std::string &name)
 {
     this->name = name;
 }
 
-// Метод установки веса продукта
+// Сеттер для веса продукта
 void Product::setWeight(double weight)
 {
+    // Проверка корректности входных данных
+    if (weight <= 0)
+    {
+        throw std::invalid_argument("Weight must be a positive value.");
+    }
     this->weight = weight;
 }
 
-// Метод установки температуры продукта
+// Сеттер для температуры продукта
 void Product::setTemperature(double temperature)
 {
     this->temperature = temperature;
+    updateState(); // Обновление состояния продукта
 }
 
-// Метод установки максимальной температуры продукта
+// Сеттер для максимальной температуры продукта
 void Product::setMaxTemperature(double maxTemp)
 {
     this->maxTemperature = maxTemp;
 }
 
-// Метод установки минимальной температуры продукта
+// Сеттер для минимальной температуры продукта
 void Product::setMinTemperature(double minTemp)
 {
     this->minTemperature = minTemp;
 }
 
-// Метод установки состояния продукта
-void Product::setState(const std::string &state)
-{
-    this->state = state;
-}
-
-// Метод установки теплоёмкости продукта
+// Сеттер для теплоемкости продукта
 void Product::setHeatCapacity(double heatCapacity)
 {
+    // Проверка корректности входных данных
+    if (heatCapacity <= 0)
+    {
+        throw std::invalid_argument("Heat capacity must be a positive value.");
+    }
     this->heatCapacity = heatCapacity;
 }
 
-// Метод возвращает имя продукта
+// Геттер для имени продукта
 std::string Product::getName() const
 {
     return name;
 }
 
-// Метод возвращает вес продукта
+// Геттер для веса продукта
 double Product::getWeight() const
 {
     return weight;
 }
 
-// Метод возвращает температуру продукта
+// Геттер для температуры продукта
 double Product::getTemperature() const
 {
     return temperature;
 }
 
-// Метод возвращает максимальную температуру продукта
+// Геттер для максимальной температуры продукта
 double Product::getMaxTemperature() const
 {
     return maxTemperature;
 }
 
-// Метод возвращает минимальную температуру продукта
+// Геттер для минимальной температуры продукта
 double Product::getMinTemperature() const
 {
     return minTemperature;
 }
-// Метод возвращает состояние продукта
+
+// Геттер для состояния продукта
 std::string Product::getState() const
 {
     return state;
 }
-// Метод возвращает теплоёмкость продукта
+
+// Геттер для теплоемкости продукта
 double Product::getHeatCapacity() const
 {
     return heatCapacity;
 }
-// Метод возвращает полную информацию о продукте
-// @getAllInfo
+
+// Метод для получения полной информации о продукте
 std::string Product::getAllInfo() const
 {
     std::stringstream ss;
@@ -101,22 +115,33 @@ std::string Product::getAllInfo() const
        << "Heat Capacity: " << getHeatCapacity();
     return ss.str();
 }
-// Метод для обновления состояния на основе температуры
+
+// Метод для обновления состояния продукта
 void Product::updateState()
 {
     if (temperature >= maxTemperature)
     {
-        // Перегретый
         state = "Overheated";
     }
     else if (temperature <= minTemperature)
     {
-        // Перемороженный
         state = "Frozen";
     }
     else
     {
-        // Нормальный
         state = "Normal";
     }
+}
+
+// Метод для передачи тепловой энергии продукту
+void Product::transferHeatEnergy(double energy)
+{
+    double deltaT = energy / (weight * heatCapacity);
+    setTemperature(temperature + deltaT);
+}
+
+// Метод для расчета достижимой температуры продукта при передаче тепловой энергии
+double Product::achievableTemperature(double energy) const
+{
+    return temperature + energy / (weight * heatCapacity);
 }
