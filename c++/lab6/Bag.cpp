@@ -41,8 +41,7 @@ bool Bag::addProduct(const Product &product)
 // Метод для удаления продукта из сумки по названию
 bool Bag::removeProduct(const std::string &name)
 {
-    auto it = std::find_if(products.begin(), products.end(), [&](const Product &p)
-                           { return p.getName() == name; });
+    auto it = std::find_if(products.begin(), products.end(), [&](const Product &p){ return p.getName() == name; });
 
     if (it == products.end())
     {
