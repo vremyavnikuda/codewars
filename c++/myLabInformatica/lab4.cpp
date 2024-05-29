@@ -1,4 +1,5 @@
 #include <iostream>
+
 // Функция для вывода матрицы
 void printMatrix(int **matrix, int M)
 {
@@ -11,31 +12,43 @@ void printMatrix(int **matrix, int M)
         std::cout << std::endl;
     }
 }
+
 // Функция для преобразования матрицы путем построчного вычитания элементов побочной диагонали
 void transformMatrix(int **matrix, int M)
 {
+    // Вычисляем побочную диагональ
+    int *diagonal = new int[M];
     for (int i = 0; i < M; ++i)
     {
-        // Элемент побочной диагонали
-        int diagonalElement = matrix[i][M - 1 - i];
+        diagonal[i] = matrix[i][M - 1 - i];
+    }
+    // Преобразуем каждую строку матрицы
+    for (int i = 0; i < M; ++i)
+    {
         for (int j = 0; j < M; ++j)
         {
-            matrix[i][j] -= diagonalElement;
+            // Вычитаем элемент побочной диагонали из текущего элемента
+            matrix[i][j] -= diagonal[j];
         }
     }
+    // Освобождаем память, выделенную под побочную диагональ
+    delete[] diagonal;
 }
 int main()
 {
+    // Размер матрицы
     int M;
+    // Запрос размера матрицы у пользователя
     std::cout << "Enter the size of the matrix (M): ";
     std::cin >> M;
-    // Создаем матрицу размером M x M
+    // Создаем матрицу и заполняем ее данными от пользователя
     int **matrix = new int *[M];
     for (int i = 0; i < M; ++i)
     {
         matrix[i] = new int[M];
     }
-    // Вводим элементы матрицы
+
+    // Заполняем матрицу данными от пользователя
     std::cout << "Enter the elements of the matrix:" << std::endl;
     for (int i = 0; i < M; ++i)
     {
@@ -49,7 +62,8 @@ int main()
     // Выводим преобразованную матрицу
     std::cout << "Transformed matrix:" << std::endl;
     printMatrix(matrix, M);
-    // Освобождаем память
+
+    // Освобождаем память, выделенную под матрицу
     for (int i = 0; i < M; ++i)
     {
         delete[] matrix[i];

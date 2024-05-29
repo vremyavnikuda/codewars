@@ -1,108 +1,106 @@
 #include <iostream>
-// Функция для определения количества цифр в числе
-int Count_Pos(int number)
+#include <cmath>
+
+// Задание №1: Найти наибольшее из отрицательных значений во вводимой последовательности чисел
+int findMaxNegative()
 {
-    int count = 0;
-    while (number != 0)
-    {
-        number /= 10;
-        ++count;
-    }
-    return count;
-}
-// Функция для поиска максимального отрицательного числа в последовательности чисел
-int findMaxNegative(int k)
-{
-    // Инициализируем переменную для максимального отрицательного значения как наименьшее возможное целое число
-    int maxNegative = INT_MIN;
-    int num;
+    int k;
+    std::cout << "Enter the number of integers (k): ";
+    std::cin >> k;
+
+    int maxNegative = INT_MIN; // Инициализируем максимальное отрицательное значение
 
     for (int i = 0; i < k; ++i)
     {
-        // Считываем одно число из ввода
+        int num;
+        std::cout << "Enter integer " << i + 1 << ": ";
         std::cin >> num;
-        // Проверяем, является ли считанное число отрицательным и больше текущего максимального отрицательного значения
+
         if (num < 0 && num > maxNegative)
         {
-            // Обновляем максимальное отрицательное значение
             maxNegative = num;
         }
     }
-    // Возвращаем найденное максимальное отрицательное значение
+
     return maxNegative;
 }
 
-// Функция для вывода всех цифр последовательности до k-й
+// Функция для определения количества цифр в числе
+int countDigits(int number)
+{
+    if (number == 0)
+    {
+        return 1; // Отдельно обрабатываем случай с числом 0
+    }
+
+    int digits = 0;
+    while (number != 0)
+    {
+        number /= 10;
+        ++digits;
+    }
+    return digits;
+}
+
+// Функция для вывода всех цифр последовательности до k-ой
 void printSequenceDigits(int k)
 {
-    int number = 10; // Начинаем с двузначного числа
-    int count = 0;
+    int count = 0;   // Счетчик выводимых цифр
+    int number = 10; // Начинаем с первого двузначного числа
+
+    std::cout << "Sequence digits: ";
 
     while (count < k)
     {
-        // Определяем количество цифр в числе
-        int numDigits = Count_Pos(number);
-        int divisor = 1;
-        for (int i = 1; i < numDigits; ++i)
-        {
-            // Вычисляем делитель для извлечения цифр числа
-            divisor *= 10;
-        }
+        int digits = countDigits(number);
 
-        // Выводим все цифры числа
-        while (divisor != 0 && count < k)
+        for (int i = 0; i < digits; ++i)
         {
-            std::cout << number / divisor << " ";
-            number %= divisor;
-            divisor /= 10;
+            std::cout << number / static_cast<int>(std::pow(10, digits - i - 1)) % 10 << " ";
             ++count;
+            if (count >= k)
+            {
+                break;
+            }
         }
 
-        // Если мы достигли k-й цифры, выходим из цикла
         if (count >= k)
         {
             break;
         }
 
-        // Переходим к следующему числу
-        number++;
-
-        // Если достигли числа 99, переходим к числу 10
-        if (number == 100)
+        // Добавляем зеркальное отражение числа в последовательность
+        int reverseNumber = 0;
+        int temp = number;
+        while (temp != 0)
         {
-            number = 10;
+            reverseNumber = reverseNumber * 10 + temp % 10;
+            temp /= 10;
         }
+        number = reverseNumber;
     }
-}
 
+    std::cout << std::endl;
+}
 int main()
 {
-    int k;
-    std::cout << "Enter the number of integers: ";
-    std::cin >> k;
-    if (k <= 0)
+    // Задание №1
+    int maxNegative = findMaxNegative();
+    if (maxNegative != INT_MIN)
     {
-        std::cout << "The number of numbers must be positive.\n";
-        // Завершаем программу с ошибкой, если введено некорректное количество чисел
-        return 1;
-    }
-
-    std::cout << "Enter " << k << " integers:\n";
-    // Вызываем функцию для поиска максимального отрицательного числа
-    int maxNegative = findMaxNegative(k);
-    if (maxNegative == INT_MIN)
-    {
-        std::cout << "There are no negative numbers.\n";
+        std::cout << "Maximum negative integer: " << maxNegative << std::endl;
     }
     else
     {
-        std::cout << "The largest negative number: " << maxNegative << std::endl;
+        std::cout << "No negative integers were entered." << std::endl;
     }
 
-    std::cout << "Digits of the sequence up to " << k << ":\n";
-    // Вызываем функцию для вывода цифр последовательности
+    // Задание №2
+    int k;
+    std::cout << "Enter k: ";
+    std::cin >> k;
+
     printSequenceDigits(k);
-    std::cout << std::endl;
 
     return 0;
 }
