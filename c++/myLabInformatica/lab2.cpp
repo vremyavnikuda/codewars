@@ -1,86 +1,60 @@
 #include <iostream>
-#include <cmath>
+#include <string>
+#include <climits>
 
 // Задание №1: Найти наибольшее из отрицательных значений во вводимой последовательности чисел
 int findMaxNegative()
 {
     int k;
-    std::cout << "Enter the number of integers (k): ";
+    std::cout << "Введите количество чисел (k): ";
     std::cin >> k;
-
-    int maxNegative = INT_MIN; // Инициализируем максимальное отрицательное значение
-
+    // Инициализируем максимальное отрицательное значение
+    int maxNegative = INT_MIN;
     for (int i = 0; i < k; ++i)
     {
         int num;
-        std::cout << "Enter integer " << i + 1 << ": ";
+        std::cout << "Введите целое число " << i + 1 << ": ";
         std::cin >> num;
-
+        // Обновляем максимальное отрицательное значение, если текущее число отрицательное и больше текущего максимума
         if (num < 0 && num > maxNegative)
         {
             maxNegative = num;
         }
     }
-
     return maxNegative;
 }
-
-// Функция для определения количества цифр в числе
-int countDigits(int number)
+// Функция для подсчета количества символов в строке
+int countDigits(const std::string &str)
 {
-    if (number == 0)
+    int cnt = 0;
+    // Проходим по всем символам строки и считаем их количество
+    for (char ch : str)
     {
-        return 1; // Отдельно обрабатываем случай с числом 0
+        cnt++;
     }
-
-    int digits = 0;
-    while (number != 0)
-    {
-        number /= 10;
-        ++digits;
-    }
-    return digits;
+    return cnt;
 }
-
-// Функция для вывода всех цифр последовательности до k-ой
-void printSequenceDigits(int k)
+// Функция для генерации последовательности двузначных чисел и их зеркальных копий
+std::string generateSequence()
 {
-    int count = 0;   // Счетчик выводимых цифр
-    int number = 10; // Начинаем с первого двузначного числа
-
-    std::cout << "Sequence digits: ";
-
-    while (count < k)
+    std::string sequence;
+    // Генерируем последовательность из двузначных чисел и их зеркальных копий
+    for (int number = 10; number < 100; ++number)
     {
-        int digits = countDigits(number);
-
-        for (int i = 0; i < digits; ++i)
-        {
-            std::cout << number / static_cast<int>(std::pow(10, digits - i - 1)) % 10 << " ";
-            ++count;
-            if (count >= k)
-            {
-                break;
-            }
-        }
-
-        if (count >= k)
-        {
-            break;
-        }
-
-        // Добавляем зеркальное отражение числа в последовательность
-        int reverseNumber = 0;
-        int temp = number;
-        while (temp != 0)
-        {
-            reverseNumber = reverseNumber * 10 + temp % 10;
-            temp /= 10;
-        }
-        number = reverseNumber;
+        // Преобразуем число в строку
+        std::string original = std::to_string(number);
+        // Создаем зеркальную копию строки
+        std::string reversed = std::string(original.rbegin(), original.rend());
+        // Добавляем оригинальную строку и ее зеркальную копию в последовательность
+        sequence += original + reversed;
     }
-
-    std::cout << std::endl;
+    return sequence;
+}
+// Функция для получения k-ой цифры в последовательности
+char getKthDigit(const std::string &sequence, int k)
+{
+    // Возвращаем k-ую цифру (учитываем, что индексация начинается с 0)
+    return sequence[k - 1];
 }
 int main()
 {
@@ -88,19 +62,28 @@ int main()
     int maxNegative = findMaxNegative();
     if (maxNegative != INT_MIN)
     {
-        std::cout << "Maximum negative integer: " << maxNegative << std::endl;
+        std::cout << "Максимальное отрицательное число: " << maxNegative << std::endl;
     }
     else
     {
-        std::cout << "No negative integers were entered." << std::endl;
+        std::cout << "Отрицательные числа не были введены." << std::endl;
     }
-
     // Задание №2
+    std::string sequence = generateSequence();
     int k;
-    std::cout << "Enter k: ";
+    std::cout << "Введите k (1 <= k <= 360): ";
     std::cin >> k;
-
-    printSequenceDigits(k);
-
+    // Проверка на корректность введенного значения k
+    if (k < 1 || k > 360)
+    {
+        std::cerr << "Некорректный ввод. k должно быть в диапазоне от 1 до 360." << std::endl;
+        return 1;
+    }
+    // Вывод всей сгенерированной последовательности для проверки
+    std::cout << generateSequence() << std::endl;
+    // Получаем k-ую цифру
+    char result = getKthDigit(sequence, k);
+    std::cout << "k-ая цифра: " << result << std::endl;
+    std::cout << "Общее количество цифр в последовательности: " << countDigits(sequence) << std::endl;
     return 0;
 }
