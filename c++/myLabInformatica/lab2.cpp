@@ -23,6 +23,7 @@ int findMaxNegative()
     }
     return maxNegative;
 }
+
 // Функция для подсчета количества символов в строке
 int countDigits(const std::string &str)
 {
@@ -34,6 +35,7 @@ int countDigits(const std::string &str)
     }
     return cnt;
 }
+
 // Функция для генерации последовательности двузначных чисел и их зеркальных копий
 std::string generateSequence()
 {
@@ -50,12 +52,19 @@ std::string generateSequence()
     }
     return sequence;
 }
-// Функция для получения k-ой цифры в последовательности
-char getKthDigit(const std::string &sequence, int k)
+
+// Функция для получения первых k символов последовательности
+std::string getKthCharacters(const std::string &sequence, int k)
 {
-    // Возвращаем k-ую цифру (учитываем, что индексация начинается с 0)
-    return sequence[k - 1];
+    return sequence.substr(0, k);
 }
+
+// Функция Count_Pos (аналог countDigits) для получения количества символов в строке
+int Count_Pos(const std::string &str)
+{
+    return countDigits(str);
+}
+
 int main()
 {
     // Задание №1
@@ -68,22 +77,24 @@ int main()
     {
         std::cout << "Отрицательные числа не были введены." << std::endl;
     }
+
     // Задание №2
     std::string sequence = generateSequence();
     int k;
     std::cout << "Введите k (1 <= k <= 360): ";
     std::cin >> k;
+
     // Проверка на корректность введенного значения k
     if (k < 1 || k > 360)
     {
         std::cerr << "Некорректный ввод. k должно быть в диапазоне от 1 до 360." << std::endl;
         return 1;
     }
-    // Вывод всей сгенерированной последовательности для проверки
-    std::cout << generateSequence() << std::endl;
-    // Получаем k-ую цифру
-    char result = getKthDigit(sequence, k);
-    std::cout << "k-ая цифра: " << result << std::endl;
-    std::cout << "Общее количество цифр в последовательности: " << countDigits(sequence) << std::endl;
+
+    // Получаем первые k символов последовательности
+    std::string result = getKthCharacters(sequence, k);
+    std::cout << "Первые " << k << " символов: " << result << std::endl;
+    std::cout << "Общее количество символов в последовательности: " << Count_Pos(sequence) << std::endl;
+
     return 0;
 }
