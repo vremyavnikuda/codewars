@@ -90,3 +90,7 @@ rust_task/target/
 rust_task/.vscode/
 
 c\+\+/lab_6/cmake-build-debug/
+
+c\+\+/lab6_l_doz/cmake-build-debug/
+
+c\+\+/lab6_l_doz/.vscode/
