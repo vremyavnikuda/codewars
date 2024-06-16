@@ -1,7 +1,9 @@
 #include <iostream>
 #include <list>
 
-bool isEquality(const std::list<int> &L1, const std::list<int> &L2)
+template<typename T>
+
+bool isEquality(const std::list<T> &L1, const std::list<T> &L2)
 {
     if (L1.size() != L2.size())
     {
