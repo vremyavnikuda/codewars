@@ -1,9 +1,8 @@
-struct list
-{
-    int value;
+struct list{
+    long number;
     struct list *next;
 };
+...
+list *head,*qnew,*ptr;
+char *str,**text;
 
-list *head //заголовок списка
-*ptr, //ссылка на текущий элемент
-*pred, //ссылка на предыдущий элемент
