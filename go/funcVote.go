@@ -24,6 +24,5 @@ func vote(x int, y int, z int) int {
 
 func main() {
 	var x, y, z int
-
 	fmt.Scanln(&x, &y, &z)
 }
