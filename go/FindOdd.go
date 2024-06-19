@@ -1,6 +1,6 @@
 package main
 
-// Найти нечетное значение int
+// FindOdd Найти нечетное значение int
 func FindOdd(seq []int) int {
 	//счетчик повторяющихся элементов
 	counts := make(map[int]int)
