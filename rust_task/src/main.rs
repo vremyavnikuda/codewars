@@ -1,9 +1,6 @@
-use std::{io, string};
-
-mod bool_to_word;
-mod high_and_low;
-mod type_data;
-mod pi;
+pub mod task;
+pub mod are_you_playing_banjo;
+mod task2;
 
 fn main() {
     let mut input_string= String::new();

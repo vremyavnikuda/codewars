@@ -2,10 +2,14 @@
 //fn main(){
 //    println!("To make an apple {} from scratch, you must first create a universe.",pi);
 //}
+fn main(){
+    task1();
+    let result= swap(123, 321);
+    println!("{} {}",result.0,result.1);
+}
 
 use std::f32;
 use std::env;
-use std::string;
 
 const  PI :f32 = f32::consts::PI+f32::consts::PI;
 
@@ -16,15 +20,10 @@ pub fn task1() {
     println!("ОС на платформе: {}", env::consts::OS);
 }
 
-fn main(){
-    task1();
-    let result= swap(123, 321);
-    println!("{} {}",result.0,result.1);
-}
 
-fn sum(x:i32,y:i32)->i32{
-    let z= x+y;
-    return z;
+
+fn sum(x:i32,y:i32) -> i32{
+    x+y
 }
 fn print() -> (){
     println!("Success!");
@@ -35,6 +34,5 @@ fn call_me(number:i64)->(){
 }
 
 fn swap(x:i32,y:i32)->(i32,i32){
-    return (y,x);
+    (y,x)
 }
-
