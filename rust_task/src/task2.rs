@@ -19,7 +19,9 @@ fn main() {
     println!("My index BMI {:.3}",bmi);
     //sum_numbers();
     //number_revers();
-    medium_number();
+    // medium_number();
+    //katet();
+    triangle_exists();
 }
 
 fn hello_world() {
@@ -90,3 +92,33 @@ fn medium_number(){
     }
 }
 
+// функция которая считывает длины двух катетов в прямоугольном треугольнике и выводит его площадь
+fn katet(){
+    let mut input= String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let mut iter=input.split_whitespace();
+
+    let a:i32=iter.next().expect("Please enter two numbers").parse().expect("Please type a number!");
+    let b:i32=iter.next().expect("Please enter two numbers").parse().expect("Please type b number!");
+
+    let result = a+b;
+    println!("{}",result);
+}
+
+// Даны три натуральный числа a, b, c
+// Определить ,существует ли треугольник с такими сторонами
+fn triangle_exists(){
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");    
+    let mut exists =input.split_whitespace();
+
+    let _a :i32= exists.next().expect("INFO").parse().expect("Error");
+    let _b :i32=exists.next().expect("INFO").parse().expect("Error");
+    let _c : i32= exists.next().expect("INFO").parse().expect("Error");
+
+    if _a+_b>_c && _a+_c>_b &&_b+_c>_a{
+        println!("{}", true)
+    }else {
+        println!("{}",false)
+    }
+}
