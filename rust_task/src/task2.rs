@@ -21,7 +21,8 @@ fn main() {
     //number_revers();
     // medium_number();
     //katet();
-    triangle_exists();
+    // triangle_exists();
+    electric_clock()
 }
 
 fn hello_world() {
@@ -109,7 +110,7 @@ fn katet(){
 // Определить ,существует ли треугольник с такими сторонами
 fn triangle_exists(){
     let mut input = String::new();
-    io::stdin().read_line(&mut input).expect("Failed to read line");    
+    io::stdin().read_line(&mut input).expect("Failed to read line");
     let mut exists =input.split_whitespace();
 
     let _a :i32= exists.next().expect("INFO").parse().expect("Error");
@@ -121,4 +122,51 @@ fn triangle_exists(){
     }else {
         println!("{}",false)
     }
+}
+
+fn electric_clock(){
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let mut n = input.split_whitespace();
+
+    //Переводим N в целое число
+    let _n :i32 = n.next().expect("INFO").parse().expect("ERROR");
+
+    //переводим число n в часы:минуты:секунды
+    let _total_seconds = _n % 86400;
+    let hours = _total_seconds / 3600;
+    let minutes = (_total_seconds % 3600) / 60;
+    let seconds = _total_seconds % 60;
+
+    println!("{}:{:02}:{:02}", hours, minutes, seconds);
+}
+
+fn i_want_2_die(a:bool,b:bool,c:bool,d:bool)-> bool{
+    let true_count = [a,b,c,d].iter().filter(|&&x|x).count();
+    let _false_count=4-true_count;
+
+    true_count==2 || _false_count==2
+}
+
+fn scan_bool() -> bool{
+    let mut input = String::new();
+
+    std::io ::stdin().read_line(&mut input).expect("Failed to read line");
+
+    let bool_value :bool= match input.trim().to_lowercase().as_str() {
+        "true"=> true,
+        "false"=> false,
+        _ => {
+            println!("Invalid input. Please enter 'true' or 'false'.");
+            std::process::exit(1);
+        }
+    };
+    bool_value
+}
+fn enter_variables(){
+    let a = scan_bool();
+    let b = scan_bool();
+    let c = scan_bool();
+    let d = scan_bool();
+    i_want_2_die(a,b,c,d);
 }
