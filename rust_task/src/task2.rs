@@ -18,7 +18,8 @@ fn main() {
     let bmi=calculate_bmi(71.1, 1.83);
     println!("My index BMI {:.3}",bmi);
     //sum_numbers();
-    number_revers();
+    //number_revers();
+    medium_number();
 }
 
 fn hello_world() {
@@ -70,4 +71,22 @@ fn number_revers(){
     println!("{}", reversed);
 }
 
+//Функция для вычисления среднего значения двух чисел
+fn medium_number(){
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+
+    let mut iter = input.split_whitespace();
+    let a: i32 = iter.next().expect("Please enter two numbers").parse().expect("Please type a number!");
+    let b: i32 = iter.next().expect("Please enter two numbers").parse().expect("Please type a number!");
+
+    let sum = a + b;
+    let average = sum as f32 / 2.0;
+
+    if sum % 2 == 0 {
+        println!("{}", sum / 2);
+    } else {
+        println!("{:.1}", average);
+    }
+}
 
