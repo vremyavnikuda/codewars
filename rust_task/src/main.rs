@@ -1,6 +1,7 @@
 pub mod task;
 pub mod are_you_playing_banjo;
 mod task2;
+mod cockroach_speed;
 
 fn main() {
     let mut input_string= String::new();
