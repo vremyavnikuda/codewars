@@ -124,6 +124,7 @@ fn triangle_exists(){
     }
 }
 
+//Вывести часы:минуты:секунды из N числа
 fn electric_clock(){
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to read line");
@@ -151,7 +152,7 @@ fn i_want_2_die(a:bool,b:bool,c:bool,d:bool)-> bool{
 fn scan_bool() -> bool{
     let mut input = String::new();
 
-    std::io ::stdin().read_line(&mut input).expect("Failed to read line");
+    io ::stdin().read_line(&mut input).expect("Failed to read line");
 
     let bool_value :bool= match input.trim().to_lowercase().as_str() {
         "true"=> true,
@@ -169,4 +170,27 @@ fn enter_variables(){
     let c = scan_bool();
     let d = scan_bool();
     i_want_2_die(a,b,c,d);
+}
+
+//Пирожок в столовой стоит rubles рублей и  kopecks копеек. Определите, сколько рублей и копеек нужно заплатить за number_of_pies пирожков.
+fn scan_uint() -> u32 {
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input)
+        .expect("Failed to read line");
+    let number: u32 = input.trim().parse().expect("Failed to parse number");
+    number
+}
+fn how_mach(rubles: u32, kopecks: u32, number_of_pies: u32) -> (u32, u32) {
+    let total_kopecks = (rubles * 100 + kopecks) * number_of_pies;
+    let calc_rubles = total_kopecks / 100;
+    let calc_kopecks = total_kopecks % 100;
+    (calc_rubles, calc_kopecks)
+}
+fn enter(){
+    let rubles = scan_uint();
+    let kopecks= scan_uint();
+    let number_of_pies =scan_uint();
+    
+    let (p_r,p_k)=how_mach(rubles,kopecks,number_of_pies);
+    println!("{} {}",p_r,p_k);
 }
