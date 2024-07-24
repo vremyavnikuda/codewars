@@ -1,4 +1,4 @@
-use std::io;
+use std::{io};
 
 fn main() {
     hello_world();
@@ -22,7 +22,7 @@ fn main() {
     // medium_number();
     //katet();
     // triangle_exists();
-    electric_clock()
+    electric_clock();
 }
 
 fn hello_world() {
@@ -193,4 +193,18 @@ fn enter(){
     
     let (p_r,p_k)=how_mach(rubles,kopecks,number_of_pies);
     println!("{} {}",p_r,p_k);
+}
+pub fn check(a:i32,b:i32,c:i32)->String{
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read line");
+    let mut expect = input.split_whitespace();
+
+    let a:i32=expect.next().expect("Please enter two numbers").parse().expect("Please type a number!");
+    let b:i32=expect.next().expect("Please enter two numbers").parse().expect("Please type b number!");
+    let c:i32 =expect.next().expect("Please enter two numbers").parse().expect("Please type c number!");
+    if a+b>c && a+c>b && b+c>a{
+        "Существует".to_string()
+    }else {
+        "Не существует".to_string()
+    }
 }
