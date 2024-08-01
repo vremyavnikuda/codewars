@@ -4,6 +4,9 @@ pub mod task;
 pub mod are_you_playing_banjo;
 mod task2;
 mod cockroach_speed;
+mod bool_to_word;
+mod vec_user;
+mod goroda;
 
 fn main() {
     let mut input = String::new();
