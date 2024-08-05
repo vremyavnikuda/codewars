@@ -1,6 +1,8 @@
 package main
 
-func main() {}
+func main() {
+	println(Angle(6))
+}
 
 func Angle(n int) int {
 	if n < 2 {
