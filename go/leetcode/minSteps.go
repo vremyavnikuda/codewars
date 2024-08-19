@@ -9,7 +9,6 @@ func minSteps(n int) int {
 	countResult := 0
 	for i := 2; i <= n; i++ {
 		for n%i == 0 {
-			// `i` является наименьшим делителем `n`, добавляем `i` операций:
 			countResult += i
 			n /= i
 		}
