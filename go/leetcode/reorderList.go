@@ -35,7 +35,6 @@ func reorderList(head *ListNode) *ListNode {
 
 	first, second := head, prev
 	for second.Next != nil {
-		// Store next nodes
 		temp1 := first.Next
 		temp2 := second.Next
 
@@ -47,7 +46,4 @@ func reorderList(head *ListNode) *ListNode {
 	}
 
 	return head
-}
-func main() {
-
 }
