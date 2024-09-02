@@ -10,7 +10,7 @@ fn is_increasing(list: Vec<i32>) -> bool {
     true
 }
 
-
+#[allow(dead_code)]
 fn main() {
     // Test cases
     let test1 = vec![1, 2, 3, 4, 5];

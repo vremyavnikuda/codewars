@@ -96,3 +96,6 @@ c\+\+/lab6_l_doz/cmake-build-debug/
 c\+\+/lab6_l_doz/.vscode/
 
 *.iml
+/c++/3semestr/lab_1/cmake-build-debug
+/c++/learn/cmake-build-debug
+/c++/learn/build
