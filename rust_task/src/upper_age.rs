@@ -1,5 +1,5 @@
 fn is_increasing(list: Vec<i32>) -> bool {
-    if list.len() > 0 {
+    if !list.is_empty() {
         for i in 0..list.len() - 1 {
             if list[i] >= list[i + 1] {
                 return false;
@@ -8,6 +8,11 @@ fn is_increasing(list: Vec<i32>) -> bool {
         return true;
     }
     true
+}
+
+/// .? len 
+fn text_len(_len:&str)-> i8{
+    _len.len() as i8
 }
 
 #[allow(dead_code)]

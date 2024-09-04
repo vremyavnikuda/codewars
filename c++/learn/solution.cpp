@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <c++/12/new>
+#include <new>
 
 std::vector<std::string> solution(const std::string &s)
 {

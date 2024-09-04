@@ -10,6 +10,7 @@ pub mod task;
 mod task2;
 mod upper_age;
 mod vec_user;
+mod last_text;
 
 fn main() {
     let mut input = String::new();
