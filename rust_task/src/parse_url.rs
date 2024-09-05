@@ -27,7 +27,7 @@ pub(crate) fn main() {
     }
     
     if !params.is_empty() {
-        for param in params.split('&').rev() {  // Перевернем порядок вывода
+        for param in params.split('&').rev() {
             let kv: Vec<&str> = param.split('=').collect();
             if kv.len() == 2 {
                 println!("{} -> {}", kv[0], kv[1]);

@@ -3,14 +3,15 @@ use std::io;
 pub mod are_you_playing_banjo;
 mod bool_to_word;
 mod cockroach_speed;
+mod disemvowel;
 mod goroda;
 mod hate_school;
+mod last_text;
 mod parse_url;
 pub mod task;
 mod task2;
 mod upper_age;
 mod vec_user;
-mod last_text;
 
 fn main() {
     let mut input = String::new();
@@ -40,7 +41,7 @@ fn main() {
         println!("Не существует");
     }
 }
-
+#[allow(unused)]
 fn input_integer() -> String {
     let mut input_string = String::new();
 
