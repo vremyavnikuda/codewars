@@ -16,7 +16,6 @@ fn main() {
     println!("{}", disemvowel("hello"));
     println!("{}", double_char("hello"))
 }
-#[allow(unused)]
 //Дублируем все буквы в словах
 fn double_char(s: &str) -> String {
     let mut _result = String::new();
