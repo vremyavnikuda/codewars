@@ -27,4 +27,5 @@ fn main(){
 
     println!("The largest number is {}",resultNumber);
     println!("The largest day is {}",resultDay);
+    println!("{}",offer(1));
 }
