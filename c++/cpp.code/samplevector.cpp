@@ -1,6 +1,13 @@
 #include <vector>
 #include <iostream>
 using namespace std;
+int println(vector<int> number){
+    for(int i:number){
+        cout<<i<<endl;
+    }
+    return 0;
+}
+
 int main(){
     vector<int>number;
     
@@ -12,8 +19,6 @@ int main(){
     number.push_back(50);
     number.push_back(60);
     
-    for (int i : number){
-        cout<<i<<endl;
-    }
+    println(number);
     return 0;
 }
