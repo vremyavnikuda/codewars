@@ -13,7 +13,8 @@ int println(vector<int> number)
     return 0;
 }
 
-//функция для сортировки массива на убывание
+//функция для сортировки массива на убывание.
+//параметр greater<int>() -> служит для сортировки массива на убывание.
 int sort_vec(vector<int> number)
 {
     sort(number.begin(), number.end(),greater<int>());
