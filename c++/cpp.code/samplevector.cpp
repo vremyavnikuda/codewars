@@ -21,7 +21,16 @@ int sort_vec(vector<int> number)
     println(number);
     return 0;
 }
-
+int sum_variable(int a,int b){
+    int result;
+    if (a!=0 &&b!=0){
+        result = a+b;
+        return result;
+        cout<<result<<endl;
+    }else{
+        return 0;
+    }
+}
 int main()
 {
     vector<int> number;
@@ -35,5 +44,6 @@ int main()
 
     println(number);
     sort_vec(number);
+    cout<< sum_variable(1,2)<<endl;
     return 0;
 }
