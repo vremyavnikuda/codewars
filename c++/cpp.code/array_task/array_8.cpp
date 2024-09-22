@@ -11,11 +11,15 @@ int main() {
     for (int i = 0; i < SIZE; i++) {
         std::cin >> arr[i];
     }
+
     for (int i = 0; i < SIZE; i++) {
-        for(int j = 0; j < SIZE; j++) {
-            if(arr[i] == arr[j]) {
+        for (int j =0;j<i;++j) {
+            if (arr[i]==arr[j]) {
                 count++;
+                break;
             }
         }
     }
+    std::cout <<"Дубликатов найдено "<<count << std::endl;
+    return 0;
 }
