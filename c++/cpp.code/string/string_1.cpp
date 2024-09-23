@@ -2,7 +2,7 @@
 #include <string>
 //
 // Created by vremyavnikuda on 9/23/24.
-//
+//2. Слова наоборот
 int main() {
     std::string word;
     getline(std::cin, word);
