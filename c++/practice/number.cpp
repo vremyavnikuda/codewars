@@ -9,19 +9,17 @@
 
 std::vector<std::string> number(const std::vector<std::string> &lines) {
     std::vector<std::string> result;
-    int counter = 0;
     for (int i = 0; i < lines.size(); i++) {
-        ++counter;
-        std::string temp = std::to_string(counter).append(": ").append(lines[i]);
-        result.push_back(temp);
+        std::string temp_string = std::to_string(i+1).append(": ").append(lines[i]);
+        result.push_back(temp_string);
     }
-    /*for (const auto &line : result) {
+    for (const auto &line : result) {
         std::cout << line << std::endl;
-    }*/
+    }
     return result;
 }
 
-/*int main() {
+int main() {
     std::vector<std::string> lines = {"a", "b", "c"};
     number(lines);
-}*/
+}
