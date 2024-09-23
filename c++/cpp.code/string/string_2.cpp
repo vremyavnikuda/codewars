@@ -4,9 +4,7 @@
 //
 int main() {
     std::string name;
-    std::cin >> name;
-
-    std::string love = "I love you, ";
-    std::string result = name.insert(0, love);
-    std::cout << result << "!" << std::endl;
+    std::cin >>name;
+    std::string love;
+    love.insert(0, "I love you, ").append(name).append("!");
 }
