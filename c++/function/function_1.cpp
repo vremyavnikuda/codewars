@@ -4,12 +4,8 @@
 
 #include <iostream>
 
-void stars() {
-    std::cout<<"*******"<<std::endl;
-}
-void body() {
-    std::cout<<"*     *"<<std::endl;
-}
+void stars() { std::cout << "*******" << std::endl; }
+void body() { std::cout << "*     *" << std::endl; }
 int main() {
     stars();
     body();

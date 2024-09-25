@@ -22,7 +22,7 @@ void print_vert(int width, int height) {
         std::cout << "#" << std::endl;
     }
 }
-
+// фукция для рисования объекта(рамки) по введенным данным пользователя
 void print(int width, int height) {
     print_hor(width);
     print_vert(width, height);
