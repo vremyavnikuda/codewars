@@ -44,4 +44,11 @@ func main() {
 	fmt.Println(c.area())
 	a := new(Android)
 	a.talk()
+	var result = Android{
+		Model: "T",
+		Person: Person{
+			Name: "3000",
+		},
+	}
+	fmt.Println(result)
 }
