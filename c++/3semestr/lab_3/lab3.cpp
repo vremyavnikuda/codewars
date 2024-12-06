@@ -61,6 +61,7 @@ public:
         strcat(newTitle, otherTitle);
 
         Book tempBook(newTitle, this->pages + other.pages, this->circulation + other.circulation);
+        // Удаляем временную строку
         delete[] newTitle;
 
         return tempBook;
@@ -187,6 +188,15 @@ int main() {
     std::cout << "\nBook 2:" << std::endl;
     book2.display();
 
+    // Сохранение объекта book2 в текстовый файл
+    std::ofstream outFile2("book2.txt");
+    if (outFile2.is_open()) {
+        outFile2 << book2;
+        outFile2.close();
+    } else {
+        std::cerr << "Error opening file for writing book2.txt!" << std::endl;
+    }
+
     // Операция сложения
     Book combinedBook = book1 + book2;
     std::cout << "\nCombined Book (book1 + book2):" << std::endl;
@@ -198,7 +208,7 @@ int main() {
         outFile << book1;
         outFile.close();
     } else {
-        std::cerr << "Error opening file for writing!" << std::endl;
+        std::cerr << "Error opening file for writing book1.txt!" << std::endl;
     }
 
     // Ввод объекта из текстового файла
@@ -208,7 +218,7 @@ int main() {
         inFile >> bookFromFile;
         inFile.close();
     } else {
-        std::cerr << "Error opening file for reading!" << std::endl;
+        std::cerr << "Error opening file for reading book2.txt!" << std::endl;
     }
 
     std::cout << "\nBook from file:" << std::endl;
