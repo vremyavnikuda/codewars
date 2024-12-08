@@ -20,13 +20,13 @@ Book::Book(const Book &other) : pages(other.pages), circulation(other.circulatio
 
 // Оператор присваивания:
 // Сначала проверяю, не является ли объект самоприсваиванием,
-// затем освобождаю старую память и копирую данные из другого объекта.
+// затем освобождаю память и копирую данные из другого объекта.
 Book &Book::operator=(const Book &other) {
     if (this == &other) {
         // Защищаюсь от самоприсваивания
         return *this;
     }
-    // Освобождаю старую память
+    // Освобождаю память
     delete[] title;
     // Копирую новое название
     title = copyString(other.title);
@@ -107,7 +107,7 @@ Book::operator int() const {
 // Метод для установки данных о книге:
 // Обновляю название, страницы и тираж.
 void Book::setBook(const char *title, int pages, int circulation) {
-    // Освобождаю старую память для названия
+    // Освобождаю память для названия
     delete[] this->title;
     // Копирую новое название
     this->title = copyString(title);
