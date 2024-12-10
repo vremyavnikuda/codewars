@@ -79,10 +79,9 @@ void AdList::deleteAd(int logicalNum) {
 // Реализовано отображение времени выполнения операции (по условию задания №6)
 void AdList::sortAds() {
     if (count <= 1) {
-        return; // Если список пуст или содержит одно объявление, сортировка не нужна
+        return;
     }
 
-    // Засекаем начальное время
     auto start = std::chrono::high_resolution_clock::now();
 
     bool swapped;
@@ -92,21 +91,18 @@ void AdList::sortAds() {
         do {
             AdStruct *nextAd = current->next;
             if (strcmp(current->date, nextAd->date) > 0) {
-                // Сравниваем даты строками
-                current->swapData(*nextAd); // Меняем данные местами
+                current->swapData(*nextAd);
                 swapped = true;
             }
             current = current->next;
         } while (current != head);
     } while (swapped);
 
-    // Засекаем конечное время
     auto end = std::chrono::high_resolution_clock::now();
 
     // Вычисляем длительность в микросекундах
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
-    // Выводим длительность выполнения
     std::cout << "Sorting took " << duration.count() << " microseconds." << std::endl;
 }
 
