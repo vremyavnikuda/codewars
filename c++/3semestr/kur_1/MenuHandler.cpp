@@ -2,8 +2,8 @@
 #include <iostream>
 #include <cstring>
 
+// Выводит меню программы на экран
 void MenuHandler::displayMenu() const {
-    // Выводит меню программы на экран
     std::cout << "Menu:\n";
     std::cout << "1. Add a new ad\n";
     std::cout << "2. Delete an ad by logical number\n";
@@ -17,8 +17,8 @@ void MenuHandler::displayMenu() const {
     std::cout << "Enter your choice: ";
 }
 
+// Получает выбор пользователя из меню
 int MenuHandler::getChoice() const {
-    // Получает выбор пользователя из меню
     int choice;
     std::cin >> choice;
     if (std::cin.fail()) {
@@ -30,16 +30,16 @@ int MenuHandler::getChoice() const {
     return choice;
 }
 
+// Запрашивает ввод строки от пользователя
 char *MenuHandler::getInput(const char *prompt, size_t size) const {
-    // Запрашивает ввод строки от пользователя
     char *input = new char[size];
     std::cout << prompt;
     std::cin.getline(input, size);
     return input;
 }
 
+// Обрабатывает выбранный пользователем пункт меню
 void MenuHandler::handleChoice(AdList &adList, int choice) const {
-    // Обрабатывает выбранный пользователем пункт меню
     switch (choice) {
         case 1: {
             char *cat = getInput("Enter category: ", 100);

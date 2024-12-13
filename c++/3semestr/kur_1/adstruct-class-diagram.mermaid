@@ -1,0 +1,22 @@
+classDiagram
+    class AdStruct {
+        -char* category
+        -char* rubric
+        -char* text
+        -char* date
+        -char* phone
+        +AdStruct* next
+        +AdStruct* prev
+        +AdStruct(const char* cat, const char* rub, const char* txt, const char* dat, const char* phn)
+        +~AdStruct()
+        +AdStruct(const AdStruct& other)
+        +operator=(const AdStruct& other) AdStruct&
+        +display() void
+        +swapData(AdStruct& other) void
+    }
+    
+    class AdList {
+        <<friend>>
+    }
+    
+    AdList --> AdStruct : friend
