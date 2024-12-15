@@ -1,5 +1,7 @@
 # codewars
 
+![img](2024-09-15-181157_hyprshot.png)
+
 ```
 Directory structure:
 └── vremyavnikuda-codewars
@@ -64,4 +66,3 @@ Directory structure:
         └── kata_5
 
 ```
-![img](2024-09-15-181157_hyprshot.png)
