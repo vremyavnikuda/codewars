@@ -167,55 +167,59 @@ void AdList::saveToFile(const char *filename) {
 void AdList::loadFromFile(const char *filename) {
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile) {
-        throw std::ios_base::failure("Failed to open file for reading");
+        throw std::ios_base::failure("failedToOpenFileForReading");
     }
 
     int loadedCount = 0;
-    inFile.read(reinterpret_cast<char *>(&loadedCount), sizeof(int));
+    try {
+        inFile.read(reinterpret_cast<char *>(&loadedCount), sizeof(int));
 
-    for (int i = 0; i < loadedCount; i++) {
-        try {
-            int catLen, rubLen, txtLen, datLen, phnLen;
-            inFile.read(reinterpret_cast<char *>(&catLen), sizeof(int));
-            char *category = new char[catLen];
-            inFile.read(category, catLen);
+        for (int i = 0; i < loadedCount; i++) {
+            try {
+                int catLen, rubLen, txtLen, datLen, phnLen;
+                inFile.read(reinterpret_cast<char *>(&catLen), sizeof(int));
+                char *category = new char[catLen];
+                inFile.read(category, catLen);
 
-            inFile.read(reinterpret_cast<char *>(&rubLen), sizeof(int));
-            char *rubric = new char[rubLen];
-            inFile.read(rubric, rubLen);
+                inFile.read(reinterpret_cast<char *>(&rubLen), sizeof(int));
+                char *rubric = new char[rubLen];
+                inFile.read(rubric, rubLen);
 
-            inFile.read(reinterpret_cast<char *>(&txtLen), sizeof(int));
-            char *text = new char[txtLen];
-            inFile.read(text, txtLen);
+                inFile.read(reinterpret_cast<char *>(&txtLen), sizeof(int));
+                char *text = new char[txtLen];
+                inFile.read(text, txtLen);
 
-            inFile.read(reinterpret_cast<char *>(&datLen), sizeof(int));
-            char *date = new char[datLen];
-            inFile.read(date, datLen);
+                inFile.read(reinterpret_cast<char *>(&datLen), sizeof(int));
+                char *date = new char[datLen];
+                inFile.read(date, datLen);
 
-            inFile.read(reinterpret_cast<char *>(&phnLen), sizeof(int));
-            char *phone = new char[phnLen];
-            inFile.read(phone, phnLen);
+                inFile.read(reinterpret_cast<char *>(&phnLen), sizeof(int));
+                char *phone = new char[phnLen];
+                inFile.read(phone, phnLen);
 
-            addAd(category, rubric, text, date, phone);
+                addAd(category, rubric, text, date, phone);
 
-            delete[] category;
-            delete[] rubric;
-            delete[] text;
-            delete[] date;
-            delete[] phone;
-        } catch (...) {
-            while (head != nullptr) {
-                AdStruct *temp = head->next;
-                delete head;
-                if (temp == head) break;
-                head = temp;
+                delete[] category;
+                delete[] rubric;
+                delete[] text;
+                delete[] date;
+                delete[] phone;
+            } catch (...) {
+                // Очистка ресурсов в случае ошибки при загрузке
+                while (head != nullptr) {
+                    AdStruct *temp = head->next;
+                    delete head;
+                    if (temp == head) break;
+                    head = temp;
+                }
+                throw;
             }
-            throw;
         }
+    } catch (const std::ios_base::failure &e) {
+        std::cerr << "fileReadErrorInLoadFromFile: " << e.what() << std::endl;
     }
     inFile.close();
 }
-
 
 // Отображение всех объявлений
 void AdList::displayAll() const {
@@ -229,22 +233,24 @@ void AdList::displayAll() const {
     } while (current != head);
 }
 
-// Проверка, является ли строка датой в формате YYYY-MM-DD
+// Валидация даты в формате YYYY-MM-DD
 bool AdList::isValidDate(const char *date) {
-    // Проверяем длину строки
+    // Валидация длинны строки
     if (strlen(date) != 10) {
         return false;
     }
 
-    // Проверяем формат YYYY-MM-DD
+    // формат YYYY-MM-DD
     for (int i = 0; i < 10; i++) {
         if (i == 4 || i == 7) {
             if (date[i] != '-') {
-                return false; // Должны быть разделители '-'
+                // Должны быть разделители '-'
+                return false;
             }
         } else {
             if (!isdigit(date[i])) {
-                return false; // Остальные символы должны быть цифрами
+                // Остальные символы должны быть цифрами
+                return false;
             }
         }
     }
@@ -254,7 +260,7 @@ bool AdList::isValidDate(const char *date) {
     int month = atoi(date + 5);
     int day = atoi(date + 8);
 
-    // Проверяем диапазоны
+    // Диапазоны
     if (year < 1900 || year > 2100) {
         return false;
     }
@@ -262,12 +268,13 @@ bool AdList::isValidDate(const char *date) {
         return false;
     }
 
-    // Проверяем количество дней в месяце
+    // Количество дней в месяце
     int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    // Проверка високосного года
+    // Високосного года
     if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-        daysInMonth[1] = 29; // В феврале 29 дней
+        // В феврале 29 дней
+        daysInMonth[1] = 29;
     }
 
     if (day < 1 || day > daysInMonth[month - 1]) {

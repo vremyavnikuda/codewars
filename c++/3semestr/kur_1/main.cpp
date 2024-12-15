@@ -2,7 +2,6 @@
 #include "MenuHandler.h"
 #include <iostream>
 
-bool isValidDate(const char *date);
 
 int main() {
     AdList adList;
@@ -13,20 +12,20 @@ int main() {
         int choice = menuHandler.getChoice();
 
         if (choice == -1) {
-            std::cerr << "Invalid input. Please enter a number.\n";
+            std::cerr << "invalidInput. pleaseEnterANumber.\n";
             continue;
         }
 
         try {
             menuHandler.handleChoice(adList, choice);
         } catch (const std::bad_alloc &e) {
-            std::cerr << "Memory allocation error: " << e.what() << std::endl;
+            std::cerr << "memoryAllocationError: " << e.what() << std::endl;
         } catch (const std::ios_base::failure &e) {
-            std::cerr << "File operation error: " << e.what() << std::endl;
+            std::cerr << "fileOperationError: " << e.what() << std::endl;
         } catch (const std::exception &e) {
-            std::cerr << "An error occurred: " << e.what() << std::endl;
+            std::cerr << "AnErrorOccurred: " << e.what() << std::endl;
         } catch (...) {
-            std::cerr << "An unknown error occurred." << std::endl;
+            std::cerr << "anUnknownErrorOccurred." << std::endl;
         }
     }
 
