@@ -1,7 +1,5 @@
 #include "runTask.h"
 #include <iostream>
-
-
 #include "Book.h"
 #include "FictionBook.h"
 #include "Textbook.h"

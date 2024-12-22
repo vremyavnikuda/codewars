@@ -1,6 +1,7 @@
 #include "runTask.h"
 
-int main() {
-    runTask();
-    return 0;
+int main()
+{
+  runTask();
+  return 0;
 }
