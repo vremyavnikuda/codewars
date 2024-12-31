@@ -1,4 +1,3 @@
-#include <iostream>
 #include "measure_time.h"
 #include "generate_data.h"
 #include "list_operations.h"
@@ -20,10 +19,10 @@ int main() {
     // std::list dev
     std::list<int> myList;
 
-    measure_time([&] { list_addition(myList, data); }, "Add to std::list");
-    measure_time([&] { list_search(myList); }, "Search in std::list");
-    measure_time([&] { list_sort(myList); }, "Sort std::list");
-    measure_time([&] { list_deletion(myList); }, "Delete from std::list");
+    measure_time([&] {list_addition(myList, data); }, "Add to std::list");
+    measure_time([&] {list_search(myList); }, "Search in std::list");
+    measure_time([&] {list_sort(myList); }, "Sort std::list");
+    measure_time([&] {list_deletion(myList); }, "Delete from std::list");
 
     // std::multimap dev
     std::multimap<int, int> myMap;
