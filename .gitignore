@@ -1,15 +1,11 @@
 # Compiled class file
 *.class
-
 # Log file
 *.log
-
 # BlueJ files
 *.ctxt
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
 # Package Files #
 *.jar
 *.war
@@ -18,83 +14,41 @@
 *.zip
 *.tar.gz
 *.rar
-
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-
 c\+\+/task2/.idea/
-
 c\+\+/task2/cmake-build-debug/
-
 c\+\+/task1/.idea/
-
 c\+\+/task1/.vs/
-
 c\+\+/task1/Debug/
-
 c\+\+/task1/task1/.idea/
-
 c\+\+/task1/task1/Debug/
-
 c\+\+/informatica/.idea/
-
 c\+\+/informatica/cmake-build-debug/
-c++/.vscode/c_cpp_properties.json
-c++/.vscode/settings.json
-c++/.vscode/tasks.json
+c++/.vscode
 c++/informatica/Документ Microsoft Word.docx
 rust_task/.idea/workspace.xml
-rust_task/target/debug/.fingerprint/rust_task-0c227a84694af954/invoked.timestamp
-rust_task/target/debug/.fingerprint/rust_task-0c227a84694af954/test-bin-rust_task.json
-rust_task/target/debug/.fingerprint/rust_task-256725db7e183649/bin-rust_task
-rust_task/target/debug/.fingerprint/rust_task-256725db7e183649/bin-rust_task.json
-rust_task/target/debug/.fingerprint/rust_task-256725db7e183649/invoked.timestamp
-rust_task/target/debug/.fingerprint/rust_task-0c227a84694af954/test-bin-rust_task
-
+rust_task/target
 c\+\+/block_schema/~$оксхемы.docx
-
 c\+\+/block_schema/Блок-схемы алгоритмов рекурсивных функций.pdf
-
 c\+\+/block_schema/блоксхемы.docx
-
 *.exe
-
 *.docx
-
 *.pdf
-rust_task/.idea/discord.xml
-.vscode/settings.json
+rust_task/.idea
+.vscode
 rust_task/.idea/vcs.xml
-rust_task/.idea/inspectionProfiles/Project_Default.xml
-rust_task/target/debug/.fingerprint/rust_task-e9cfbecdc83823b9/test-bin-rust_task.json
-rust_task/target/debug/.fingerprint/rust_task-e9cfbecdc83823b9/test-bin-rust_task
-rust_task/target/debug/.fingerprint/rust_task-e9cfbecdc83823b9/invoked.timestamp
-rust_task/target/debug/.fingerprint/rust_task-622bae5c76f4d81e/invoked.timestamp
-rust_task/target/debug/.fingerprint/rust_task-622bae5c76f4d81e/bin-rust_task.json
-rust_task/target/debug/.fingerprint/rust_task-622bae5c76f4d81e/bin-rust_task
-rust_task/target/debug/.cargo-lock
-rust_task/target/.rustc_info.json
-
+rust_task/target
 .idea/
-
 c\+\+/.vscode/
-
 *.txt
-
 c\+\+/lab4/output/
-
 c\+\+/cmake-build-debug/
-
 rust_task/target/
-
 rust_task/.vscode/
-
 c\+\+/lab_6/cmake-build-debug/
-
 c\+\+/lab6_l_doz/cmake-build-debug/
-
 c\+\+/lab6_l_doz/.vscode/
-
 *.iml
 /c++/3semestr/lab_1/cmake-build-debug
 /c++/learn/cmake-build-debug
@@ -130,3 +84,4 @@ c\+\+/lab6_l_doz/.vscode/
 /c++/3semestr/lab_8/build
 /c++/3semestr/lab_8/output
 /build
+rust_task/task/target

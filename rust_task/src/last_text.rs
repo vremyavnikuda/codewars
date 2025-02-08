@@ -10,7 +10,8 @@ fn last_symbol(txt: &str) -> String {
 
 #[allow(unused)]
 fn main() {
-    println!("{}",two_word("abc", "ade"))
+    println!("{}",two_word("abc", "ade"));
+    println!("{}",last_symbol("text"));
 }
 
 fn two_word(word1:&str,word2:&str)->bool{

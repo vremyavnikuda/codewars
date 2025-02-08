@@ -4,7 +4,11 @@ fn are_you_playing_banjo(name: &str) -> String {
     }
     format!("{} does not play banjo", name)
 }
-
+#[allow(dead_code)]
+fn main() {
+    let name = "Rikke";
+    println!("{}", are_you_playing_banjo(name));
+}
 // See https://doc.rust-lang.org/stable/rust-by-example/testing/unit_testing.html
 #[cfg(test)]
 mod tests {
