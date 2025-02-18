@@ -28,7 +28,8 @@ fn main() {
     // sum_function();
     // task_number1();
     //srednee_arefmiticheskoe();
-    proverca_zadachi();
+    //proverca_zadachi();
+    tretiy_lishniy();
 }
 /// task_1 creates an array of 100 strings, each of which is
 /// "This temperature is: ". The first and second elements
@@ -69,6 +70,22 @@ fn five() -> i32 {
 fn f(x: i32) -> i32 {
     x + 1
 }
+use nom::error::ErrorKind;
+
+fn handle_parsing_errors(input: &str) {
+    match parse_abcdef(input) {
+        Ok((remaining, result)) => {
+            println!("Успешный парсинг!");
+            println!("Результат: {:?}", result);
+            println!("Оставшаяся строка: {}", remaining);
+        },
+        Err(nom::Err::Error(e)) => {
+            println!("Ошибка парсинга: {:?}", e);
+        },
+        Err(e) => println!("Другая ошибка: {:?}", e),
+    }
+}
+
 /// A loop that increments a counter until it reaches 10, then returns the doubled count.
 /// The doubled count is then printed to the console.
 #[warn(dead_code)]
@@ -202,7 +219,17 @@ fn srednee_arefmiticheskoe() {
     println!("{} % ({}) = {}", a, b, a % b);
 }
 
-fn proverca_zadachi() {
-    let x: i8 = 130;
-    println!("{x}");
+/// This function reads two numbers from the standard input, then prints the
+/// second number first, followed by the first number.
+fn tretiy_lishniy() {
+    let mut number_1 = String::new();
+    let mut number_2 = String::new();
+
+    io::stdin().read_line(&mut number_1).expect("Failed to read text ");
+    let a: i32 = number_1.trim().parse().expect("Failed to parse number");
+    io::stdin().read_line(&mut number_2).expect("Failed to read line");
+    let b: i32 = number_2.trim().parse().expect("Failed to parse number");
+
+    println!("{}", b);
+    println!("{}", a);
 }
