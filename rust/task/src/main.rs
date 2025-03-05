@@ -229,3 +229,46 @@ fn converter_function() {
     println!("{:#o}", a);
     println!("{:#x}", a);
 }
+
+use crate::chapter2::{ Identifier, Number, Expression, Statement };
+
+fn analyze_type(env: &mut Env, expr: &Expression) -> Result<Type, String> {
+    match expr {
+        Expression::Number(_) => Ok(Type::Int),
+        Expression::Identifier(Identifier(name)) => {
+            env.get_variable(name).cloned().ok_or(format!("Variable {} not found", name))
+        }
+        Expression::Add(left, right) => {
+            let left_type = analyze_type(env, left)?;
+            let right_type = analyze_type(env, right)?;
+            env.unify(&left_type, &right_type)?;
+            Ok(Type::Int)
+        }
+        Expression::Subtract(left, right) => {
+            let left_type = analyze_type(env, left)?;
+            let right_type = analyze_type(env, right)?;
+            env.unify(&left_type, &right_type)?;
+            Ok(Type::Int)
+        }
+        Expression::Multiply(left, right) => {
+            let left_type = analyze_type(env, left)?;
+            let right_type = analyze_type(env, right)?;
+            env.unify(&left_type, &right_type)?;
+            Ok(Type::Int)
+        }
+        Expression::Divide(left, right) => {
+            let left_type = analyze_type(env, left)?;
+            let right_type = analyze_type(env, right)?;
+            env.unify(&left_type, &right_type)?;
+            Ok(Type::Int)
+        }
+        Expression::Comp(left, right) => {
+            let left_type = analyze_type(env, left)?;
+            let right_type = analyze_type(env, right)?;
+            env.unify(&left_type, &right_type)?;
+            Ok(Type::Bool)
+        }
+    }
+}
+
+
