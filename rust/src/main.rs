@@ -14,6 +14,7 @@ mod upper_age;
 mod vec_user;
 mod remove_ever_other;
 mod r#loop;
+mod task_3;
 
 fn main() {
     let mut input = String::new();
