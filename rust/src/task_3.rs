@@ -11,10 +11,11 @@ fn main() {
     // an_func(10);
     // sum_an_func();
     // closed_func();
-    println_result();
+    // println_result();
+    println!("{:?}",Week::match_week());
 }
 
-#[warn(dead_code)]
+#[allow(dead_code)]
 fn int16() {
     let int16_number: i16 = 10;
     println!("{}", int16_number);
@@ -23,6 +24,7 @@ fn int16() {
     println!("{}", int32);
 }
 
+#[allow(dead_code)]
 fn if_construction() {
     let number = 12;
 
@@ -33,6 +35,7 @@ fn if_construction() {
     }
 }
 
+#[allow(dead_code)]
 fn match_construction() {
     let number: i8 = 2;
     match number {
@@ -45,6 +48,7 @@ fn match_construction() {
     }
 }
 
+#[allow(dead_code)]
 fn loop_function() {
     let mut number = 10;
 
@@ -59,12 +63,15 @@ fn loop_function() {
     println!("{:?}", result);
 }
 
+#[allow(dead_code)]
 fn for_condition() {
     for num in 1..10 {
         println!("{}", num);
     }
     println!("end program");
 }
+
+#[allow(dead_code)]
 fn ref_cycle() {
     let mut count = 0;
     'outer: loop {
@@ -85,6 +92,7 @@ fn ref_cycle() {
     println!("Final count = {count}");
 }
 
+#[allow(dead_code)]
 fn func_ref(number: i32) {
     let result: i32 = number + number;
     println!("{}", result);
@@ -107,6 +115,7 @@ fn func_ref(number: i32) {
 /// let result = func_for_func(4, 4);
 /// assert_eq!(result, 16);
 /// ```
+#[allow(dead_code)]
 fn func_for_func(a: i8, b: i8) -> i32 {
     fn type_variable(a: i8, b: i8) -> (i32, i32) {
         let par_1: i32 = a as i32;
@@ -126,6 +135,7 @@ fn func_for_func(a: i8, b: i8) -> i32 {
 /// let result = an_func(10);
 /// println!("{}",result);
 /// ```
+#[allow(dead_code)]
 fn an_func(n: i32) -> i32 {
     let func = |n: i32| {
         let result_func = n * n;
@@ -146,12 +156,12 @@ fn an_func(n: i32) -> i32 {
 /// ```
 /// sum_an_func(); // Prints "20" to the console.
 /// ```
-
+#[allow(dead_code)]
 fn sum_an_func() {
     let sum = |a: i32, b: i32| -> i32 { a + b };
     println!("{}", sum(10, 10));
 }
-
+#[allow(dead_code)]
 fn closed_func() {
     let number = 10;
 
@@ -162,6 +172,7 @@ fn closed_func() {
     print_number();
 }
 
+#[allow(dead_code)]
 fn println_result() -> i32 {
     let mut number = 5;
     let mut result = || {
@@ -173,4 +184,33 @@ fn println_result() -> i32 {
     result();
     result();
     number
+}
+
+#[derive(Debug)]
+enum Week {
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday,
+}
+impl Week {
+    pub fn match_week() -> Week {
+        println!("Please enter a number between 1 and 7");
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input).expect("Failed to read line");
+        let today: i32 = input.trim().parse().expect("Please type a number!");
+        match today {
+            1 => Week::Monday,
+            2 => Week::Tuesday,
+            3 => Week::Wednesday,
+            4 => Week::Thursday,
+            5 => Week::Friday,
+            6 => Week::Saturday,
+            7 => Week::Sunday,
+            _ => panic!("Invalid day"),
+        }
+    }
 }
