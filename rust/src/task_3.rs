@@ -9,7 +9,9 @@ fn main() {
     // func_for_func(10, 10);
     // println!("{}", func_for_func(4, 4));
     // an_func(10);
-    sum_an_func();
+    // sum_an_func();
+    // closed_func();
+    println_result();
 }
 
 #[warn(dead_code)]
@@ -148,4 +150,27 @@ fn an_func(n: i32) -> i32 {
 fn sum_an_func() {
     let sum = |a: i32, b: i32| -> i32 { a + b };
     println!("{}", sum(10, 10));
+}
+
+fn closed_func() {
+    let number = 10;
+
+    let print_number = || {
+        println!("{}", number);
+    };
+
+    print_number();
+}
+
+fn println_result() -> i32 {
+    let mut number = 5;
+    let mut result = || {
+        number = number + 1;
+        println!("{}", &number);
+    };
+    result();
+    result();
+    result();
+    result();
+    number
 }
