@@ -174,3 +174,6 @@ rust\rust\target
 /rust/rust_task/target/debug/.fingerprint/rust_task-86a3a1e170660da6/invoked.timestamp
 /rust/src/target
 
+rust/rust_task/target
+rust/task/target/
+rust/src/target/.rustc_info.json
