@@ -12,9 +12,39 @@ fn main() {
     // sum_an_func();
     // closed_func();
     // println_result();
-    println!("{:?}",Week::match_week());
+    // println!("{:?}",Week::match_week());
+    let operation_1=main_go_run_operation(2);
+    operation_1(1,1);
 }
 
+fn main_go_run_operation(operation:i32) -> fn(i32,i32){
+    match operation {
+        1 => func_multiply,
+        2 => go_run_slojenie,
+        3 => go_run_delenie,
+        4 => fn_go_run_vichitanie,
+        _ => panic!("Invalid operation")
+    }
+}
+/////////////////////////////
+fn fn_go_run_vichitanie(a:i32,b:i32){
+    println!("{}",a-b);
+}
+
+fn fn_go_run_operation(a:i32,b:i32,operation:fn(i32,i32)->i32){
+    let result = operation(a,b);
+    println!("{}",result);
+}
+fn func_multiply(a:i32,b:i32){
+    println!("{}",a*b);
+}
+fn go_run_slojenie(a:i32,b:i32){
+    println!("{}",a+b);
+}
+fn go_run_delenie(a:i32,b:i32){
+    println!("{}",a/b);
+}
+/////////////////////////////
 #[allow(dead_code)]
 fn int16() {
     let int16_number: i16 = 10;
@@ -196,9 +226,18 @@ enum Week {
     Saturday,
     Sunday,
 }
+
+fn message(){
+    println!("Please enter a number between 1 and 7");
+}
+
 impl Week {
     pub fn match_week() -> Week {
-        println!("Please enter a number between 1 and 7");
+        {
+            let display: fn() = message;
+            display();
+        }
+
         let mut input = String::new();
         std::io::stdin().read_line(&mut input).expect("Failed to read line");
         let today: i32 = input.trim().parse().expect("Please type a number!");
