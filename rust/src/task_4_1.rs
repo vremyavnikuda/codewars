@@ -7,6 +7,7 @@ fn main(){
     println!("{}",user.name());
     println!("{}",user.age());
     println!("{}",user.height());
+    arr_();
 }
 
 struct StructUserTuple<'a>{
@@ -31,4 +32,10 @@ impl User for StructUserTuple<'_> {
     fn height(&self)->f32{
         self.height
     }
+}
+
+fn arr_(){
+    let number:[i32;2]=[1,2];
+    println!("{:?}",number[0]);
+    println!("{:?}",number[1]);
 }
