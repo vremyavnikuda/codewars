@@ -11,6 +11,7 @@ The repository is organized by programming languages and contains solutions in t
 - **Java** (9.7%)
 - **C** (5.4%)
 - **Rust** (5.3%)
+- **С#** (4.3%)
 
 Each language has its own directory, and inside each directory, you will find the solutions categorized by the challenge.
 
