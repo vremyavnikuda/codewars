@@ -15,6 +15,7 @@ mod vec_user;
 mod remove_ever_other;
 mod r#loop;
 mod task_3;
+pub mod task_4_1;
 
 fn main() {
     let mut input = String::new();

@@ -322,7 +322,7 @@ UpgradeLog*.htm
 
 # Temp files when opening LibreOffice on ubuntu
 .~lock.*
- 
+
 # svn
 .svn
 
@@ -353,50 +353,6 @@ ehthumbs.db
 
 # Folder config file
 Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# OS generated files #
-Icon?
-
-# Mac desktop service store files
-.DS_Store
-
-# SASS Compiler cache
-.sass-cache
-
-# Visual Studio 2014 CTP
-**/*.sln.ide
-
-# Visual Studio temp something
-.vs/
-
-# dotnet stuff
-project.lock.json
-
-# VS 2015+
-*.vc.vc.opendb
-*.vc.db
-
-# Rider
-.idea/
-
-# Visual Studio Code
-.vscode/
-
-# Output folder used by Webpack or other FE stuff
-**/node_modules/*
-**/wwwroot/*
-
-# SpecFlow specific
-*.feature.cs
-*.feature.xlsx.*
-*.Specs_*.html
-
-# UWP Projects
-AppPackages/
-
-#####
-# End of core ignore list, below put you custom 'per project' settings (patterns or path)
-#####
+rust/rust_task/target
+rust/task/target/
+rust/src/target/.rustc_info.json
