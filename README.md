@@ -1,3 +1,7 @@
+![GitHub language count](https://img.shields.io/github/languages/count/vremyavnikuda/codewars) ![GitHub top language](https://img.shields.io/github/languages/top/vremyavnikuda/codewars)
+
+
+___
 # Codewars Solutions Repository
 
 Welcome to the **Codewars Solutions** repository! This repository contains solutions to various coding challenges from [Codewars](https://www.codewars.com/) implemented in multiple programming languages.
