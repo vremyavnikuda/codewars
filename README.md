@@ -1,5 +1,9 @@
 # Codewars Solutions Repository
 
+<p align="center">
+  <img src="https://www.codewars.com/users/vremyavnikuda/badges/large" alt="Codewars Badge"/>
+</p>
+
 Welcome to the **Codewars Solutions** repository! This repository contains solutions to various coding challenges from [Codewars](https://www.codewars.com/) implemented in multiple programming languages.
 
 ## Repository Structure

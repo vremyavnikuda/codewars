@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <!-- Координатные оси -->
+  <line x1="50" y1="350" x2="550" y2="350" stroke="black" stroke-width="2" />
+  <line x1="50" y1="50" x2="50" y2="350" stroke="black" stroke-width="2" />
+  
+  <!-- Стрелки осей -->
+  <polygon points="550,350 540,345 540,355" fill="black" />
+  <polygon points="50,50 45,60 55,60" fill="black" />
+  
+  <!-- Подписи осей -->
+  <text x="300" y="380" text-anchor="middle" font-family="Arial" font-size="14"> V1(Uзи), В</text>
+  <text x="30" y="200" text-anchor="middle" font-family="Arial" font-size="14" transform="rotate(-90,30,200)">Ic, мА</text>
+  
+  <!-- Деления на оси X (V1) -->
+  <line x1="100" y1="347" x2="100" y2="353" stroke="black" stroke-width="1" />
+  <text x="100" y="367" text-anchor="middle" font-family="Arial" font-size="12">1</text>
+  <line x1="150" y1="347" x2="150" y2="353" stroke="black" stroke-width="1" />
+  <text x="150" y="367" text-anchor="middle" font-family="Arial" font-size="12">0</text>
+  <line x1="200" y1="347" x2="200" y2="353" stroke="black" stroke-width="1" />
+  <text x="200" y="367" text-anchor="middle" font-family="Arial" font-size="12">-1</text>
+  <line x1="250" y1="347" x2="250" y2="353" stroke="black" stroke-width="1" />
+  <text x="250" y="367" text-anchor="middle" font-family="Arial" font-size="12">-2</text>
+  <line x1="300" y1="347" x2="300" y2="353" stroke="black" stroke-width="1" />
+  <text x="300" y="367" text-anchor="middle" font-family="Arial" font-size="12">-3</text>
+  <line x1="325" y1="347" x2="325" y2="353" stroke="black" stroke-width="1" />
+  <text x="325" y="367" text-anchor="middle" font-family="Arial" font-size="12">-3.25</text>
+  <line x1="350" y1="347" x2="350" y2="353" stroke="black" stroke-width="1" />
+  <text x="350" y="367" text-anchor="middle" font-family="Arial" font-size="12">-3.5</text>
+  <line x1="375" y1="347" x2="375" y2="353" stroke="black" stroke-width="1" />
+  <text x="375" y="367" text-anchor="middle" font-family="Arial" font-size="12">-3.75</text>
+  <line x1="400" y1="347" x2="400" y2="353" stroke="black" stroke-width="1" />
+  <text x="400" y="367" text-anchor="middle" font-family="Arial" font-size="12">-4</text>
+  <line x1="425" y1="347" x2="425" y2="353" stroke="black" stroke-width="1" />
+  <text x="425" y="367" text-anchor="middle" font-family="Arial" font-size="12">-4.25</text>
+  
+  <!-- Деления на оси Y (Ic) -->
+  <line x1="47" y1="350" x2="53" y2="350" stroke="black" stroke-width="1" />
+  <text x="37" y="354" text-anchor="end" font-family="Arial" font-size="12">0</text>
+  <line x1="47" y1="300" x2="53" y2="300" stroke="black" stroke-width="1" />
+  <text x="37" y="304" text-anchor="end" font-family="Arial" font-size="12">2</text>
+  <line x1="47" y1="250" x2="53" y2="250" stroke="black" stroke-width="1" />
+  <text x="37" y="254" text-anchor="end" font-family="Arial" font-size="12">4</text>
+  <line x1="47" y1="200" x2="53" y2="200" stroke="black" stroke-width="1" />
+  <text x="37" y="204" text-anchor="end" font-family="Arial" font-size="12">6</text>
+  <line x1="47" y1="150" x2="53" y2="150" stroke="black" stroke-width="1" />
+  <text x="37" y="154" text-anchor="end" font-family="Arial" font-size="12">8</text>
+  
+  <!-- ВАХ для V2=5В -->
+  <path d="M100,254.5 L150,255.5 L200,290.5 L250,330.5 L300,350 L325,350 L350,350 L375,350 L400,350 L425,350" 
+        stroke="blue" stroke-width="2" fill="none" />
+  <text x="480" y="290" font-family="Arial" font-size="12" fill="blue">V2 = 5В</text>
+  
+  <!-- ВАХ для V2=10В -->
+  <path d="M100,172.3 L150,184.5 L200,269.4 L250,329.5 L300,350 L325,350 L350,350 L375,350 L400,350 L425,350" 
+        stroke="red" stroke-width="2" fill="none" />
+  <text x="480" y="260" font-family="Arial" font-size="12" fill="red">V2 = 10В</text>
+  
+  <!-- Напряжение отсечки -->
+  <line x1="300" y1="150" x2="300" y2="350" stroke="darkgreen" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="280" y="140" font-family="Arial" font-size="12" fill="darkgreen">Uзо = -3В</text>
+</svg>
