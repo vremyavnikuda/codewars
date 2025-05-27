@@ -1,3 +1,7 @@
+![GitHub language count](https://img.shields.io/github/languages/count/vremyavnikuda/codewars) ![GitHub top language](https://img.shields.io/github/languages/top/vremyavnikuda/codewars)
+
+
+___
 # Codewars Solutions Repository
 
 <p align="center">
