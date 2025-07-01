@@ -337,7 +337,6 @@ UpgradeLog*.htm
 **/App_Data/*.ldf
 **/App_Data/*.sdf
 
-
 #LightSwitch generated files
 GeneratedArtifacts/
 _Pvt_Extensions/
@@ -356,3 +355,5 @@ Desktop.ini
 rust/rust_task/target
 rust/task/target/
 rust/src/target/.rustc_info.json
+rust/task2/target/.rustc_info.json
+rust/task2/target/CACHEDIR.TAG
