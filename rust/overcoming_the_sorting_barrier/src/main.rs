@@ -710,13 +710,11 @@ mod tests {
         }
     }
 
-    /* Verify that limited_relaxations never increases distances. */
     #[test]
     fn monotonicity_of_relaxations() {
         let n = 300;
         let m = 4_000;
         let mut g = gen_random_graph(n, m, 314159, 4.0);
-        // add a few zero-weight edges to test boundary
         for i in 0..50 {
             let u = i;
             let v = (i + 1) % n;
