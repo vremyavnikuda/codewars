@@ -443,7 +443,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::collections::{HashSet, VecDeque};
+    use std::collections::HashSet;
     use std::time::Instant;
 
     /* Simple deterministic RNG (XorShift64) to avoid external deps. */
@@ -480,11 +480,7 @@ mod tests {
             // Non-negative finite weights > 0 to avoid ties as much as possible
             let x = self.next_f64_unit();
             let w = x * max_w + 1e-9;
-            if w.is_finite() {
-                w
-            } else {
-                max_w
-            }
+            if w.is_finite() { w } else { max_w }
         }
     }
 
@@ -729,7 +725,7 @@ mod tests {
         let s = 5usize;
         let mut dist = vec![f64::INFINITY; n];
         let mut pred = (0..n).collect::<Vec<_>>();
-        let mut done = vec![false; n];
+        let done = vec![false; n];
         dist[s] = 0.0;
         pred[s] = s;
 
