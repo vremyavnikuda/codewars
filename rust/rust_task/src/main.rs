@@ -1,744 +1,259 @@
-use std::cmp::{Ordering, Reverse};
-use std::collections::{BinaryHeap, VecDeque};
-use std::f64;
-
-#[derive(Clone, Debug)]
-struct Edge {
-    to: usize,
-    w: f64,
+// Пример 1: Простейшая структура с одним lifetime
+struct TextHolder<'a> {
+    content: &'a str, // Эта структура "заимствует" строку на время 'a
 }
 
-#[derive(Clone, Debug)]
-struct Graph {
-    n: usize,
-    adj: Vec<Vec<Edge>>,
+impl<'a> TextHolder<'a> {
+    // Конструктор принимает ссылку и возвращает структуру с тем же lifetime
+    fn new(text: &'a str) -> Self {
+        TextHolder { content: text }
+    }
+
+    // Метод возвращает ссылку с тем же lifetime, что и структура
+    fn get_content(&self) -> &'a str {
+        self.content
+    }
+
+    // Метод может принимать другие параметры с независимыми lifetime
+    fn compare_with(&self, other: &str) -> bool {
+        self.content == other
+    }
 }
 
-impl Graph {
-    fn new(n: usize) -> Self {
-        Self {
-            n,
-            adj: vec![Vec::new(); n],
+fn basic_example() {
+    println!("Пример 1: Основы");
+
+    let original = "Привет, мир!"; // original живет до конца функции
+
+    let holder = TextHolder::new(original); // holder "заимствует" original
+    println!("Содержимое: {}", holder.get_content());
+
+    // Это работает, потому что original все еще существует
+    println!("Сравнение: {}", holder.compare_with("Привет, мир!"));
+
+    // holder может существовать, пока существует original
+} // здесь заканчиваются времена жизни и original, и holder
+
+// Пример 2: Структура с несколькими независимыми lifetime
+struct BookReference<'title, 'author> {
+    title: &'title str,   // Название может жить своей жизнью
+    author: &'author str, // Автор может жить своей жизнью
+}
+
+impl<'title, 'author> BookReference<'title, 'author> {
+    fn new(title: &'title str, author: &'author str) -> Self {
+        BookReference { title, author }
+    }
+
+    // Возвращаем название - lifetime 'title
+    fn get_title(&self) -> &'title str {
+        self.title
+    }
+
+    // Возвращаем автора - lifetime 'author
+    fn get_author(&self) -> &'author str {
+        self.author
+    }
+}
+
+fn multiple_lifetimes_example() {
+    println!("\nПример 2: Несколько независимых lifetime");
+
+    let book_title = "1984"; // Название живет до конца функции
+
+    {
+        let author_name = "Джордж Оруэлл"; // Автор живет только в этом блоке
+
+        let book = BookReference::new(book_title, author_name);
+        println!("Книга: {} от {}", book.get_title(), book.get_author());
+
+        // Если бы мы попытались вынести book за пределы этого блока,
+        // получили бы ошибку, так как author_name перестанет существовать
+    }
+
+    // book_title все еще доступно здесь
+    println!("Название все еще существует: {}", book_title);
+}
+
+// Пример 3: Constraint между lifetime - 'b: 'a
+struct ConfigWithOverride<'base, 'override_: 'base> {
+    base_config: &'base str,          // Базовая конфигурация (короче живет)
+    override_config: &'override_ str, // Переопределения (дольше живут)
+}
+
+impl<'base, 'override_: 'base> ConfigWithOverride<'base, 'override_> {
+    fn new(base: &'base str, override_val: &'override_ str) -> Self {
+        ConfigWithOverride {
+            base_config: base,
+            override_config: override_val,
         }
     }
-    fn add_edge(&mut self, u: usize, v: usize, w: f64) {
-        assert!(u < self.n && v < self.n, "vertex out of range");
-        assert!(
-            w >= 0.0 && w.is_finite(),
-            "non-negative finite weights required"
+
+    // Этот метод может безопасно вернуть любую из конфигураций
+    fn get_effective_config(&self, use_override: bool) -> &'base str {
+        if use_override {
+            // Можем вернуть override с lifetime 'base, потому что 'override_: 'base
+            // То есть override живет как минимум столько же, сколько base
+            self.override_config
+        } else {
+            self.base_config
+        }
+    }
+}
+
+fn lifetime_constraints_example() {
+    println!("\nПример 3: Constraint между lifetime");
+
+    let global_config = "debug=false,log_level=info"; // Живет долго
+
+    {
+        let local_override = "debug=true"; // Живет в локальном блоке
+
+        // Это работает: 'global (long) : 'local (short)
+        // global_config переживет local_override
+        let config = ConfigWithOverride::new(local_override, global_config);
+
+        println!("Базовая конфигурация: {}", config.base_config);
+        println!(
+            "Эффективная конфигурация: {}",
+            config.get_effective_config(true)
         );
-        self.adj[u].push(Edge { to: v, w });
     }
 }
 
-/* Totally ordered wrapper for f64.
-Accepts only finite numbers and infinities; comparing NaN will panic. */
-#[derive(Copy, Clone, Debug, PartialEq)]
-struct OrdF64(f64);
-impl Eq for OrdF64 {}
-impl PartialOrd for OrdF64 {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.0.partial_cmp(&other.0)
-    }
-}
-impl Ord for OrdF64 {
-    fn cmp(&self, other: &Self) -> Ordering {
-        self.0
-            .partial_cmp(&other.0)
-            .expect("NaN encountered in OrdF64::cmp")
-    }
+// Пример 4: Структура, содержащая другую структуру с lifetime
+struct Document<'content> {
+    title: String,          // Владеет своими данными
+    content: &'content str, // Заимствует контент
 }
 
-/* Partial priority queue: a min-heap by distance with chunked extraction. */
-#[derive(Default)]
-struct PartialPQ {
-    heap: BinaryHeap<(Reverse<OrdF64>, usize)>,
+struct DocumentCollection<'docs, 'content> {
+    name: String,                           // Владеет именем коллекции
+    documents: &'docs [Document<'content>], // Заимствует массив документов
 }
-impl PartialPQ {
-    fn new() -> Self {
-        Self {
-            heap: BinaryHeap::new(),
-        }
+
+impl<'content> Document<'content> {
+    fn new(title: String, content: &'content str) -> Self {
+        Document { title, content }
     }
-    fn clear(&mut self) {
-        self.heap.clear();
-    }
-    fn push(&mut self, key: f64, v: usize) {
-        debug_assert!(key.is_finite() || key.is_infinite());
-        self.heap.push((Reverse(OrdF64(key)), v));
-    }
-    fn pop_min(&mut self) -> Option<(f64, usize)> {
-        self.heap.pop().map(|(Reverse(k), v)| (k.0, v))
-    }
-    fn is_empty(&self) -> bool {
-        self.heap.is_empty()
-    }
-    fn len(&self) -> usize {
-        self.heap.len()
-    }
-    fn extract_k_smallest(&mut self, k: usize) -> Vec<(f64, usize)> {
-        let mut out = Vec::with_capacity(k);
-        for _ in 0..k {
-            if let Some((kmin, v)) = self.pop_min() {
-                out.push((kmin, v));
-            } else {
-                break;
+
+    fn preview(&self) -> &str {
+        // Безопасно получаем первые 50 байт, учитывая границы UTF-8 символов
+        let max_bytes = 50;
+
+        if self.content.len() <= max_bytes {
+            // Если строка короче 50 байт, возвращаем её целиком
+            self.content
+        } else {
+            // Ищем безопасную позицию для среза, не разрезая символы
+            let mut end = max_bytes;
+
+            // Двигаемся назад до тех пор, пока не найдем границу символа
+            while end > 0 && !self.content.is_char_boundary(end) {
+                end -= 1;
             }
-        }
-        out
-    }
-    fn batch_prepend(&mut self, items: &[(f64, usize)]) {
-        for &(k, v) in items {
-            debug_assert!(k.is_finite() || k.is_infinite());
-            self.push(k, v);
+
+            &self.content[..end]
         }
     }
 }
 
-/* Limited batch relaxations. */
-fn limited_relaxations(
-    g: &Graph,
-    dist: &mut [f64],
-    pred: &mut [usize],
-    rounds: usize,
-    active_seed: &[usize],
-) {
-    if rounds == 0 || active_seed.is_empty() {
-        return;
-    }
-    let mut q = VecDeque::new();
-    let mut inq = vec![false; g.n];
-    for &s in active_seed.iter() {
-        if dist[s].is_finite() && !inq[s] {
-            q.push_back(s);
-            inq[s] = true;
+impl<'docs, 'content> DocumentCollection<'docs, 'content> {
+    fn new(name: String, docs: &'docs [Document<'content>]) -> Self {
+        DocumentCollection {
+            name,
+            documents: docs,
         }
     }
-    let mut layer = 0usize;
-    while layer < rounds && !q.is_empty() {
-        let mut next = VecDeque::new();
-        while let Some(u) = q.pop_front() {
-            inq[u] = false;
-            let du = dist[u];
-            for e in &g.adj[u] {
-                let nd = du + e.w;
-                if nd < dist[e.to] {
-                    dist[e.to] = nd;
-                    pred[e.to] = u;
-                    if !inq[e.to] {
-                        next.push_back(e.to);
-                        inq[e.to] = true;
-                    }
-                }
-            }
-        }
-        q = next;
-        layer += 1;
+
+    fn count(&self) -> usize {
+        self.documents.len()
+    }
+
+    fn get_document(&self, index: usize) -> Option<&Document<'content>> {
+        self.documents.get(index)
     }
 }
 
-/* Collect frontier below the threshold. */
-fn collect_frontier(n: usize, dist: &[f64], done: &[bool], d_upper: f64) -> Vec<usize> {
-    let mut f = Vec::new();
-    for v in 0..n {
-        if !done[v] && dist[v].is_finite() && dist[v] < d_upper {
-            f.push(v);
-        }
-    }
-    f
-}
+fn nested_structures_example() {
+    println!("\nПример 4: Вложенные структуры с lifetime");
 
-/* Heuristic depth along predecessor links. */
-fn frontier_depth_to(
-    v: usize,
-    dist: &[f64],
-    pred: &[usize],
-    d_anchor: f64,
-    guard_limit: usize,
-) -> usize {
-    let mut steps = 0usize;
-    let mut cur = v;
-    let mut guard = 0usize;
-    while dist[cur].is_finite() && dist[cur] >= 0.0 && dist[cur] >= d_anchor {
-        let p = pred[cur];
-        if p == cur {
-            break;
-        }
-        cur = p;
-        steps += 1;
-        guard += 1;
-        if guard > guard_limit {
-            break;
-        }
-    }
-    steps
-}
+    let content1 = "Это содержимое первого документа. Оно довольно длинное.";
+    let content2 = "Короткий второй документ.";
 
-/* Find pivots. */
-fn find_pivots(
-    g: &Graph,
-    dist: &[f64],
-    pred: &[usize],
-    done: &[bool],
-    d_upper: f64,
-    b: usize,
-) -> Vec<usize> {
-    let guard_limit = 8 * b.max(1);
-    let f = collect_frontier(g.n, dist, done, d_upper);
-    if f.is_empty() {
-        return Vec::new();
-    }
+    let doc1 = Document::new("Первый документ".to_string(), content1);
+    let doc2 = Document::new("Второй документ".to_string(), content2);
 
-    let mut depths = Vec::with_capacity(f.len());
-    for &v in &f {
-        let unit = 1.0_f64.max(d_upper / (b as f64 + 1.0));
-        let d_anchor = (dist[v] / unit).floor() * unit;
-        let depth = frontier_depth_to(v, dist, pred, d_anchor, guard_limit);
-        depths.push((depth, v));
-    }
+    let documents = vec![doc1, doc2];
+    let collection = DocumentCollection::new("Моя коллекция".to_string(), &documents);
 
-    depths.sort_by_key(|&(d, _)| usize::MAX - d);
-    let mut pivots = Vec::new();
-    let mut seen = vec![false; g.n];
-
-    for &(d, v) in &depths {
-        if d < b {
-            continue;
-        }
-        let mut u = v;
-        let mut k = d;
-        while k > 0 {
-            let p = pred[u];
-            if p == u {
-                break;
-            }
-            u = p;
-            k -= 1;
-        }
-        if !seen[u] {
-            pivots.push(u);
-            seen[u] = true;
-            if pivots.len() == b {
-                break;
-            }
-        }
-    }
-    pivots
-}
-
-/* Bounded Dijkstra with a distance threshold. */
-fn dijkstra_bounded(
-    g: &Graph,
-    dist: &mut [f64],
-    pred: &mut [usize],
-    done: &mut [bool],
-    seeds: &[(usize, f64)],
-    d_upper: f64,
-    b: usize,
-) {
-    let mut pq = PartialPQ::new();
-    for &(s, ds) in seeds {
-        if ds < dist[s] {
-            dist[s] = ds;
-            pred[s] = s;
-        }
-        if dist[s].is_finite() && dist[s] < d_upper {
-            pq.push(dist[s], s);
-        }
-    }
-
-    let frontier_cap = (g.n / b.max(1)).max(1);
-    let batch_k = b.max(1);
-
-    while !pq.is_empty() {
-        if pq.len() > frontier_cap {
-            let active: Vec<usize> = collect_frontier(g.n, dist, done, d_upper);
-            limited_relaxations(g, dist, pred, b, &active);
-
-            let mut items = Vec::new();
-            for v in 0..g.n {
-                if !done[v] && dist[v].is_finite() && dist[v] < d_upper {
-                    items.push((dist[v], v));
-                }
-            }
-            pq.clear();
-            pq.batch_prepend(&items);
-        }
-
-        let chunk = pq.extract_k_smallest(batch_k);
-        if chunk.is_empty() {
-            break;
-        }
-
-        for (du, u) in chunk {
-            if done[u] {
-                continue;
-            }
-            if du > dist[u] {
-                continue;
-            }
-            if du >= d_upper {
-                continue;
-            }
-
-            done[u] = true;
-
-            for e in &g.adj[u] {
-                if done[e.to] {
-                    continue;
-                }
-                let nd = du + e.w;
-                if nd < dist[e.to] && nd < d_upper {
-                    dist[e.to] = nd;
-                    pred[e.to] = u;
-                    pq.push(nd, e.to);
-                }
-            }
-        }
-    }
-}
-
-/* Recursive BMSSP. */
-fn bmssp_recursive(
-    g: &Graph,
-    dist: &mut [f64],
-    pred: &mut [usize],
-    done: &mut [bool],
-    seeds: &[(usize, f64)],
-    d_upper: f64,
-    b: usize,
-    _depth: usize,
-) {
-    dijkstra_bounded(g, dist, pred, done, seeds, d_upper, b);
-
-    let mut unfinished = Vec::new();
-    for v in 0..g.n {
-        if !done[v] && dist[v].is_finite() && dist[v] < d_upper {
-            unfinished.push(v);
-        }
-    }
-    if unfinished.is_empty() {
-        return;
-    }
-
-    let pivots = find_pivots(g, dist, pred, done, d_upper, b);
-    if pivots.is_empty() {
-        let active = collect_frontier(g.n, dist, done, d_upper);
-        limited_relaxations(g, dist, pred, b, &active);
-        dijkstra_bounded(g, dist, pred, done, seeds, d_upper, b);
-        return;
-    }
-
-    for &p in &pivots {
-        let base = dist[p];
-        if !base.is_finite() {
-            continue;
-        }
-
-        let mut neigh = Vec::new();
-        for e in &g.adj[p] {
-            let dv = dist[e.to];
-            if dv.is_finite() && dv >= base && dv < d_upper {
-                neigh.push(dv);
-            }
-        }
-        for e in &g.adj[p] {
-            for ee in &g.adj[e.to] {
-                let dv = dist[ee.to];
-                if dv.is_finite() && dv >= base && dv < d_upper {
-                    neigh.push(dv);
-                }
-            }
-        }
-        if neigh.is_empty() {
-            bmssp_recursive(g, dist, pred, done, &[(p, base)], d_upper, b, 0);
-            continue;
-        }
-        neigh.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        let q_idx = neigh.len().min(b.max(2)) - 1;
-        let d_local = neigh[q_idx].min(d_upper);
-
-        bmssp_recursive(g, dist, pred, done, &[(p, base)], d_local, b, 0);
-    }
-
-    dijkstra_bounded(g, dist, pred, done, seeds, d_upper, b);
-}
-
-/* Outer wrapper. */
-fn sssp_research_style(g: &Graph, s: usize, b: usize) -> (Vec<f64>, Vec<usize>) {
-    assert!(s < g.n, "invalid source");
-    let mut dist = vec![f64::INFINITY; g.n];
-    let mut pred = (0..g.n).collect::<Vec<_>>();
-    let mut done = vec![false; g.n];
-    dist[s] = 0.0;
-    pred[s] = s;
-
-    let seeds = vec![(s, 0.0)];
-    bmssp_recursive(
-        g,
-        &mut dist,
-        &mut pred,
-        &mut done,
-        &seeds,
-        f64::INFINITY,
-        b.max(2),
-        0,
+    println!(
+        "Коллекция '{}' содержит {} документов",
+        collection.name,
+        collection.count()
     );
 
-    (dist, pred)
+    if let Some(first_doc) = collection.get_document(0) {
+        println!("Первый документ: '{}'", first_doc.title);
+        println!("Превью: '{}'", first_doc.preview());
+    }
+}
+
+// Пример 5: Методы с разными lifetime параметрами
+struct TextProcessor<'data> {
+    source: &'data str,
+}
+
+impl<'data> TextProcessor<'data> {
+    fn new(source: &'data str) -> Self {
+        TextProcessor { source }
+    }
+
+    // Метод, который работает с исходными данными
+    fn get_source(&self) -> &'data str {
+        self.source
+    }
+
+    // Метод с новым lifetime параметром для temporary данных
+    fn process_with_temp<'temp>(&self, temp_data: &'temp str) -> (&'data str, &'temp str) {
+        (self.source, temp_data)
+    }
+
+    // Метод, который возвращает строку с lifetime не длиннее исходного
+    fn extract_word(&self, start: usize, end: usize) -> &'data str {
+        &self.source[start..end.min(self.source.len())]
+    }
+
+    // Метод, сравнивающий с внешними данными
+    fn contains_word<'word>(&self, word: &'word str) -> bool {
+        self.source.contains(word)
+    }
+}
+
+fn method_lifetimes_example() {
+    println!("\nПример 5: Методы с разными lifetime");
+
+    let source_text = "Rust - это системный язык программирования";
+    let processor = TextProcessor::new(source_text);
+
+    println!("Исходный текст: {}", processor.get_source());
+
+    {
+        let temp_word = "временное слово";
+        let (orig, temp) = processor.process_with_temp(temp_word);
+        println!("Оригинал: {}, Временное: {}", orig, temp);
+    }
+
+    let first_word = processor.extract_word(0, 4);
+    println!("Первое слово: {}", first_word);
+
+    println!("Содержит 'Rust'? {}", processor.contains_word("Rust"));
 }
 
 fn main() {
-    let mut g = Graph::new(8);
-    g.add_edge(0, 1, 3.0);
-    g.add_edge(0, 2, 1.0);
-    g.add_edge(2, 1, 1.0);
-    g.add_edge(1, 3, 2.0);
-    g.add_edge(2, 3, 4.0);
-    g.add_edge(3, 4, 2.5);
-    g.add_edge(1, 5, 10.0);
-    g.add_edge(4, 5, 1.0);
-    g.add_edge(2, 6, 2.0);
-    g.add_edge(6, 7, 2.0);
-    g.add_edge(7, 5, 1.0);
-
-    let b = 16;
-    let s = 0usize;
-
-    let (dist, pred) = sssp_research_style(&g, s, b);
-
-    for v in 0..g.n {
-        if dist[v].is_finite() {
-            print!("dist[{v}] = {:.6}", dist[v]);
-        } else {
-            print!("dist[{v}] = +INF");
-        }
-        if dist[v].is_finite() {
-            let mut path = Vec::new();
-            let mut cur = v;
-            let mut guard = 0usize;
-            while pred[cur] != cur && guard < 4 * g.n {
-                path.push(cur);
-                cur = pred[cur];
-                guard += 1;
-            }
-            path.push(cur);
-            path.reverse();
-            println!("   path = {:?}", path);
-        } else {
-            println!();
-        }
-    }
-}
-
-// dist[0] = 0.000000   path = [0]
-// dist[1] = 2.000000   path = [0, 2, 1]
-// dist[2] = 1.000000   path = [0, 2]
-// dist[3] = 4.000000   path = [0, 2, 1, 3]
-// dist[4] = 6.500000   path = [0, 2, 1, 3, 4]
-// dist[5] = 6.000000   path = [0, 2, 6, 7, 5]
-// dist[6] = 3.000000   path = [0, 2, 6]
-// dist[7] = 5.000000   path = [0, 2, 6, 7]
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::collections::{HashSet, VecDeque};
-    use std::time::Instant;
-
-    /* Simple deterministic RNG (XorShift64) to avoid external deps. */
-    #[derive(Clone)]
-    struct XorShift64 {
-        state: u64,
-    }
-    impl XorShift64 {
-        fn new(seed: u64) -> Self {
-            Self { state: seed.max(1) }
-        }
-        fn next_u64(&mut self) -> u64 {
-            let mut x = self.state;
-            x ^= x << 13;
-            x ^= x >> 7;
-            x ^= x << 17;
-            self.state = x;
-            x
-        }
-        fn next_f64_unit(&mut self) -> f64 {
-            // Uniform in [0,1)
-            const DEN: f64 = (1u64 << 53) as f64;
-            ((self.next_u64() >> 11) as f64) / DEN
-        }
-        fn gen_range_usize(&mut self, lo: usize, hi: usize) -> usize {
-            // [lo, hi)
-            let span = hi - lo;
-            if span == 0 {
-                return lo;
-            }
-            (self.next_u64() as usize % span) + lo
-        }
-        fn gen_weight(&mut self, max_w: f64) -> f64 {
-            // Non-negative finite weights > 0 to avoid ties as much as possible
-            let x = self.next_f64_unit();
-            let w = x * max_w + 1e-9;
-            if w.is_finite() {
-                w
-            } else {
-                max_w
-            }
-        }
-    }
-
-    /* Baseline Dijkstra with standard min-heap; returns distance vector. */
-    fn baseline_dijkstra(g: &Graph, s: usize) -> Vec<f64> {
-        let mut dist = vec![f64::INFINITY; g.n];
-        let mut done = vec![false; g.n];
-        let mut pq: BinaryHeap<(Reverse<OrdF64>, usize)> = BinaryHeap::new();
-        dist[s] = 0.0;
-        pq.push((Reverse(OrdF64(0.0)), s));
-
-        while let Some((Reverse(OrdF64(d)), u)) = pq.pop() {
-            if done[u] {
-                continue;
-            }
-            if d > dist[u] {
-                continue;
-            }
-            done[u] = true;
-            for e in &g.adj[u] {
-                let nd = d + e.w;
-                if nd < dist[e.to] {
-                    dist[e.to] = nd;
-                    pq.push((Reverse(OrdF64(nd)), e.to));
-                }
-            }
-        }
-        dist
-    }
-
-    /* Helper: compare two distance arrays with tolerance. */
-    fn assert_dist_close(a: &[f64], b: &[f64], eps_abs: f64, eps_rel: f64) {
-        assert_eq!(a.len(), b.len(), "distance vector length mismatch");
-        for i in 0..a.len() {
-            let da = a[i];
-            let db = b[i];
-            if da.is_infinite() && db.is_infinite() {
-                continue;
-            }
-            let diff = (da - db).abs();
-            let scale = da.abs().max(db.abs()).max(1.0);
-            assert!(
-                diff <= eps_abs || diff / scale <= eps_rel,
-                "distance mismatch at {}: got {:.10}, expected {:.10}, |diff|={:.3e}, rel={:.3e}",
-                i,
-                da,
-                db,
-                diff,
-                diff / scale
-            );
-        }
-    }
-
-    /* Random directed graph generator with exactly m edges, no self-loops, no multi-edges. */
-    fn gen_random_graph(n: usize, m: usize, seed: u64, max_w: f64) -> Graph {
-        let mut rng = XorShift64::new(seed);
-        let mut g = Graph::new(n);
-        let mut used = HashSet::<(usize, usize)>::with_capacity(m * 2);
-        let mut edges = 0usize;
-
-        while edges < m {
-            let u = rng.gen_range_usize(0, n);
-            let mut v = rng.gen_range_usize(0, n);
-            if v == u {
-                v = (v + 1) % n;
-            }
-            if used.insert((u, v)) {
-                let w = rng.gen_weight(max_w);
-                g.add_edge(u, v, w);
-                edges += 1;
-            }
-        }
-        g
-    }
-
-    /* Grid graph N x M with right and down edges; weights in [1, max_w). */
-    fn gen_grid_graph(nx: usize, ny: usize, seed: u64, max_w: f64) -> Graph {
-        let n = nx * ny;
-        let mut rng = XorShift64::new(seed);
-        let mut g = Graph::new(n);
-        let at = |x: usize, y: usize| -> usize { y * nx + x };
-        for y in 0..ny {
-            for x in 0..nx {
-                let u = at(x, y);
-                if x + 1 < nx {
-                    let v = at(x + 1, y);
-                    g.add_edge(u, v, rng.gen_weight(max_w));
-                }
-                if y + 1 < ny {
-                    let v = at(x, y + 1);
-                    g.add_edge(u, v, rng.gen_weight(max_w));
-                }
-            }
-        }
-        g
-    }
-
-    /* Sanity: small random sparse graphs, multiple seeds. */
-    #[test]
-    fn random_sparse_small_multiple_seeds() {
-        let n = 200;
-        let m = 2_000;
-        let seeds = [1u64, 12345, 999_001, 2025_08_10, 42];
-        for &seed in &seeds {
-            let g = gen_random_graph(n, m, seed, 10.0);
-            let s = (seed as usize) % n;
-            let dist_ref = baseline_dijkstra(&g, s);
-            let (dist, _pred) = sssp_research_style(&g, s, 16);
-            assert_dist_close(&dist, &dist_ref, 1e-9, 1e-9);
-        }
-    }
-
-    /* Medium-size dense-ish random graphs. */
-    #[test]
-    fn random_medium_denser() {
-        let n = 400;
-        let m = 16_000; // average out-degree 40
-        let g = gen_random_graph(n, m, 777, 5.0);
-        let s = 7usize;
-        let t0 = Instant::now();
-        let dist_ref = baseline_dijkstra(&g, s);
-        let t1 = Instant::now();
-        let (dist, _pred) = sssp_research_style(&g, s, 32);
-        let t2 = Instant::now();
-
-        eprintln!(
-            "baseline dijkstra: {:?}, research-style: {:?}",
-            t1 - t0,
-            t2 - t1
-        );
-        assert_dist_close(&dist, &dist_ref, 1e-9, 1e-9);
-    }
-
-    /* Large grid to exercise long paths and structured topology. */
-    #[test]
-    fn grid_large_structured() {
-        let nx = 150;
-        let ny = 150;
-        let g = gen_grid_graph(nx, ny, 13579, 3.0);
-        let s = 0usize; // top-left
-        let dist_ref = baseline_dijkstra(&g, s);
-        let (dist, _pred) = sssp_research_style(&g, s, 32);
-        assert_dist_close(&dist, &dist_ref, 1e-9, 1e-9);
-    }
-
-    /* Long chain with shortcuts to test stability on deep predecessor chains. */
-    #[test]
-    fn long_chain_with_shortcuts() {
-        let n = 10_000;
-        let mut g = Graph::new(n);
-        for i in 0..n - 1 {
-            g.add_edge(i, i + 1, 1.0);
-        }
-        // Random forward shortcuts
-        let mut rng = XorShift64::new(2468);
-        for _ in 0..n {
-            let u = rng.gen_range_usize(0, n - 2);
-            let v = rng.gen_range_usize(u + 2, n);
-            let w = rng.gen_weight(0.5); // small bonus edges
-            g.add_edge(u, v, w);
-        }
-        let s = 0usize;
-        let dist_ref = baseline_dijkstra(&g, s);
-        let (dist, _pred) = sssp_research_style(&g, s, 64);
-        assert_dist_close(&dist, &dist_ref, 1e-9, 1e-9);
-    }
-
-    /* Heavy stress: large n and m. Marked ignored by default; run with:
-       cargo test -- --ignored
-       or       cargo test heavy_random_stress -- --ignored
-    */
-    #[test]
-    #[ignore]
-    fn heavy_random_stress() {
-        let n = 5_000;
-        let m = 120_000;
-        let g = gen_random_graph(n, m, 0xDEADBEEF, 7.0);
-        let s = 123usize;
-        let t0 = Instant::now();
-        let dist_ref = baseline_dijkstra(&g, s);
-        let t1 = Instant::now();
-        let (dist, _pred) = sssp_research_style(&g, s, 64);
-        let t2 = Instant::now();
-
-        eprintln!(
-            "n={}, m={}, baseline={:?}, research={:?}",
-            n,
-            m,
-            t1 - t0,
-            t2 - t1
-        );
-        assert_dist_close(&dist, &dist_ref, 1e-8, 1e-8);
-    }
-
-    /* Disconnected components: verify +INF handling. */
-    #[test]
-    fn disconnected_components() {
-        let n = 1000;
-        let mut g = Graph::new(n);
-        // Component A: 0..499
-        for i in 0..499 {
-            g.add_edge(i, i + 1, 1.0);
-        }
-        // Component B: 500..999
-        for i in 500..999 {
-            g.add_edge(i, i + 1, 1.0);
-        }
-        let s = 0usize;
-        let dist_ref = baseline_dijkstra(&g, s);
-        let (dist, _pred) = sssp_research_style(&g, s, 16);
-        assert_dist_close(&dist, &dist_ref, 1e-9, 1e-9);
-        // Spot-check unreachable vertices
-        assert!(dist[900].is_infinite());
-    }
-
-    /* Random sparse with multiple sources validated one by one. */
-    #[test]
-    fn random_sparse_multi_sources() {
-        let n = 800;
-        let m = 8_000;
-        let g = gen_random_graph(n, m, 0xABCDEF, 10.0);
-        let sources = [0usize, 1, 7, 123, 456, 777];
-        for &s in &sources {
-            let dist_ref = baseline_dijkstra(&g, s);
-            let (dist, _pred) = sssp_research_style(&g, s, 32);
-            assert_dist_close(&dist, &dist_ref, 1e-9, 1e-9);
-        }
-    }
-
-    /* Verify that limited_relaxations never increases distances. */
-    #[test]
-    fn monotonicity_of_relaxations() {
-        let n = 300;
-        let m = 4_000;
-        let mut g = gen_random_graph(n, m, 314159, 4.0);
-        // add a few zero-weight edges to test boundary
-        for i in 0..50 {
-            let u = i;
-            let v = (i + 1) % n;
-            g.add_edge(u, v, 0.0);
-        }
-        let s = 5usize;
-        let mut dist = vec![f64::INFINITY; n];
-        let mut pred = (0..n).collect::<Vec<_>>();
-        let mut done = vec![false; n];
-        dist[s] = 0.0;
-        pred[s] = s;
-
-        let before = dist.clone();
-        let active = collect_frontier(n, &dist, &done, f64::INFINITY);
-        limited_relaxations(&g, &mut dist, &mut pred, 8, &active);
-
-        for i in 0..n {
-            assert!(dist[i] <= before[i] || before[i].is_infinite());
-        }
-    }
+    basic_example();
+    multiple_lifetimes_example();
+    lifetime_constraints_example();
+    nested_structures_example();
+    method_lifetimes_example();
 }
