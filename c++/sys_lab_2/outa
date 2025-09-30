@@ -1,0 +1,4 @@
+Script name: ./string_compare.sh
+Parameter 1: apple
+Parameter 2: banana
+The strings are not equal.
