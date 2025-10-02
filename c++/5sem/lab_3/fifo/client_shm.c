@@ -16,12 +16,13 @@
 #define MAX_PATH 4096
 
 // Структура для разделяемой памяти
-typedef struct {
+typedef struct
+{
     char data[BUFFER_SIZE];
     // Флаг готовности данных
     int ready;
-    // Флаг завершения      
-    int done;       
+    // Флаг завершения
+    int done;
 } shared_data_t;
 
 // Глобальные переменные
@@ -30,57 +31,68 @@ int server_pid = 0;
 int shmid = -1;
 
 // Рекурсивное сканирование директории
-void scan_directory_shm(const char *path, int level, int max_depth) {
+void scan_directory_shm(const char *path, int level, int max_depth)
+{
     DIR *dir;
     struct dirent *entry;
     struct stat statbuf;
     char full_path[MAX_PATH];
     char message[MAX_PATH];
     // Ограничение глубины рекурсии
-    if (level > max_depth) {
+    if (level > max_depth)
+    {
         return;
     }
     dir = opendir(path);
-    if (dir == NULL) {
+    if (dir == NULL)
+    {
         // Нет прав доступа или другая ошибка
         return;
     }
-    while ((entry = readdir(dir)) != NULL) {
+    while ((entry = readdir(dir)) != NULL)
+    {
         // Пропускаем . и ..
-        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+        {
             continue;
         }
         // Создаем полный путь
         snprintf(full_path, MAX_PATH, "%s/%s", path, entry->d_name);
         // Получаем информацию о файле
-        if (lstat(full_path, &statbuf) == -1) {
+        if (lstat(full_path, &statbuf) == -1)
+        {
             continue;
         }
         // Формируем и отправляем сообщение
-        if (S_ISDIR(statbuf.st_mode)) {
+        if (S_ISDIR(statbuf.st_mode))
+        {
             // Это директория
             snprintf(message, MAX_PATH, "D:%d:%s\n", level, entry->d_name);
             // Копируем сообщение в разделяемую память
             strncpy(shm_ptr->data, message, MAX_PATH);
-            shm_ptr->data[MAX_PATH-1] = '\0';
+            shm_ptr->data[MAX_PATH - 1] = '\0';
             // Устанавливаем флаг готовности
             shm_ptr->ready = 1;
             // Ждем, пока сервер не обработает данные
-            while (shm_ptr->ready) {
+            while (shm_ptr->ready)
+            {
                 usleep(10000);
             }
             // Рекурсивно сканируем поддиректорию
             scan_directory_shm(full_path, level + 1, max_depth);
-        } else if (S_ISREG(statbuf.st_mode)) {
+        }
+        else if (S_ISREG(statbuf.st_mode))
+        {
             // Это обычный файл
             snprintf(message, MAX_PATH, "F:%d:%s\n", level, entry->d_name);
             // Копируем сообщение в разделяемую память
             strncpy(shm_ptr->data, message, MAX_PATH);
-            shm_ptr->data[MAX_PATH-1] = '\0';
+            shm_ptr->data[MAX_PATH - 1] = '\0';
             // Устанавливаем флаг готовности
             shm_ptr->ready = 1;
             // Ждем, пока сервер не обработает данные
-            while (shm_ptr->ready) {
+            while (shm_ptr->ready)
+            {
                 usleep(10000);
             }
         }
@@ -89,36 +101,43 @@ void scan_directory_shm(const char *path, int level, int max_depth) {
 }
 
 // Функция для получения домашней директории
-char *get_home_directory() {
+char *get_home_directory()
+{
     char *home = getenv("HOME");
-    if (home != NULL) {
+    if (home != NULL)
+    {
         return home;
     }
     // Альтернативный способ через passwd
     struct passwd *pw = getpwuid(getuid());
-    if (pw != NULL) {
+    if (pw != NULL)
+    {
         return pw->pw_dir;
     }
     return NULL;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     char *home_dir;
     // Ограничиваем глубину сканирования по умолчанию
     int max_depth = 3;
     printf("Tree Client Started (Shared Memory)\n");
-    
+
     // Обработка аргументов командной строки
-    if (argc > 1) {
+    if (argc > 1)
+    {
         max_depth = atoi(argv[1]);
-        if (max_depth < 1 || max_depth > 10) {
+        if (max_depth < 1 || max_depth > 10)
+        {
             fprintf(stderr, "Invalid depth. Using default: 3\n");
             max_depth = 3;
         }
     }
     // Получаем домашнюю директорию
     home_dir = get_home_directory();
-    if (home_dir == NULL) {
+    if (home_dir == NULL)
+    {
         fprintf(stderr, "Error: Cannot determine home directory\n");
         exit(1);
     }
@@ -126,13 +145,15 @@ int main(int argc, char *argv[]) {
     printf("Scan depth: %d levels\n", max_depth);
     // Получение доступа к разделяемой памяти
     shmid = shmget(SHM_KEY, sizeof(shared_data_t), 0666);
-    if (shmid == -1) {
+    if (shmid == -1)
+    {
         perror("shmget - client");
         exit(1);
     }
     // Подключение к разделяемой памяти
-    shm_ptr = (shared_data_t*)shmat(shmid, NULL, 0);
-    if (shm_ptr == (void*)-1) {
+    shm_ptr = (shared_data_t *)shmat(shmid, NULL, 0);
+    if (shm_ptr == (void *)-1)
+    {
         perror("shmat");
         exit(1);
     }
@@ -142,11 +163,12 @@ int main(int argc, char *argv[]) {
     char message[MAX_PATH];
     snprintf(message, MAX_PATH, "D:0:%s\n", home_dir);
     strncpy(shm_ptr->data, message, MAX_PATH);
-    shm_ptr->data[MAX_PATH-1] = '\0';
+    shm_ptr->data[MAX_PATH - 1] = '\0';
     // Устанавливаем флаг готовности
     shm_ptr->ready = 1;
     // Ждем, пока сервер не обработает данные
-    while (shm_ptr->ready) {
+    while (shm_ptr->ready)
+    {
         usleep(10000);
     }
     // Сканируем дерево директорий

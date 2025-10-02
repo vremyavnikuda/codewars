@@ -1,7 +1,4 @@
 #!/bin/bash
-
-# Menu script to run different IPC method implementations
-
 # Function to compile a program
 compile_program() {
     local src=$1

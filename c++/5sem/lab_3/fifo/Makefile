@@ -1,15 +1,8 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -O2
-TARGETS = server client server_pipe client_pipe server_socket client_socket server_shm client_shm server_sem client_sem server_signal client_signal
+TARGETS = server_pipe client_pipe server_socket client_socket server_shm client_shm server_sem client_sem server_signal client_signal
 
 all: $(TARGETS)
-
-# FIFO (original)
-server: server.c
-	$(CC) $(CFLAGS) -o server server.c
-
-client: client.c
-	$(CC) $(CFLAGS) -o client client.c
 
 # Named Pipes
 server_pipe: server_pipe.c
@@ -48,25 +41,10 @@ client_signal: client_signal.c
 
 clean:
 	rm -f $(TARGETS)
-	rm -f /tmp/tree_fifo
 	rm -f /tmp/tree_fifo_new
 	rm -f /tmp/tree_socket
 
-run_server:
-	./server
-
-run_client:
-	./client 3
-
 # Test targets for each IPC method
-test_fifo: server client
-	@echo "Testing FIFO IPC..."
-	@./server &
-	@sleep 2
-	@./client 2
-	@sleep 1
-	@echo "FIFO test completed!"
-
 test_pipe: server_pipe client_pipe
 	@echo "Testing Named Pipes IPC..."
 	@./server_pipe &
@@ -106,6 +84,6 @@ test_signal: server_signal client_signal
 	@echo "Please run manually: ./server_signal & and then ./client_signal 2 <PID>"
 
 # Run all tests
-test_all: test_fifo test_pipe test_socket test_shm test_sem
+test_all: test_pipe test_socket test_shm test_sem
 
-.PHONY: all clean run_server run_client test_fifo test_pipe test_socket test_shm test_sem test_signal test_all
+.PHONY: all clean test_pipe test_socket test_shm test_sem test_signal test_all

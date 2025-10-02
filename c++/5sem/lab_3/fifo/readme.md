@@ -12,14 +12,10 @@
 4. **Сокеты (Sockets)** - сервер: `server_socket`, клиент: `client_socket`
 5. **Именованные и неименованные каналы (Named Pipes)** - сервер: `server_pipe`, клиент: `client_pipe`
 
-Также сохранена оригинальная реализация через FIFO: `server` и `client`
-
 ## Структура проекта
 
 ```
 .
-├── server.c            # Оригинальная серверная программа (FIFO)
-├── client.c            # Оригинальная клиентская программа (FIFO)
 ├── server_pipe.c       # Сервер через именованные каналы
 ├── client_pipe.c       # Клиент через именованные каналы
 ├── server_socket.c     # Сервер через сокеты
@@ -50,10 +46,6 @@ make
 
 ### Вариант 3: Ручная компиляция отдельных реализаций
 ```bash
-# FIFO
-gcc -Wall -Wextra -O2 -o server server.c
-gcc -Wall -Wextra -O2 -o client client.c
-
 # Named Pipes
 gcc -Wall -Wextra -O2 -o server_pipe server_pipe.c
 gcc -Wall -Wextra -O2 -o client_pipe client_pipe.c
@@ -89,13 +81,13 @@ gcc -Wall -Wextra -O2 -o client_signal client_signal.c
 1. Сначала запустите сервер
 2. Затем запустите клиента
 
-Пример для FIFO:
+Пример для Named Pipes:
 ```bash
 # В одном терминале
-./server
+./server_pipe
 
 # В другом терминале
-./client [глубина_сканирования]
+./client_pipe [глубина_сканирования]
 ```
 
 Параметры:
@@ -103,9 +95,9 @@ gcc -Wall -Wextra -O2 -o client_signal client_signal.c
 
 Примеры:
 ```bash
-./client       # Сканирование на глубину 3 уровня
-./client 2     # Сканирование на глубину 2 уровня
-./client 5     # Сканирование на глубину 5 уровней
+./client_pipe       # Сканирование на глубину 3 уровня
+./client_pipe 2     # Сканирование на глубину 2 уровня
+./client_pipe 5     # Сканирование на глубину 5 уровней
 ```
 
 Для сигнальной реализации параметры немного отличаются:

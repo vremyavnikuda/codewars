@@ -18,17 +18,19 @@
 #define MAX_PATH 4096
 
 // Union для работы с семафорами
-union semun {
+union semun
+{
     int val;
     struct semid_ds *buf;
     unsigned short *array;
 };
 
 // Структура для разделяемой памяти
-typedef struct {
+typedef struct
+{
     char data[BUFFER_SIZE];
     // Флаг завершения
-    int done;       
+    int done;
 } shared_data_t;
 
 // Глобальные переменные
@@ -40,7 +42,8 @@ int semid = -1;
 int sem_empty, sem_full;
 
 // Рекурсивное сканирование директории
-void scan_directory_sem(const char *path, int level, int max_depth) {
+void scan_directory_sem(const char *path, int level, int max_depth)
+{
     DIR *dir;
     struct dirent *entry;
     struct stat statbuf;
@@ -48,53 +51,63 @@ void scan_directory_sem(const char *path, int level, int max_depth) {
     char message[MAX_PATH];
     struct sembuf sop;
     // Ограничение глубины рекурсии
-    if (level > max_depth) {
+    if (level > max_depth)
+    {
         return;
     }
     dir = opendir(path);
-    if (dir == NULL) {
+    if (dir == NULL)
+    {
         // Нет прав доступа или другая ошибка
         return;
     }
-    while ((entry = readdir(dir)) != NULL) {
+    while ((entry = readdir(dir)) != NULL)
+    {
         // Пропускаем . и ..
-        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+        {
             continue;
         }
         // Создаем полный путь
         snprintf(full_path, MAX_PATH, "%s/%s", path, entry->d_name);
         // Получаем информацию о файле
-        if (lstat(full_path, &statbuf) == -1) {
+        if (lstat(full_path, &statbuf) == -1)
+        {
             continue;
         }
         // Формируем и отправляем сообщение
-        if (S_ISDIR(statbuf.st_mode)) {
+        if (S_ISDIR(statbuf.st_mode))
+        {
             // Это директория
             snprintf(message, MAX_PATH, "D:%d:%s\n", level, entry->d_name);
             // Ждем, пока буфер не будет пуст
             sop.sem_num = sem_empty;
-            sop.sem_op = -1;  // Уменьшаем семафор (ждет, если 0)
+            sop.sem_op = -1; // Уменьшаем семафор (ждет, если 0)
             sop.sem_flg = 0;
-            if (semop(semid, &sop, 1) == -1) {
+            if (semop(semid, &sop, 1) == -1)
+            {
                 perror("semop wait empty");
                 closedir(dir);
                 return;
             }
             // Копируем сообщение в разделяемую память
             strncpy(shm_ptr->data, message, MAX_PATH);
-            shm_ptr->data[MAX_PATH-1] = '\0';
+            shm_ptr->data[MAX_PATH - 1] = '\0';
             // Сигнализируем, что буфер заполнен
             sop.sem_num = sem_full;
-            sop.sem_op = 1;  // Увеличиваем семафор (буфер полон)
+            sop.sem_op = 1; // Увеличиваем семафор (буфер полон)
             sop.sem_flg = 0;
-            if (semop(semid, &sop, 1) == -1) {
+            if (semop(semid, &sop, 1) == -1)
+            {
                 perror("semop signal full");
                 closedir(dir);
                 return;
             }
             // Рекурсивно сканируем поддиректорию
             scan_directory_sem(full_path, level + 1, max_depth);
-        } else if (S_ISREG(statbuf.st_mode)) {
+        }
+        else if (S_ISREG(statbuf.st_mode))
+        {
             // Это обычный файл
             snprintf(message, MAX_PATH, "F:%d:%s\n", level, entry->d_name);
             // Ждем, пока буфер не будет пуст
@@ -102,20 +115,22 @@ void scan_directory_sem(const char *path, int level, int max_depth) {
             // Уменьшаем семафор (ждет, если 0)
             sop.sem_op = -1;
             sop.sem_flg = 0;
-            if (semop(semid, &sop, 1) == -1) {
+            if (semop(semid, &sop, 1) == -1)
+            {
                 perror("semop wait empty");
                 closedir(dir);
                 return;
             }
             // Копируем сообщение в разделяемую память
             strncpy(shm_ptr->data, message, MAX_PATH);
-            shm_ptr->data[MAX_PATH-1] = '\0';
+            shm_ptr->data[MAX_PATH - 1] = '\0';
             // Сигнализируем, что буфер заполнен
             sop.sem_num = sem_full;
             // Увеличиваем семафор (буфер полон)
             sop.sem_op = 1;
             sop.sem_flg = 0;
-            if (semop(semid, &sop, 1) == -1) {
+            if (semop(semid, &sop, 1) == -1)
+            {
                 perror("semop signal full");
                 closedir(dir);
                 return;
@@ -126,36 +141,43 @@ void scan_directory_sem(const char *path, int level, int max_depth) {
 }
 
 // Функция для получения домашней директории
-char *get_home_directory() {
+char *get_home_directory()
+{
     char *home = getenv("HOME");
-    if (home != NULL) {
+    if (home != NULL)
+    {
         return home;
     }
     // Альтернативный способ через passwd
     struct passwd *pw = getpwuid(getuid());
-    if (pw != NULL) {
+    if (pw != NULL)
+    {
         return pw->pw_dir;
     }
     return NULL;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     char *home_dir;
     struct sembuf sop;
     // Ограничиваем глубину сканирования по умолчанию
     int max_depth = 3;
     printf("Tree Client Started (Semaphores)\n");
     // Обработка аргументов командной строки
-    if (argc > 1) {
+    if (argc > 1)
+    {
         max_depth = atoi(argv[1]);
-        if (max_depth < 1 || max_depth > 10) {
+        if (max_depth < 1 || max_depth > 10)
+        {
             fprintf(stderr, "Invalid depth. Using default: 3\n");
             max_depth = 3;
         }
     }
     // Получаем домашнюю директорию
     home_dir = get_home_directory();
-    if (home_dir == NULL) {
+    if (home_dir == NULL)
+    {
         fprintf(stderr, "Error: Cannot determine home directory\n");
         exit(1);
     }
@@ -163,19 +185,22 @@ int main(int argc, char *argv[]) {
     printf("Scan depth: %d levels\n", max_depth);
     // Получение доступа к разделяемой памяти
     shmid = shmget(SHM_KEY, sizeof(shared_data_t), 0666);
-    if (shmid == -1) {
+    if (shmid == -1)
+    {
         perror("shmget - client");
         exit(1);
     }
     // Подключение к разделяемой памяти
-    shm_ptr = (shared_data_t*)shmat(shmid, NULL, 0);
-    if (shm_ptr == (void*)-1) {
+    shm_ptr = (shared_data_t *)shmat(shmid, NULL, 0);
+    if (shm_ptr == (void *)-1)
+    {
         perror("shmat");
         exit(1);
     }
     // Получение доступа к семафорам
     semid = semget(SEM_KEY, 2, 0666);
-    if (semid == -1) {
+    if (semid == -1)
+    {
         perror("semget - client");
         shmdt(shm_ptr);
         exit(1);
@@ -189,7 +214,8 @@ int main(int argc, char *argv[]) {
     // Уменьшаем семафор (ждет, если 0)
     sop.sem_op = -1;
     sop.sem_flg = 0;
-    if (semop(semid, &sop, 1) == -1) {
+    if (semop(semid, &sop, 1) == -1)
+    {
         perror("semop wait empty");
         shmdt(shm_ptr);
         return 1;
@@ -199,13 +225,14 @@ int main(int argc, char *argv[]) {
     snprintf(message, MAX_PATH, "D:0:%s\n", home_dir);
     // Копируем сообщение в разделяемую память
     strncpy(shm_ptr->data, message, MAX_PATH);
-    shm_ptr->data[MAX_PATH-1] = '\0';
+    shm_ptr->data[MAX_PATH - 1] = '\0';
     // Сигнализируем, что буфер заполнен
     sop.sem_num = sem_full;
     // Увеличиваем семафор (буфер полон)
     sop.sem_op = 1;
     sop.sem_flg = 0;
-    if (semop(semid, &sop, 1) == -1) {
+    if (semop(semid, &sop, 1) == -1)
+    {
         perror("semop signal full");
         shmdt(shm_ptr);
         return 1;
@@ -220,16 +247,20 @@ int main(int argc, char *argv[]) {
     // Уменьшаем семафор (ждет, если 0)
     sop.sem_op = -1;
     sop.sem_flg = 0;
-    if (semop(semid, &sop, 1) == -1) {
+    if (semop(semid, &sop, 1) == -1)
+    {
         perror("semop wait empty for done");
-    } else {
+    }
+    else
+    {
         shm_ptr->done = 1;
         // Сигнализируем, что буфер заполнен
         sop.sem_num = sem_full;
         // Увеличиваем семафор (буфер полон)
         sop.sem_op = 1;
         sop.sem_flg = 0;
-        if (semop(semid, &sop, 1) == -1) {
+        if (semop(semid, &sop, 1) == -1)
+        {
             perror("semop signal full for done");
         }
     }

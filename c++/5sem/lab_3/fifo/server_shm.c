@@ -11,12 +11,13 @@
 #define BUFFER_SIZE 4096
 
 // Структура для разделяемой памяти
-typedef struct {
+typedef struct
+{
     char data[BUFFER_SIZE];
     // Флаг готовности данных
-    int ready;      
+    int ready;
     // Флаг завершения
-    int done;       
+    int done;
 } shared_data_t;
 
 // Глобальные переменные
@@ -24,45 +25,59 @@ shared_data_t *shm_ptr = NULL;
 int shmid = -1;
 
 // Функция очистки разделяемой памяти
-void cleanup_shm() {
-    if (shm_ptr) {
+void cleanup_shm()
+{
+    if (shm_ptr)
+    {
         shmdt(shm_ptr);
     }
-    if (shmid != -1) {
+    if (shmid != -1)
+    {
         shmctl(shmid, IPC_RMID, NULL);
     }
 }
 
 // Функция для вывода дерева с красивым форматированием
-void print_tree_line(int level, const char *name, char type) {
+void print_tree_line(int level, const char *name, char type)
+{
     // Рисуем отступы и символы дерева
-    for (int i = 0; i < level; i++) {
-        if (i == level - 1) {
+    for (int i = 0; i < level; i++)
+    {
+        if (i == level - 1)
+        {
             printf("├── ");
-        } else {
+        }
+        else
+        {
             printf("│   ");
         }
     }
-    if (type == 'D') {
+    if (type == 'D')
+    {
         // Директории синим цветом
         printf("\033[1;34m%s/\033[0m\n", name);
-    } else {
+    }
+    else
+    {
         // Файлы обычным цветом
         printf("%s\n", name);
     }
 }
 
-int main() {
+int main()
+{
     printf("Tree Server Started (Shared Memory)\n");
     // Создание разделяемой памяти
     shmid = shmget(SHM_KEY, sizeof(shared_data_t), IPC_CREAT | 0666);
-    if (shmid == -1) {
+    if (shmid == -1)
+    {
         perror("shmget");
         exit(1);
     }
     // Подключение к разделяемой памяти
-    shm_ptr = (shared_data_t*)shmat(shmid, NULL, 0);
-    if (shm_ptr == (void*)-1) {
+    shm_ptr = (shared_data_t *)shmat(shmid, NULL, 0);
+    if (shm_ptr == (void *)-1)
+    {
         perror("shmat");
         cleanup_shm();
         exit(1);
@@ -77,29 +92,36 @@ int main() {
     printf("###################################\n");
     // Ожидание и обработка данных от клиента
     char leftover[BUFFER_SIZE] = "";
-    while (!shm_ptr->done) {
-        if (shm_ptr->ready) {
+    while (!shm_ptr->done)
+    {
+        if (shm_ptr->ready)
+        {
             // Данные готовы, обрабатываем их
             char combined[BUFFER_SIZE * 2];
             snprintf(combined, sizeof(combined), "%s%s", leftover, shm_ptr->data);
             // Обрабатываем построчно
             char *line = strtok(combined, "\n");
             char *last_line = NULL;
-            while (line != NULL) {
+            while (line != NULL)
+            {
                 last_line = line;
                 // Парсим строку: тип:уровень:имя
                 char type;
                 int level;
                 char name[512];
-                if (sscanf(line, "%c:%d:%511[^\n]", &type, &level, name) == 3) {
+                if (sscanf(line, "%c:%d:%511[^\n]", &type, &level, name) == 3)
+                {
                     print_tree_line(level, name, type);
                 }
                 line = strtok(NULL, "\n");
             }
             // Сохраняем неполную строку для следующей итерации
-            if (last_line != NULL && combined[strlen(combined) - 1] != '\n') {
+            if (last_line != NULL && combined[strlen(combined) - 1] != '\n')
+            {
                 strcpy(leftover, last_line);
-            } else {
+            }
+            else
+            {
                 leftover[0] = '\0';
             }
             // Сбрасываем флаг готовности

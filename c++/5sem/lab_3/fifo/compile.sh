@@ -4,23 +4,6 @@
 
 echo "Compiling all IPC implementations..."
 
-# Compile FIFO-based implementations (original)
-gcc -o server server.c
-if [ $? -eq 0 ]; then
-    echo "FIFO server compiled successfully!"
-else
-    echo "Error compiling server.c"
-    exit 1
-fi
-
-gcc -o client client.c
-if [ $? -eq 0 ]; then
-    echo "FIFO client compiled successfully!"
-else
-    echo "Error compiling client.c"
-    exit 1
-fi
-
 # Compile Named Pipes implementations
 gcc -o server_pipe server_pipe.c
 if [ $? -eq 0 ]; then
@@ -109,7 +92,6 @@ fi
 echo "All compilations completed successfully!"
 echo ""
 echo "Available executables:"
-echo "  - FIFO: server, client"
 echo "  - Named Pipes: server_pipe, client_pipe"
 echo "  - Sockets: server_socket, client_socket"
 echo "  - Shared Memory: server_shm, client_shm"
