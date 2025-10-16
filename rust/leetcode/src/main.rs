@@ -6,6 +6,12 @@ mod sum_frequency_divisible;
 mod longest_balanced_substring;
 mod longest_balanced_abc;
 mod sum_ancestors_perfect_square;
+mod smallest_missing_integer;
+mod guess_the_word;
+mod regex_matching;
+mod merge_k_lists;
+mod find_itinerary;
+mod merge;
 
 struct Solution;
 
