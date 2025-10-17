@@ -1,17 +1,18 @@
-mod shortest_palindrome;
-mod kth_largest_element;
 mod adjacent_increasing_subarrays;
-mod type_of_triangle;
-mod sum_frequency_divisible;
-mod longest_balanced_substring;
-mod longest_balanced_abc;
-mod sum_ancestors_perfect_square;
-mod smallest_missing_integer;
-mod guess_the_word;
-mod regex_matching;
-mod merge_k_lists;
 mod find_itinerary;
+mod guess_the_word;
+mod kth_largest_element;
+mod longest_balanced_abc;
+mod longest_balanced_substring;
+mod max_partitions_after_operations;
 mod merge;
+mod merge_k_lists;
+mod regex_matching;
+mod shortest_palindrome;
+mod smallest_missing_integer;
+mod sum_ancestors_perfect_square;
+mod sum_frequency_divisible;
+mod type_of_triangle;
 
 struct Solution;
 
@@ -100,49 +101,53 @@ fn main() {
     let test14 = "zzabccy".to_string();
     let result14 = longest_balanced_substring::Solution::longest_balanced(test14);
     println!("Test 2: {}", result14);
-    
+
     let test15 = "abbac".to_string();
     let result15 = longest_balanced_abc::Solution::longest_balanced(test15);
     println!("Test 1: {}", result15);
-    
+
     let test16 = "aabcc".to_string();
     let result16 = longest_balanced_abc::Solution::longest_balanced(test16);
     println!("Test 2: {}", result16);
-    
+
     let test17 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
-        3, vec![vec![0, 1], vec![1, 2]], vec![2, 8, 2]
+        3,
+        vec![vec![0, 1], vec![1, 2]],
+        vec![2, 8, 2],
     );
     println!("Test 1: {} (expected: 3)", test17);
-    
+
     let test18 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
-        3, vec![vec![0, 1], vec![0, 2]], vec![1, 2, 4]
+        3,
+        vec![vec![0, 1], vec![0, 2]],
+        vec![1, 2, 4],
     );
     println!("Test 2: {} (expected: 1)", test18);
-    
+
     // Large test
     let n = 100000i64;
     let mut edges = Vec::new();
-    for i in 0..n-1 {
+    for i in 0..n - 1 {
         edges.push(vec![i as i32, (i + 1) as i32]);
     }
-    
+
     let mut nums = Vec::new();
     for i in 0..n {
         let val = (2 * (i + 1) * (i + 1)) as i32;
         nums.push(val);
     }
-    
+
     println!("First few signatures:");
     for i in 0..5 {
         let sig = sum_ancestors_perfect_square::Solution::get_signature(nums[i as usize]);
         println!("  nums[{}] = {} -> sig = {}", i, nums[i as usize], sig);
     }
-    
+
     use std::time::Instant;
     let start = Instant::now();
     let result = sum_ancestors_perfect_square::Solution::sum_of_ancestors(n as i32, edges, nums);
     let duration = start.elapsed();
-    
+
     let expected: i64 = (n - 1) * n / 2;
     println!("Result: {}", result);
     println!("Expected: {}", expected);
