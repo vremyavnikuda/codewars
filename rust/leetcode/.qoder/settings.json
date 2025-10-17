@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "ask": [
+      "Read(!/home/vremyavnikuda/repository/codewars/rust/leetcode/**)",
+      "Edit(!/home/vremyavnikuda/repository/codewars/rust/leetcode/**)"
+    ],
+    "allow": [
+      "Read(/home/vremyavnikuda/repository/codewars/rust/leetcode/**)",
+      "Edit(/home/vremyavnikuda/repository/codewars/rust/leetcode/**)"
+    ]
+  },
+  "memoryImport": {},
+  "monitoring": {}
+}

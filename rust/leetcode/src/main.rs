@@ -8,12 +8,14 @@ mod max_partitions_after_operations;
 mod merge;
 mod merge_k_lists;
 mod regex_matching;
+mod remove_duplicates;
+mod remove_element;
 mod shortest_palindrome;
 mod smallest_missing_integer;
 mod sum_ancestors_perfect_square;
+mod sum_divisible_by_k;
 mod sum_frequency_divisible;
 mod type_of_triangle;
-
 struct Solution;
 
 impl Solution {
