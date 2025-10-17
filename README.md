@@ -1,45 +1,15 @@
-![GitHub language count](https://img.shields.io/github/languages/count/vremyavnikuda/codewars) ![GitHub top language](https://img.shields.io/github/languages/top/vremyavnikuda/codewars)
+<div align="center">
+  <img src="https://img.shields.io/github/languages/count/vremyavnikuda/codewars?style=for-the-badge" alt="GitHub language count">
+  <img src="https://img.shields.io/github/languages/top/vremyavnikuda/codewars?style=for-the-badge" alt="GitHub top language">
+  
+  <a href="https://leetcode.com/u/vremyavnikuda/"><img src="https://img.shields.io/badge/LeetCode-vremyavnikuda-orange?style=for-the-badge&logo=leetcode" alt="LeetCode"></a>
+</div>
+
+<div align="center">
+  <a href="https://www.codewars.com/users/vremyavnikuda"><img src="https://www.codewars.com/users/vremyavnikuda/badges/large" alt="Codewars"></a>
+</div>
 
 
-___
-# Codewars Solutions Repository
+# Coding Problem Solutions Repository
 
-<p align="center">
-  <img src="https://www.codewars.com/users/vremyavnikuda/badges/large" alt="Codewars Badge"/>
-</p>
-
-Welcome to the **Codewars Solutions** repository! This repository contains solutions to various coding challenges from [Codewars](https://www.codewars.com/) implemented in multiple programming languages.
-
-## Repository Structure
-
-The repository is organized by programming languages and contains solutions in the following languages:
-
-- **C++** (64.1%)
-- **Go** (12.7%)
-- **Java** (9.7%)
-- **C** (5.4%)
-- **Rust** (5.3%)
-- **С#** (4.3%)
-
-Each language has its own directory, and inside each directory, you will find the solutions categorized by the challenge.
-
-## Contributing
-
-Contributions are welcome! If you have a solution to a Codewars challenge that is not yet in this repository, feel free to add it by following these steps:
-
-1. **Fork** this repository.
-2. **Clone** your forked repository to your local machine.
-3. Create a new **branch** for your solution.
-4. Add your solution in the appropriate language directory.
-5. **Commit** your changes and push them to your fork.
-6. Create a **pull request** to merge your solution into the main repository.
-
-Please ensure that your code is well-documented and follows the coding standards for the respective language.
-
-## License
-
-This repository is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
-## Contact
-
-If you have any questions or suggestions, feel free to open an issue or contact the repository owner at [vremyavnikuda](https://github.com/vremyavnikuda).
+Welcome to the **Coding Problem Solutions** repository! This repository contains example solutions to various coding challenges from platforms like [Codewars](https://www.codewars.com/) and [LeetCode](https://leetcode.com/u/vremyavnikuda/) implemented in multiple programming languages.
