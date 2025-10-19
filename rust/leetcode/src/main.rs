@@ -1,5 +1,6 @@
 mod adjacent_increasing_subarrays;
 mod find_itinerary;
+mod find_lex_smallest_string;
 mod guess_the_word;
 mod kth_largest_element;
 mod longest_balanced_abc;
