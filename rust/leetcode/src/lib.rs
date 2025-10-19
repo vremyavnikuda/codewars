@@ -1,3 +1,4 @@
+struct Solution;
 #[cfg(test)]
 mod tests {
     use super::*;

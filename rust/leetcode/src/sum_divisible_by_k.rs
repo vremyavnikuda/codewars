@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-
+struct Solution;
 impl Solution {
     pub fn sum_divisible_by_k(nums: Vec<i32>, k: i32) -> i32 {
         let mut freq_map: HashMap<i32, i32> = HashMap::new();
