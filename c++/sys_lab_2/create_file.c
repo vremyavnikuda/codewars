@@ -6,9 +6,9 @@
 #include <sys/stat.h>
 
 int main(int argc, char *argv[]) {
-    // Check if correct number of arguments provided
+    // Проверка, передано ли правильное количество аргументов
     if (argc != 3) {
-        fprintf(stderr, "Usage: %s <filename> <content>\n", argv[0]);
+        fprintf(stderr, "Использование: %s <имя_файла> <содержимое>\n", argv[0]);
         return 1;
     }
 
@@ -16,26 +16,26 @@ int main(int argc, char *argv[]) {
     const char *content = argv[2];
     int fd;
 
-    // Use the open system call to create the file
+    // Используем системный вызов open для создания файла
     fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     
     if (fd == -1) {
-        perror("Error creating file");
+        perror("Ошибка при создании файла");
         return 1;
     }
 
-    // Use the write system call to write content to the file
+    // Используем системный вызов write для записи содержимого в файл
     ssize_t bytes_written = write(fd, content, strlen(content));
     
     if (bytes_written == -1) {
-        perror("Error writing to file");
+        perror("Ошибка при записи в файл");
         close(fd);
         return 1;
     }
 
-    // Close the file descriptor
+    // Закрываем файловый дескриптор
     close(fd);
 
-    printf("File '%s' created successfully with content: %s\n", filename, content);
+    printf("Файл '%s' успешно создан с содержимым: %s\n", filename, content);
     return 0;
 }

@@ -3,20 +3,20 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
-    // Check if correct number of arguments provided
+    // Проверка, передано ли правильное количество аргументов
     if (argc != 2) {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        fprintf(stderr, "Использование: %s <имя_файла>\n", argv[0]);
         return 1;
     }
 
     const char *filename = argv[1];
 
-    // Use the unlink system call to delete the file
+    // Используем системный вызов unlink для удаления файла
     if (unlink(filename) == -1) {
-        perror("Error deleting file");
+        perror("Ошибка при удалении файла");
         return 1;
     }
 
-    printf("File '%s' deleted successfully\n", filename);
+    printf("Файл '%s' успешно удалён\n", filename);
     return 0;
 }

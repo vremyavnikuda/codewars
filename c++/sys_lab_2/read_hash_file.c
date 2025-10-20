@@ -4,20 +4,20 @@
 #include <unistd.h>
 #include <string.h>
 
-// Simple hash function (djb2 algorithm)
+// Простая хеш-функция (алгоритм djb2)
 unsigned long hash(unsigned char *str) {
     unsigned long hash = 5381;
     int c;
 
     while ((c = *str++))
-        hash = ((hash << 5) + hash) + c; // hash * 33 + c
+        hash = ((hash << 5) + hash) + c;
 
     return hash;
 }
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        fprintf(stderr, "Использование: %s <имя_файла>\n", argv[0]);
         return 1;
     }
 
@@ -29,21 +29,21 @@ int main(int argc, char *argv[]) {
     size_t total_size = 0;
     size_t allocated_size = 0;
 
-    // Use the open system call to open the file
+    // Используем системный вызов open для открытия файла
     fd = open(filename, O_RDONLY);
     if (fd == -1) {
-        perror("Error opening file");
+        perror("Ошибка при открытии файла");
         return 1;
     }
 
-    // Read file content using the read system call
+    // Читаем содержимое файла с помощью системного вызова read
     while ((bytes_read = read(fd, buffer, sizeof(buffer))) > 0) {
-        // Resize content buffer if necessary
+        // При необходимости увеличиваем размер буфера content
         if (total_size + bytes_read >= allocated_size) {
             allocated_size = allocated_size == 0 ? 1024 : allocated_size * 2;
             content = realloc(content, allocated_size);
             if (content == NULL) {
-                fprintf(stderr, "Memory allocation error\n");
+                fprintf(stderr, "Ошибка выделения памяти\n");
                 close(fd);
                 return 1;
             }
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (bytes_read == -1) {
-        perror("Error reading file");
+        perror("Ошибка при чтении файла");
         free(content);
         close(fd);
         return 1;
@@ -63,27 +63,27 @@ int main(int argc, char *argv[]) {
     close(fd);
 
     if (content != NULL) {
-        // Add null terminator
+        // Добавляем завершающий нулевой символ
         if (total_size + 1 >= allocated_size) {
             content = realloc(content, total_size + 1);
         }
         content[total_size] = '\0';
 
-        // Calculate hash
+        // Вычисляем хеш
         unsigned long file_hash = hash((unsigned char*)content);
 
-        // Output filename and hash value
-        printf("Filename: %s\n", filename);
-        printf("Hash: %lu\n", file_hash);
-        printf("Content:\n%s\n", content);
+        // Выводим имя файла и значение хеша
+        printf("Имя файла: %s\n", filename);
+        printf("Хеш: %lu\n", file_hash);
+        printf("Содержимое:\n%s\n", content);
 
         free(content);
     } else {
-        // File is empty
+        // Файл пустой
         unsigned long empty_hash = hash((unsigned char*)"");
-        printf("Filename: %s\n", filename);
-        printf("Hash: %lu\n", empty_hash);
-        printf("Content: (empty file)\n");
+        printf("Имя файла: %s\n", filename);
+        printf("Хеш: %lu\n", empty_hash);
+        printf("Содержимое: (пустой файл)\n");
     }
 
     return 0;
