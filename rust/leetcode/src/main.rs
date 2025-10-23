@@ -5,6 +5,7 @@ mod guess_the_word;
 mod has_increasing_subarrays;
 mod has_increasing_subarrays;
 mod has_increasing_subarrays;
+mod has_same_digits;
 mod int_to_roman;
 mod kth_largest_element;
 mod letter_combinations;
