@@ -17,6 +17,7 @@ mod max_partitions_after_operations;
 mod merge;
 mod merge_k_lists;
 mod missing_multiple;
+mod next_beautiful_number;
 mod num_water_bottles;
 mod regex_matching;
 mod remove_duplicates;
