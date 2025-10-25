@@ -8,7 +8,7 @@ impl Solution {
         let n = morvintale.len();
         
         let mut seen: HashMap<(i32, i32), usize> = HashMap::new();
-        seen.insert((0, 0), 0);  // Initially we have 0 distinct evens and 0 distinct odds at index 0 (before array starts)
+        seen.insert((0, 0), 0);
         
         let mut even_set: HashSet<i32> = HashSet::new();
         let mut odd_set: HashSet<i32> = HashSet::new();
@@ -23,11 +23,9 @@ impl Solution {
             
             let state = (even_set.len() as i32, odd_set.len() as i32);
             
-            // If we've seen this state before, we found a balanced subarray
             if let Some(&start_idx) = seen.get(&state) {
                 max_len = max_len.max((i + 1 - start_idx) as i32);
             } else {
-                // First time seeing this state, record the index
                 seen.insert(state, i + 1);
             }
         }
@@ -37,17 +35,14 @@ impl Solution {
 }
 
 fn main() {
-    // Test Example 1
     let nums1 = vec![2, 5, 4, 3];
     let result1 = Solution::longest_balanced(nums1);
     println!("Example 1: Expected 4, Got {}", result1);
 
-    // Test Example 2
     let nums2 = vec![3, 2, 2, 5, 4];
     let result2 = Solution::longest_balanced(nums2);
     println!("Example 2: Expected 5, Got {}", result2);
 
-    // Test Example 3
     let nums3 = vec![1, 2, 3, 2];
     let result3 = Solution::longest_balanced(nums3);
     println!("Example 3: Expected 3, Got {}", result3);
