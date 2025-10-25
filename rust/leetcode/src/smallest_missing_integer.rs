@@ -5,12 +5,12 @@ pub struct Solution;
 impl Solution {
     pub fn find_smallest_integer(nums: Vec<i32>, value: i32) -> i32 {
         let mut freq: HashMap<i32, i32> = HashMap::new();
-        
+
         for &num in &nums {
             let remainder = num.rem_euclid(value);
             *freq.entry(remainder).or_insert(0) += 1;
         }
-        
+
         let mut mex = 0;
         loop {
             let remainder = mex % value;
@@ -25,7 +25,7 @@ impl Solution {
                 break;
             }
         }
-        
+
         mex
     }
 }

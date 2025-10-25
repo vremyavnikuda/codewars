@@ -1,5 +1,3 @@
-// This is the Master's API interface.
-// You should not implement it, or speculate about its implementation
 use std::cell::Cell;
 
 pub struct Master {
@@ -8,10 +6,12 @@ pub struct Master {
 }
 
 impl Master {
-    // This is for local testing only
     #[cfg(test)]
     pub fn new(secret: String) -> Self {
-        Master { secret, guesses: Cell::new(0) }
+        Master {
+            secret,
+            guesses: Cell::new(0),
+        }
     }
 
     pub fn guess(&self, word: String) -> i32 {
@@ -38,8 +38,6 @@ impl Master {
         #[cfg(not(test))]
         {
             let _ = word;
-            // In LeetCode environment, this will call the actual API
-            // This is just a placeholder that won't be used
             0
         }
     }
@@ -60,16 +58,12 @@ impl Solution {
             if possible.is_empty() {
                 break;
             }
-
-            // Pick a word that will help us narrow down the search
             let current = Self::pick_word(&possible);
             let result = master.guess(current.clone());
 
             if result == 6 {
-                return; // Found it!
+                return;
             }
-
-            // Filter: keep only words with same match count
             let mut next_possible = Vec::new();
             for word in &possible {
                 if Self::count_matches(&current, word) == result {
@@ -79,48 +73,35 @@ impl Solution {
             possible = next_possible;
         }
     }
-
-    // Count how many characters match in the same positions
     fn count_matches(w1: &str, w2: &str) -> i32 {
         let b1 = w1.as_bytes();
         let b2 = w2.as_bytes();
         let mut matches = 0;
-
         for i in 0..6 {
             if b1[i] == b2[i] {
                 matches += 1;
             }
         }
-
         matches
     }
-
-    // Pick the word that splits the remaining words most evenly
     fn pick_word(words: &[String]) -> String {
         if words.len() <= 1 {
             return words[0].clone();
         }
-
         let mut best = words[0].clone();
         let mut min_avg_overlap = i32::MAX;
-
-        // Try each word and see how it divides the possibilities
         for candidate in words {
             let mut total_overlap = 0;
-
             for other in words {
                 if candidate != other {
                     total_overlap += Self::count_matches(candidate, other);
                 }
             }
-
-            // Pick word with minimum average overlap (most different from others)
             if total_overlap < min_avg_overlap {
                 min_avg_overlap = total_overlap;
                 best = candidate.clone();
             }
         }
-
         best
     }
 }
@@ -136,7 +117,7 @@ mod tests {
             "acckzz".to_string(),
             "ccbazz".to_string(),
             "eiowzz".to_string(),
-            "abcczz".to_string()
+            "abcczz".to_string(),
         ];
         let master = Master::new(secret);
 
@@ -188,7 +169,7 @@ mod tests {
             "wcyxnp".to_string(),
             "kexmwg".to_string(),
             "bpwtxd".to_string(),
-            "hbaczn".to_string()
+            "hbaczn".to_string(),
         ];
         let master = Master::new(secret);
 

@@ -30,7 +30,6 @@ impl Solution {
                 
                 *sig_counts.entry(signatures[node]).or_insert(0) += 1;
                 
-                // Push children
                 for &child in &graph[node] {
                     if Some(child) != parent {
                         stack.push((child, Some(node), 0, sig_counts.clone()));
