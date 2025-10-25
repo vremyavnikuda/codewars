@@ -28,6 +28,7 @@ mod smallest_missing_integer;
 mod sum_ancestors_perfect_square;
 mod sum_divisible_by_k;
 mod sum_frequency_divisible;
+mod total_money;
 mod type_of_triangle;
 struct Solution;
 
