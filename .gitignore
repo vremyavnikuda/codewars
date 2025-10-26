@@ -357,3 +357,4 @@ rust/task/target/
 rust/src/target/.rustc_info.json
 rust/task2/target/.rustc_info.json
 rust/task2/target/CACHEDIR.TAG
+c++/sys_lab_2/.anchora/tasks.json

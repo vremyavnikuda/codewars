@@ -24,6 +24,7 @@ mod remove_duplicates;
 mod remove_element;
 mod roman_to_int;
 mod shortest_palindrome;
+mod simple_bank_system;
 mod smallest_missing_integer;
 mod sum_ancestors_perfect_square;
 mod sum_divisible_by_k;
