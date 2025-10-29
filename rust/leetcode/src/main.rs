@@ -1,4 +1,5 @@
 mod adjacent_increasing_subarrays;
+mod count_valid_selections;
 mod find_itinerary;
 mod find_lex_smallest_string;
 mod guess_the_word;
@@ -27,12 +28,12 @@ mod roman_to_int;
 mod shortest_palindrome;
 mod simple_bank_system;
 mod smallest_missing_integer;
+mod smallest_number;
 mod sum_ancestors_perfect_square;
 mod sum_divisible_by_k;
 mod sum_frequency_divisible;
 mod total_money;
 mod type_of_triangle;
-mod smallest_number;
 struct Solution;
 
 impl Solution {
