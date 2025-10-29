@@ -32,6 +32,7 @@ mod sum_divisible_by_k;
 mod sum_frequency_divisible;
 mod total_money;
 mod type_of_triangle;
+mod smallest_number;
 struct Solution;
 
 impl Solution {
@@ -131,14 +132,14 @@ fn main() {
     let test17 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
         3,
         vec![vec![0, 1], vec![1, 2]],
-        vec![2, 8, 2],
+        vec![2, 8, 2]
     );
     println!("Test 1: {} (expected: 3)", test17);
 
     let test18 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
         3,
         vec![vec![0, 1], vec![0, 2]],
-        vec![1, 2, 4],
+        vec![1, 2, 4]
     );
     println!("Test 2: {} (expected: 1)", test18);
 
