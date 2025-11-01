@@ -19,6 +19,7 @@ mod merge;
 mod merge_k_lists;
 mod min_number_operations;
 mod missing_multiple;
+mod modified_list;
 mod next_beautiful_number;
 mod num_water_bottles;
 mod number_of_beams;
