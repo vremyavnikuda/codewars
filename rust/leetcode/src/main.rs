@@ -18,6 +18,7 @@ mod max_frequency_2;
 mod max_partitions_after_operations;
 mod merge;
 mod merge_k_lists;
+mod min_cost;
 mod min_number_operations;
 mod missing_multiple;
 mod modified_list;
