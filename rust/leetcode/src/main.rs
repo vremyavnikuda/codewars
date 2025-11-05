@@ -3,6 +3,7 @@ mod count_unguarded;
 mod count_valid_selections;
 mod find_itinerary;
 mod find_lex_smallest_string;
+mod find_x_sum;
 mod guess_the_word;
 mod has_increasing_subarrays;
 mod has_increasing_subarrays;
