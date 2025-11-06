@@ -26,6 +26,7 @@ mod modified_list;
 mod next_beautiful_number;
 mod num_water_bottles;
 mod number_of_beams;
+mod process_queries;
 mod regex_matching;
 mod remove_duplicates;
 mod remove_element;
