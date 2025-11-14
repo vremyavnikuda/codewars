@@ -39,6 +39,7 @@ mod sum_divisible_by_k;
 mod sum_frequency_divisible;
 mod total_money;
 mod type_of_triangle;
+mod range_add_queries;
 struct Solution;
 
 impl Solution {
