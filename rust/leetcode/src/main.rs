@@ -40,6 +40,8 @@ mod sum_frequency_divisible;
 mod total_money;
 mod type_of_triangle;
 mod range_add_queries;
+mod number_of_substrings;
+mod convert;
 struct Solution;
 
 impl Solution {
