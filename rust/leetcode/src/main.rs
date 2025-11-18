@@ -43,6 +43,7 @@ mod type_of_triangle;
 mod range_add_queries;
 mod number_of_substrings;
 mod convert;
+mod k_length_apart;
 struct Solution;
 
 impl Solution {
@@ -142,14 +143,14 @@ fn main() {
     let test17 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
         3,
         vec![vec![0, 1], vec![1, 2]],
-        vec![2, 8, 2],
+        vec![2, 8, 2]
     );
     println!("Test 1: {} (expected: 3)", test17);
 
     let test18 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
         3,
         vec![vec![0, 1], vec![0, 2]],
-        vec![1, 2, 4],
+        vec![1, 2, 4]
     );
     println!("Test 2: {} (expected: 1)", test18);
 
