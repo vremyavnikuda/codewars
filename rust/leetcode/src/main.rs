@@ -1,7 +1,9 @@
 mod adjacent_increasing_subarrays;
+mod count_unguarded;
 mod count_valid_selections;
 mod find_itinerary;
 mod find_lex_smallest_string;
+mod find_x_sum;
 mod guess_the_word;
 mod has_increasing_subarrays;
 mod has_increasing_subarrays;
@@ -17,10 +19,14 @@ mod max_frequency_2;
 mod max_partitions_after_operations;
 mod merge;
 mod merge_k_lists;
+mod min_cost;
+mod min_number_operations;
 mod missing_multiple;
+mod modified_list;
 mod next_beautiful_number;
 mod num_water_bottles;
 mod number_of_beams;
+mod process_queries;
 mod regex_matching;
 mod remove_duplicates;
 mod remove_element;
@@ -34,6 +40,9 @@ mod sum_divisible_by_k;
 mod sum_frequency_divisible;
 mod total_money;
 mod type_of_triangle;
+mod range_add_queries;
+mod number_of_substrings;
+mod convert;
 struct Solution;
 
 impl Solution {
@@ -133,14 +142,14 @@ fn main() {
     let test17 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
         3,
         vec![vec![0, 1], vec![1, 2]],
-        vec![2, 8, 2]
+        vec![2, 8, 2],
     );
     println!("Test 1: {} (expected: 3)", test17);
 
     let test18 = sum_ancestors_perfect_square::Solution::sum_of_ancestors(
         3,
         vec![vec![0, 1], vec![0, 2]],
-        vec![1, 2, 4]
+        vec![1, 2, 4],
     );
     println!("Test 2: {} (expected: 1)", test18);
 
