@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 pub struct Solution;
 
 impl Solution {
@@ -84,4 +86,15 @@ mod tests {
     fn test_edge_case_invalid() {
         assert_eq!(Solution::triangle_type(vec![1, 1, 2]), "none");
     }
+}
+
+
+fn main() {
+    let nums1 = vec![3, 3, 3];
+    println!("Input: {:?}", nums1);
+    println!("Result: {}", Solution::triangle_type(nums1));
+    
+    let nums2 = vec![3, 4, 5];
+    println!("\nInput: {:?}", nums2);
+    println!("Result: {}", Solution::triangle_type(nums2));
 }

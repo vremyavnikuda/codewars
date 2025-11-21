@@ -1,4 +1,6 @@
-struct Solution;
+#!/usr/bin/env rust-script
+
+pub struct Solution;
 
 impl Solution {
     pub fn range_add_queries(n: i32, queries: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
@@ -34,5 +36,15 @@ impl Solution {
             }
         }
         matrix
+    }
+}
+
+
+fn main() {
+    let queries = vec![vec![1, 1, 2, 2], vec![0, 0, 1, 1]];
+    let result = Solution::range_add_queries(3, queries);
+    println!("Test 1: n=3");
+    for row in result {
+        println!("{:?}", row);
     }
 }

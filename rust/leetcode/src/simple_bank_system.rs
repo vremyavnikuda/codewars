@@ -1,4 +1,6 @@
-struct Bank {
+#!/usr/bin/env rust-script
+
+pub struct Bank {
     balances: Vec<i64>,
     total_accounts: usize,
 }
@@ -63,4 +65,15 @@ impl Bank {
             None
         }
     }
+}
+
+
+fn main() {
+    let balance = vec![10, 100, 20, 50, 30];
+    let mut bank = Bank::new(balance);
+    
+    println!("Bank initialized with balance: [10, 100, 20, 50, 30]");
+    println!("Withdraw 10 from account 3: {}", bank.withdraw(3, 10));
+    println!("Transfer 5 from account 1 to account 2: {}", bank.transfer(1, 2, 5));
+    println!("Deposit 20 to account 5: {}", bank.deposit(5, 20));
 }

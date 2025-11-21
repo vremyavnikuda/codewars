@@ -1,4 +1,8 @@
+#!/usr/bin/env rust-script
+
 use std::collections::BTreeMap;
+
+pub struct Solution;
 
 impl Solution {
     pub fn max_frequency(nums: Vec<i32>, k: i32, num_operations: i32) -> i32 {
@@ -19,4 +23,13 @@ impl Solution {
         }
         max_result
     }
+}
+
+
+fn main() {
+    let nums1 = vec![1, 4, 5];
+    let k1 = 1;
+    let num_operations1 = 2;
+    println!("Input: nums = {:?}, k = {}, numOperations = {}", nums1, k1, num_operations1);
+    println!("Result: {}", Solution::max_frequency(nums1, k1, num_operations1));
 }

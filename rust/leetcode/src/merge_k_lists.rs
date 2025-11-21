@@ -1,5 +1,25 @@
+#!/usr/bin/env rust-script
+
 use std::cmp::Ordering;
 use std::collections::BinaryHeap;
+
+#[derive(PartialEq, Eq, Clone, Debug)]
+pub struct ListNode {
+  pub val: i32,
+  pub next: Option<Box<ListNode>>
+}
+
+impl ListNode {
+  #[inline]
+  fn new(val: i32) -> Self {
+    ListNode {
+      next: None,
+      val
+    }
+  }
+}
+
+pub struct Solution;
 
 struct MinNode(Box<ListNode>);
 
@@ -47,4 +67,10 @@ impl Solution {
 
         dummy.next
     }
+}
+
+
+fn main() {
+    println!("Merge k sorted lists example");
+    println!("This function works with linked lists - run tests with: cargo test --lib merge_k_lists");
 }

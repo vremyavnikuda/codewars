@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 pub struct Solution;
 
 impl Solution {
@@ -55,4 +57,17 @@ impl Solution {
         }
         dfs(0, 0, true, s_bytes, n, k, &mut memo)
     }
+}
+
+
+fn main() {
+    let s1 = "accca".to_string();
+    let k1 = 2;
+    println!("Input: s = {}, k = {}", s1, k1);
+    println!("Result: {}", Solution::max_partitions_after_operations(s1, k1));
+    
+    let s2 = "aabaab".to_string();
+    let k2 = 3;
+    println!("\nInput: s = {}, k = {}", s2, k2);
+    println!("Result: {}", Solution::max_partitions_after_operations(s2, k2));
 }

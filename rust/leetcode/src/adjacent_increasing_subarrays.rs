@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 pub struct Solution;
 
 impl Solution {
@@ -6,24 +8,18 @@ impl Solution {
         if n < 2 {
             return 0;
         }
-        
         let mut lengths = vec![1; n];
-        
         for i in (0..n - 1).rev() {
             if nums[i] < nums[i + 1] {
                 lengths[i] = lengths[i + 1] + 1;
             }
         }
-        
         let mut max_k = 0;
-        
         for i in 0..n {
             let current_len = lengths[i];
-            
             if current_len >= 2 {
                 max_k = max_k.max(current_len / 2);
             }
-            
             let next_start = i + current_len;
             if next_start < n {
                 let next_len = lengths[next_start];
@@ -33,7 +29,6 @@ impl Solution {
                 }
             }
         }
-        
         max_k as i32
     }
 }
@@ -41,7 +36,6 @@ impl Solution {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn test_example_1() {
         assert_eq!(
@@ -49,7 +43,6 @@ mod tests {
             3
         );
     }
-
     #[test]
     fn test_example_2() {
         assert_eq!(
@@ -57,22 +50,18 @@ mod tests {
             2
         );
     }
-
     #[test]
     fn test_minimal() {
         assert_eq!(Solution::max_increasing_subarrays(vec![1, 2]), 1);
     }
-
     #[test]
     fn test_all_increasing() {
         assert_eq!(Solution::max_increasing_subarrays(vec![1, 2, 3, 4, 5, 6]), 3);
     }
-
     #[test]
     fn test_decreasing_array() {
         assert_eq!(Solution::max_increasing_subarrays(vec![5, 4, 3, 2, 1]), 1);
     }
-
     #[test]
     fn test_multiple_segments() {
         assert_eq!(
@@ -80,7 +69,6 @@ mod tests {
             3
         );
     }
-
     #[test]
     fn test_long_then_short() {
         assert_eq!(
@@ -88,7 +76,6 @@ mod tests {
             3
         );
     }
-
     #[test]
     fn test_all_strictly_increasing() {
         assert_eq!(
@@ -96,7 +83,6 @@ mod tests {
             3
         );
     }
-
     #[test]
     fn test_equal_adjacent_segments() {
         assert_eq!(
@@ -104,12 +90,10 @@ mod tests {
             4
         );
     }
-
     #[test]
     fn test_single_split() {
         assert_eq!(Solution::max_increasing_subarrays(vec![1, 2, 10, 11]), 2);
     }
-
     #[test]
     fn test_large_values() {
         assert_eq!(
@@ -117,9 +101,18 @@ mod tests {
             1
         );
     }
-
     #[test]
     fn test_decreasing_then_increasing() {
         assert_eq!(Solution::max_increasing_subarrays(vec![5, 4, 1, 2, 3]), 1);
     }
+}
+
+fn main() {
+    let nums1 = vec![2, 5, 7, 8, 9, 2, 3, 4, 3, 1];
+    println!("Input: {:?}", nums1);
+    println!("Result: {}", Solution::max_increasing_subarrays(nums1));
+    
+    let nums2 = vec![1, 2, 3, 4, 4, 4, 4, 5, 6, 7];
+    println!("\nInput: {:?}", nums2);
+    println!("Result: {}", Solution::max_increasing_subarrays(nums2));
 }

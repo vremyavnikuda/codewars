@@ -1,6 +1,6 @@
-use std::collections::HashMap;
+#!/usr/bin/env rust-script
 
-struct Solution;
+pub struct Solution;
 
 impl Solution {
     pub fn lex_greater_permutation(s: String, target: String) -> String {
@@ -52,9 +52,8 @@ impl Solution {
     }
     fn can_arrange_greater(remaining_freq: &[i32; 26], target: &[char]) -> bool {
         let mut temp_freq = *remaining_freq;
-        for (i, &target_char) in target.iter().enumerate() {
+        for &target_char in target.iter() {
             let target_idx = (target_char as u8 - b'a') as usize;
-            let mut found_equal_or_greater = false;
             for c in (target_idx + 1)..26 {
                 if temp_freq[c] > 0 {
                     return true;
@@ -62,7 +61,6 @@ impl Solution {
             }
             if temp_freq[target_idx] > 0 {
                 temp_freq[target_idx] -= 1;
-                found_equal_or_greater = true;
             } else {
                 return false;
             }
@@ -81,4 +79,17 @@ impl Solution {
         }
         a.len() > b.len()
     }
+}
+
+
+fn main() {
+    let s1 = "abc".to_string();
+    let target1 = "bcd".to_string();
+    println!("Input: s = {}, target = {}", s1, target1);
+    println!("Result: {}", Solution::lex_greater_permutation(s1, target1));
+    
+    let s2 = "aaa".to_string();
+    let target2 = "aab".to_string();
+    println!("\nInput: s = {}, target = {}", s2, target2);
+    println!("Result: {}", Solution::lex_greater_permutation(s2, target2));
 }

@@ -1,3 +1,6 @@
+#!/usr/bin/env rust-script
+
+pub struct Solution;
 impl Solution {
     pub fn number_of_substrings(s: String) -> i32 {
         let n = s.len();
@@ -27,4 +30,13 @@ impl Solution {
         }
         ans
     }
+}
+
+
+fn main() {
+    let test1 = Solution::number_of_substrings("00011".to_string());
+    println!("Test 1: \"00011\" => {}", test1);
+    
+    let test2 = Solution::number_of_substrings("101101".to_string());
+    println!("Test 2: \"101101\" => {}", test2);
 }

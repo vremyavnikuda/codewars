@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 pub struct Solution;
 
 impl Solution {
@@ -74,4 +76,17 @@ mod tests {
     fn test_multiple_stars() {
         assert_eq!(Solution::is_match("aaa".to_string(), "a*a".to_string()), true);
     }
+}
+
+
+fn main() {
+    let s1 = "aa".to_string();
+    let p1 = "a".to_string();
+    println!("Input: s = {}, p = {}", s1, p1);
+    println!("Result: {}", Solution::is_match(s1, p1));
+    
+    let s2 = "aa".to_string();
+    let p2 = "a*".to_string();
+    println!("\nInput: s = {}, p = {}", s2, p2);
+    println!("Result: {}", Solution::is_match(s2, p2));
 }

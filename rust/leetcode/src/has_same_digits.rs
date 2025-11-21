@@ -1,3 +1,6 @@
+#!/usr/bin/env rust-script
+
+pub struct Solution;
 impl Solution {
     pub fn has_same_digits(s: String) -> bool {
         let string_length = s.len();
@@ -16,4 +19,14 @@ impl Solution {
         }
         working_string[0] == working_string[1]
     }
+}
+
+fn main() {
+    let s1 = "2357".to_string();
+    println!("Input: {}", s1);
+    println!("Result: {}", Solution::has_same_digits(s1));
+    
+    let s2 = "1234".to_string();
+    println!("\nInput: {}", s2);
+    println!("Result: {}", Solution::has_same_digits(s2));
 }

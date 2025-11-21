@@ -1,3 +1,6 @@
+#!/usr/bin/env rust-script
+
+pub struct Solution;
 impl Solution {
     pub fn has_increasing_subarrays(nums: Vec<i32>, k: i32) -> bool {
         if k == 0 {
@@ -20,4 +23,16 @@ impl Solution {
         }
         max_valid_length >= k as usize
     }
+}
+
+fn main() {
+    let nums1 = vec![2, 5, 7, 8, 9, 2, 3, 4, 3, 1];
+    let k1 = 3;
+    println!("Input: nums = {:?}, k = {}", nums1, k1);
+    println!("Result: {}", Solution::has_increasing_subarrays(nums1, k1));
+    
+    let nums2 = vec![1, 2, 3, 4, 4, 4, 4, 5, 6, 7];
+    let k2 = 2;
+    println!("\nInput: nums = {:?}, k = {}", nums2, k2);
+    println!("Result: {}", Solution::has_increasing_subarrays(nums2, k2));
 }

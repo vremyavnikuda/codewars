@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 pub struct Solution;
 
 impl Solution {
@@ -34,4 +36,14 @@ impl Solution {
         
         max_len as i32
     }
+}
+
+fn main() {
+    let s1 = "cabbacc".to_string();
+    println!("Input: {}", s1);
+    println!("Result: {}", Solution::longest_balanced(s1));
+    
+    let s2 = "abcabc".to_string();
+    println!("\nInput: {}", s2);
+    println!("Result: {}", Solution::longest_balanced(s2));
 }

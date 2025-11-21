@@ -1,5 +1,7 @@
-use std::collections::{ HashMap, VecDeque };
-struct Solution;
+#!/usr/bin/env rust-script
+
+use std::collections::HashMap;
+pub struct Solution;
 impl Solution {
     pub fn find_itinerary(tickets: Vec<Vec<String>>) -> Vec<String> {
         let mut graph: HashMap<String, Vec<String>> = HashMap::new();
@@ -63,4 +65,15 @@ mod tests {
         let result = Solution::find_itinerary(tickets);
         assert_eq!(result, vec!["JFK", "ATL", "JFK", "SFO", "ATL", "SFO"]);
     }
+}
+
+fn main() {
+    let tickets = vec![
+        vec!["MUC".to_string(), "LHR".to_string()],
+        vec!["JFK".to_string(), "MUC".to_string()],
+        vec!["SFO".to_string(), "SJC".to_string()],
+        vec!["LHR".to_string(), "SFO".to_string()]
+    ];
+    println!("Input: {:?}", tickets);
+    println!("Result: {:?}", Solution::find_itinerary(tickets));
 }

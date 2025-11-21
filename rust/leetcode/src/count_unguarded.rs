@@ -1,3 +1,6 @@
+#!/usr/bin/env rust-script
+
+pub struct Solution;
 impl Solution {
     pub fn count_unguarded(m: i32, n: i32, guards: Vec<Vec<i32>>, walls: Vec<Vec<i32>>) -> i32 {
         let mut q1 = vec![vec![0; n as usize]; m as usize];
@@ -39,4 +42,15 @@ impl Solution {
         }
         q14
     }
+}
+
+fn main() {
+    let m = 4;
+    let n = 6;
+    let guards = vec![vec![0, 0], vec![1, 1], vec![2, 3]];
+    let walls = vec![vec![0, 1], vec![2, 2], vec![1, 4]];
+    println!("Input: m = {}, n = {}", m, n);
+    println!("Guards: {:?}", guards);
+    println!("Walls: {:?}", walls);
+    println!("Result: {}", Solution::count_unguarded(m, n, guards, walls));
 }

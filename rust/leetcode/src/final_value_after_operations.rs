@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 pub struct Solution;
 
 impl Solution {
@@ -14,4 +16,14 @@ impl Solution {
         
         x
     }
+}
+
+fn main() {
+    let ops1 = vec!["--X".to_string(), "X++".to_string(), "X++".to_string()];
+    println!("Input: {:?}", ops1);
+    println!("Result: {}", Solution::final_value_after_operations(ops1));
+    
+    let ops2 = vec!["++X".to_string(), "++X".to_string(), "X++".to_string()];
+    println!("\nInput: {:?}", ops2);
+    println!("Result: {}", Solution::final_value_after_operations(ops2));
 }

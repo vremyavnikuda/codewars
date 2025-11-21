@@ -1,3 +1,6 @@
+#!/usr/bin/env rust-script
+
+pub struct Solution;
 impl Solution {
     pub fn min_number_operations(target: Vec<i32>) -> i32 {
         if target.is_empty() {
@@ -11,4 +14,15 @@ impl Solution {
         }
         t1
     }
+}
+
+
+fn main() {
+    let target1 = vec![1, 2, 3, 2, 1];
+    println!("Input: {:?}", target1);
+    println!("Result: {}", Solution::min_number_operations(target1));
+    
+    let target2 = vec![3, 1, 1, 2];
+    println!("\nInput: {:?}", target2);
+    println!("Result: {}", Solution::min_number_operations(target2));
 }

@@ -1,5 +1,8 @@
+#!/usr/bin/env rust-script
+
 use std::collections::HashMap;
 
+pub struct Solution;
 impl Solution {
     pub fn roman_to_int(s: String) -> i32 {
         let roman_values: HashMap<char, i32> = [
@@ -22,4 +25,16 @@ impl Solution {
         }
         result
     }
+}
+
+
+fn main() {
+    let test1 = Solution::roman_to_int("III".to_string());
+    println!("Test 1: III = {}", test1);
+    
+    let test2 = Solution::roman_to_int("LVIII".to_string());
+    println!("Test 2: LVIII = {}", test2);
+    
+    let test3 = Solution::roman_to_int("MCMXCIV".to_string());
+    println!("Test 3: MCMXCIV = {}", test3);
 }

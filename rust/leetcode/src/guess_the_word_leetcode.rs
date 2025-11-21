@@ -1,3 +1,46 @@
+#!/usr/bin/env rust-script
+
+use std::cell::Cell;
+
+pub struct Master {
+    secret: String,
+    guesses: Cell<usize>,
+}
+
+impl Master {
+    pub fn new(secret: String) -> Self {
+        Master {
+            secret,
+            guesses: Cell::new(0),
+        }
+    }
+
+    pub fn guess(&self, word: String) -> i32 {
+        self.guesses.set(self.guesses.get() + 1);
+        if word.len() != 6 {
+            return -1;
+        }
+
+        let mut matches = 0;
+        let secret_bytes = self.secret.as_bytes();
+        let word_bytes = word.as_bytes();
+
+        for i in 0..6 {
+            if secret_bytes[i] == word_bytes[i] {
+                matches += 1;
+            }
+        }
+
+        matches
+    }
+
+    pub fn get_guesses(&self) -> usize {
+        self.guesses.get()
+    }
+}
+
+pub struct Solution;
+
 impl Solution {
     pub fn find_secret_word(words: Vec<String>, master: &Master) {
         let mut possible = words;
@@ -64,4 +107,61 @@ impl Solution {
 
         best
     }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_example_1() {
+        let secret = "acckzz".to_string();
+        let words = vec![
+            "acckzz".to_string(),
+            "ccbazz".to_string(),
+            "eiowzz".to_string(),
+            "abcczz".to_string(),
+        ];
+        let master = Master::new(secret);
+
+        Solution::find_secret_word(words, &master);
+
+        assert!(master.get_guesses() <= 30);
+    }
+
+    #[test]
+    fn test_example_2() {
+        let secret = "hamada".to_string();
+        let words = vec!["hamada".to_string(), "khaled".to_string()];
+        let master = Master::new(secret);
+
+        Solution::find_secret_word(words, &master);
+
+        assert!(master.get_guesses() <= 30);
+    }
+
+    #[test]
+    fn test_count_matches() {
+        assert_eq!(Solution::count_matches("acckzz", "acckzz"), 6);
+        assert_eq!(Solution::count_matches("acckzz", "ccbazz"), 3);
+        assert_eq!(Solution::count_matches("acckzz", "eiowzz"), 2);
+        assert_eq!(Solution::count_matches("acckzz", "abcczz"), 4);
+    }
+}
+
+fn main() {
+    let secret = "acckzz".to_string();
+    let words = vec![
+        "acckzz".to_string(),
+        "ccbazz".to_string(),
+        "eiowzz".to_string(),
+        "abcczz".to_string(),
+    ];
+    let master = Master::new(secret.clone());
+
+    println!("Secret word: {}", secret);
+    println!("Word list: {:?}", words);
+    
+    Solution::find_secret_word(words, &master);
+    
+    println!("Total guesses: {}", master.get_guesses());
 }

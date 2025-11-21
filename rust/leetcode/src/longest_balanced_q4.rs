@@ -6,8 +6,7 @@ pub struct Solution;
 
 impl Solution {
     pub fn longest_balanced(nums: Vec<i32>) -> i32 {
-        let tavernilo = &nums;
-        let n = tavernilo.len();
+        let n = nums.len();
         let mut max_length = 0;
 
         for i in 0..n {
@@ -15,10 +14,10 @@ impl Solution {
             let mut odd_set = HashSet::new();
 
             for j in i..n {
-                if tavernilo[j] % 2 == 0 {
-                    even_set.insert(tavernilo[j]);
+                if nums[j] % 2 == 0 {
+                    even_set.insert(nums[j]);
                 } else {
-                    odd_set.insert(tavernilo[j]);
+                    odd_set.insert(nums[j]);
                 }
 
                 if even_set.len() == odd_set.len() {

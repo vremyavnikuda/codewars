@@ -1,3 +1,7 @@
+#!/usr/bin/env rust-script
+
+pub struct Solution;
+
 impl Solution {
     pub fn is_match(s: String, p: String) -> bool {
         let s = s.as_bytes();
@@ -28,4 +32,17 @@ impl Solution {
         
         dp[m][n]
     }
+}
+
+
+fn main() {
+    let s1 = "aa".to_string();
+    let p1 = "a".to_string();
+    println!("Input: s = {}, p = {}", s1, p1);
+    println!("Result: {}", Solution::is_match(s1, p1));
+    
+    let s2 = "aa".to_string();
+    let p2 = "a*".to_string();
+    println!("\nInput: s = {}, p = {}", s2, p2);
+    println!("Result: {}", Solution::is_match(s2, p2));
 }

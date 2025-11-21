@@ -1,3 +1,6 @@
+#!/usr/bin/env rust-script
+
+pub struct Solution;
 impl Solution {
     pub fn min_cost(colors: String, needed_time: Vec<i32>) -> i32 {
         let mut a = 0;
@@ -20,4 +23,12 @@ impl Solution {
         }
         a
     }
+}
+
+
+fn main() {
+    let colors = "abaac".to_string();
+    let needed_time = vec![1, 2, 3, 4, 5];
+    println!("Input: colors = {}, neededTime = {:?}", colors, needed_time);
+    println!("Result: {}", Solution::min_cost(colors, needed_time));
 }

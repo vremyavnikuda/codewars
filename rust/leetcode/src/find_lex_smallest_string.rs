@@ -1,4 +1,7 @@
+#!/usr/bin/env rust-script
+
 use std::collections::HashSet;
+
 use std::collections::VecDeque;
 
 pub struct Solution;
@@ -49,4 +52,20 @@ impl Solution {
 
         result
     }
+}
+
+fn main() {
+    let s = "5525".to_string();
+    let a = 9;
+    let b = 2;
+    let result = Solution::find_lex_smallest_string(s.clone(), a, b);
+    println!("Input: s = {}, a = {}, b = {}", s, a, b);
+    println!("Result: {}", result);
+    
+    let s2 = "74".to_string();
+    let a2 = 5;
+    let b2 = 1;
+    let result2 = Solution::find_lex_smallest_string(s2.clone(), a2, b2);
+    println!("\nInput: s = {}, a = {}, b = {}", s2, a2, b2);
+    println!("Result: {}", result2);
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 struct UnionFind {
     p: Vec<usize>,
     size: Vec<usize>,
@@ -39,6 +41,8 @@ impl UnionFind {
     }
 }
 
+pub struct Solution;
+
 impl Solution {
     pub fn process_queries(c: i32, connections: Vec<Vec<i32>>, queries: Vec<Vec<i32>>) -> Vec<i32> {
         let mut uf = UnionFind::new((c + 1) as usize);
@@ -76,5 +80,64 @@ impl Solution {
         }
         
         ans
+    }
+}
+
+// Main функция для независимого запуска
+// Запуск: rustc src/process_queries.rs && ./process_queries (Linux/Mac)
+// или    : rustc src\process_queries.rs -o process_queries.exe && .\process_queries.exe (Windows)
+
+fn main() {
+    // Тестовый пример 1
+    let c = 5;
+    let connections = vec![
+        vec![1, 2],
+        vec![3, 4],
+    ];
+    let queries = vec![
+        vec![1, 1],
+        vec![2, 1],
+        vec![1, 1],
+    ];
+    
+    let result = Solution::process_queries(c, connections.clone(), queries.clone());
+    println!("Test 1:");
+    println!("  c = {}", c);
+    println!("  connections = {:?}", connections);
+    println!("  queries = {:?}", queries);
+    println!("  result = {:?}", result);
+    println!();
+
+    // Тестовый пример 2
+    let c2 = 3;
+    let connections2 = vec![vec![1, 2]];
+    let queries2 = vec![
+        vec![1, 3],
+        vec![1, 1],
+        vec![2, 2],
+        vec![1, 2],
+    ];
+    
+    let result2 = Solution::process_queries(c2, connections2.clone(), queries2.clone());
+    println!("Test 2:");
+    println!("  c = {}", c2);
+    println!("  connections = {:?}", connections2);
+    println!("  queries = {:?}", queries2);
+    println!("  result = {:?}", result2);
+    
+    println!("\n✅ All tests completed!");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_example_1() {
+        let c = 5;
+        let connections = vec![vec![1, 2], vec![3, 4]];
+        let queries = vec![vec![1, 1], vec![2, 1], vec![1, 1]];
+        let result = Solution::process_queries(c, connections, queries);
+        println!("Test result: {:?}", result);
     }
 }

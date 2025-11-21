@@ -1,3 +1,8 @@
+#include <vector>
+#include <set>
+#include <unordered_map>
+#include <algorithm>
+
 class Solution {
 public:
     vector<int> findXSum(vector<int>& nums, int k, int x) {
@@ -61,3 +66,31 @@ public:
         return result;
     }
 };
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    Solution sol;
+    vector<int> nums = {1, 1, 2, 2, 3, 4, 2, 3};
+    int k = 6;
+    int x = 2;
+    
+    cout << "Input: nums = [";
+    for (size_t i = 0; i < nums.size(); i++) {
+        cout << nums[i];
+        if (i < nums.size() - 1) cout << ", ";
+    }
+    cout << "], k = " << k << ", x = " << x << endl;
+    
+    vector<int> result = sol.findXSum(nums, k, x);
+    
+    cout << "Result: [";
+    for (size_t i = 0; i < result.size(); i++) {
+        cout << result[i];
+        if (i < result.size() - 1) cout << ", ";
+    }
+    cout << "]" << endl;
+    
+    return 0;
+}

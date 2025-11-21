@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 use std::collections::HashMap;
 
 pub struct Solution;
@@ -125,4 +127,13 @@ mod tests {
         let nums = vec![2, 3, 5];
         assert_eq!(Solution::sum_of_ancestors(n, edges, nums), 0);
     }
+}
+
+
+fn main() {
+    let n = 6;
+    let edges = vec![vec![0, 1], vec![0, 2], vec![1, 3], vec![1, 4], vec![2, 5]];
+    let nums = vec![1, 4, 9, 16, 25, 36];
+    println!("Input: n = {}, edges = {:?}, nums = {:?}", n, edges, nums);
+    println!("Result: {}", Solution::sum_of_ancestors(n, edges, nums));
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 use std::collections::HashMap;
 
 pub struct Solution;
@@ -97,4 +99,15 @@ mod tests {
     fn test_partial_balance() {
         assert_eq!(Solution::longest_balanced("aabbbcc".to_string()), 4);
     }
+}
+
+
+fn main() {
+    let s1 = "cabbacc".to_string();
+    println!("Input: {}", s1);
+    println!("Result: {}", Solution::longest_balanced(s1));
+    
+    let s2 = "aabbbcc".to_string();
+    println!("\nInput: {}", s2);
+    println!("Result: {}", Solution::longest_balanced(s2));
 }

@@ -1,11 +1,13 @@
+#!/usr/bin/env rust-script
+
 use std::collections::{HashSet, HashMap};
 
-struct Solution;
+pub struct Solution;
 
 impl Solution {
     pub fn longest_balanced(nums: Vec<i32>) -> i32 {
         let morvintale = &nums;
-        let n = morvintale.len();
+
         
         let mut seen: HashMap<(i32, i32), usize> = HashMap::new();
         seen.insert((0, 0), 0);

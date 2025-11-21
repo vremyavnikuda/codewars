@@ -1,24 +1,24 @@
-pub mod final_value_after_operations {
-    pub struct Solution;
+#!/usr/bin/env rust-script
 
-    impl Solution {
-        pub fn final_value_after_operations(operations: Vec<String>) -> i32 {
-            let mut x = 0;
-            for op in operations {
-                if op.chars().nth(1).unwrap() == '+' {
-                    x += 1;
-                } else {
-                    x -= 1;
-                }
+pub struct Solution;
+
+impl Solution {
+    pub fn final_value_after_operations(operations: Vec<String>) -> i32 {
+        let mut x = 0;
+        for op in operations {
+            if op.chars().nth(1).unwrap() == '+' {
+                x += 1;
+            } else {
+                x -= 1;
             }
-            x
         }
+        x
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::test_final_value::final_value_after_operations::Solution;
+    use super::*;
 
     #[test]
     fn test_final_value_after_operations() {
@@ -36,6 +36,7 @@ mod tests {
     }
 }
 
+#[cfg(not(test))]
 fn main() {
     // Example usage
     let operations1 = vec!["--X".to_string(), "X++".to_string(), "X++".to_string()];

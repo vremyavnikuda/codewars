@@ -1,8 +1,61 @@
-mod longest_balanced_q4;
+pub mod adjacent_increasing_subarrays;
+pub mod convert;
+pub mod count_palindromic_subsequence;
+pub mod count_unguarded;
+pub mod count_valid_selections;
+pub mod final_value_after_operations;
+pub mod find_itinerary;
+pub mod find_lex_smallest_string;
+pub mod guess_the_word;
+pub mod guess_the_word_leetcode;
+pub mod has_increasing_subarrays;
+pub mod has_same_digits;
+pub mod int_to_roman;
+pub mod kth_largest_element;
+pub mod k_length_apart;
+pub mod letter_combinations;
+pub mod lex_greater_permutation;
+pub mod longest_balanced;
+pub mod longest_balanced_abc;
+pub mod longest_balanced_q4;
+pub mod longest_balanced_substring;
+pub mod longest_palindrome;
+pub mod max_frequency;
+pub mod max_frequency_2;
+pub mod max_partitions_after_operations;
+pub mod merge;
+pub mod merge_k_lists;
+pub mod min_cost;
+pub mod min_number_operations;
+pub mod missing_multiple;
+pub mod modified_list;
+pub mod next_beautiful_number;
+pub mod number_of_beams;
+pub mod number_of_substrings;
+pub mod num_water_bottles;
+pub mod process_queries;
+pub mod range_add_queries;
+pub mod regex_matching;
+pub mod regex_matching_leetcode;
+pub mod remove_duplicates;
+pub mod remove_element;
+pub mod roman_to_int;
+pub mod shortest_palindrome;
+pub mod simple_bank_system;
+pub mod smallest_missing_integer;
+pub mod smallest_number;
+pub mod sum_ancestors_perfect_square;
+pub mod sum_divisible_by_k;
+pub mod sum_frequency_divisible;
+pub mod test_balanced;
+pub mod test_final_value;
+pub mod test_longest_balanced_q4;
+pub mod total_money;
+pub mod type_of_triangle;
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::remove_element::Solution;
 
     #[test]
     fn test_remove_element() {

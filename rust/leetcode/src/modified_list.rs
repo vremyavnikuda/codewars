@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
@@ -37,3 +39,9 @@ impl Solution {
 }
 
 pub struct Solution;
+
+
+fn main() {
+    println!("Modified list example");
+    println!("This function works with linked lists - run tests with: cargo test --lib modified_list");
+}

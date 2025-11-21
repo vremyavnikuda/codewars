@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 use std::collections::HashMap;
 
 pub struct Solution;
@@ -61,4 +63,17 @@ mod tests {
         let value = 5;
         assert_eq!(Solution::find_smallest_integer(nums, value), 1);
     }
+}
+
+
+fn main() {
+    let nums1 = vec![1, -10, 7, 13, 6, 8];
+    let value1 = 5;
+    println!("Input: nums = {:?}, value = {}", nums1, value1);
+    println!("Result: {}", Solution::find_smallest_integer(nums1, value1));
+    
+    let nums2 = vec![1, -10, 7, 13, 6, 8];
+    let value2 = 7;
+    println!("\nInput: nums = {:?}, value = {}", nums2, value2);
+    println!("Result: {}", Solution::find_smallest_integer(nums2, value2));
 }

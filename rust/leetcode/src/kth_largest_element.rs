@@ -1,3 +1,5 @@
+#!/usr/bin/env rust-script
+
 use std::cmp::Ordering;
 
 pub struct Solution;
@@ -67,6 +69,17 @@ impl Solution {
     }
 }
 
+
+fn main() {
+    println!("=== Kth Largest Element ===\n");
+    
+    let test1 = Solution::find_kth_largest(vec![3, 2, 1, 5, 6, 4], 2);
+    println!("Test 1: [3,2,1,5,6,4], k=2 => {} (expected 5)", test1);
+    
+    let test2 = Solution::find_kth_largest(vec![3, 2, 3, 1, 2, 4, 5, 5, 6], 4);
+    println!("Test 2: [3,2,3,1,2,4,5,5,6], k=4 => {} (expected 4)", test2);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -128,7 +141,7 @@ mod tests {
 
     #[test]
     fn test_large_array() {
-        let nums: Vec<i32> = (1..=1000).rev().collect();
+        let nums: Vec<i32> = (1..=1000).rev(). collect();
         assert_eq!(Solution::find_kth_largest(nums, 500), 501);
     }
 
