@@ -12,7 +12,7 @@ int main()
     int choice;
     do
     {
-        std::cout << "\nМеню:\n";
+        std::cout << "\n Меню:\n";
         std::cout << "1. Вставить ребро\n";
         std::cout << "2. Удалить ребро\n";
         std::cout << "3. Проверить наличие ребра\n";

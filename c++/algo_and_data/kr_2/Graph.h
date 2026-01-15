@@ -5,10 +5,14 @@ template <typename WeightType>
 class Graph
 {
 private:
-    int vertices;                 // количество вершин
-    int edges;                    // количество ребер
-    WeightType **adjacencyMatrix; // матрица смежности
-    WeightType infinity;          // значение "бесконечность" для отсутствующих ребер
+    // количество вершин
+    int vertices;
+    // количество ребер
+    int edges;
+    // матрица смежности
+    WeightType **adjacencyMatrix;
+    // значение "бесконечность" для отсутствующих ребер
+    WeightType infinity;
     // Вспомогательные структуры для алгоритма Флойда
     WeightType **distanceMatrix;
     int **nextVertexMatrix;
@@ -276,4 +280,4 @@ void Graph<WeightType>::Show() const
         std::cout << "\n";
     }
 }
-#endif // GRAPH_H
+#endif
