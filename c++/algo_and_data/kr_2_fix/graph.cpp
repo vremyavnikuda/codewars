@@ -343,7 +343,7 @@ public:
         reverse(path.begin(), path.end());
 
         // 4. Вывод найденных результатов
-        cout << "\n=== Результаты задачи ===" << endl;
+        cout << "\nРезультаты задачи" << endl;
         cout << "Диаметр графа: " << diameter << endl;
         cout << "Самый длинный путь: ";
 
@@ -360,7 +360,7 @@ public:
         // 5. Визуализация матрицы с путём
         if (enableVisualization)
         {
-            cout << "\n=== Визуализация пути в матрице ===" << endl;
+            cout << "\nВизуализация пути в матрице" << endl;
             cout << "(ребра пути выделены [скобками] зелёным)" << endl;
             visualizeInternal(path);
         }
@@ -372,9 +372,7 @@ void menu(Graph &g)
     int choice;
     do
     {
-        cout << "------------------------------------------" << endl;
-        cout << "          Меню для 'Граф'" << endl;
-        cout << "------------------------------------------" << endl;
+        cout << "Меню для 'Граф'" << endl;
         cout << "1. Добавить ребро (Insert)" << endl;
         cout << "2. Удалить ребро (Delete)" << endl;
         cout << "3. Задать вес ребра (SetEdge)" << endl;
