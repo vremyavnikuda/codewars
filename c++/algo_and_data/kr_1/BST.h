@@ -11,7 +11,6 @@ class BSTException
 
 public:
   BSTException(string msg) : message(msg) {}
-
   string What() { return message; }
 };
 
@@ -30,62 +29,38 @@ protected:
     Node *right;
     // Критерий сбалансированности
     int balance;
-
     Node(TKey k, TData d)
         : key(k), data(d), left(nullptr), right(nullptr), balance(0) {}
   };
-
   Node *root;
   int count;
-
   // Вспомогательные рекурсивные методы
   Node *InsertRec(Node *t, TKey k, TData data, bool &inserted);
-
   Node *DeleteRec(Node *t, TKey k, bool &deleted);
-
   Node *Del(Node *t, Node *t0);
-
   TData SearchRec(Node *t, TKey k);
-
   void ClearRec(Node *t);
-
   void TraverseInOrder(Node *t);
-
   void ShowRec(Node *t, int level);
-
   int CalcHeight(Node *t);
-
   void CalcBalance(Node *t);
-
   Node *CopyRec(Node *t);
 
 public:
   BST();
-
   BST(const BST<TKey, TData> &tree);
-
   ~BST();
-
   // Основные операции АТД
   int Size() const { return count; }
-
   void Clear();
-
   bool IsEmpty() const { return count == 0; }
-
   TData Search(TKey k);
-
   bool Insert(TKey k, TData data);
-
   bool Delete(TKey k);
-
   void Traverse();
-
   void Show();
-
   // Дополнительная операция
   void UpdateBalance();
-
   // Внутренний класс итератора
   class Iterator
   {
@@ -95,24 +70,16 @@ public:
     int stackSize;
     int top;
     Node *current;
-
     void PushLeftPath(Node *node);
 
   public:
     Iterator(BST<TKey, TData> *owner);
-
     ~Iterator();
-
     void Begin();
-
     void Next();
-
     bool IsOff();
-
     TData &operator*();
-
     bool operator==(const Iterator &other);
-
     Iterator &operator++();
   };
 };
@@ -139,7 +106,6 @@ typename BST<TKey, TData>::Node *BST<TKey, TData>::CopyRec(Node *t)
 {
   if (t == nullptr)
     return nullptr;
-
   Node *newNode = new Node(t->key, t->data);
   newNode->balance = t->balance;
   newNode->left = CopyRec(t->left);
@@ -191,18 +157,15 @@ BST<TKey, TData>::InsertRec(Node *t, TKey k, TData data, bool &inserted)
     inserted = true;
     return new Node(k, data);
   }
-
   if (k == t->key)
   {
     inserted = false;
     return t;
   }
-
   if (k < t->key)
     t->left = InsertRec(t->left, k, data, inserted);
   else
     t->right = InsertRec(t->right, k, data, inserted);
-
   return t;
 }
 
@@ -218,10 +181,8 @@ TData BST<TKey, TData>::SearchRec(Node *t, TKey k)
 {
   if (t == nullptr)
     throw BSTException("Ключ не найден");
-
   if (k == t->key)
     return t->data;
-
   if (k < t->key)
     return SearchRec(t->left, k);
   else
@@ -248,41 +209,34 @@ typename BST<TKey, TData>::Node *BST<TKey, TData>::DeleteRec(Node *t, TKey k,
     deleted = false;
     return t;
   }
-
   if (k < t->key)
   {
     t->left = DeleteRec(t->left, k, deleted);
     return t;
   }
-
   if (k > t->key)
   {
     t->right = DeleteRec(t->right, k, deleted);
     return t;
   }
-
   deleted = true;
-
   if (t->left == nullptr && t->right == nullptr)
   {
     delete t;
     return nullptr;
   }
-
   if (t->left == nullptr)
   {
     Node *x = t->right;
     delete t;
     return x;
   }
-
   if (t->right == nullptr)
   {
     Node *x = t->left;
     delete t;
     return x;
   }
-
   t->right = Del(t->right, t);
   return t;
 }
@@ -295,7 +249,6 @@ typename BST<TKey, TData>::Node *BST<TKey, TData>::Del(Node *t, Node *t0)
     t->left = Del(t->left, t0);
     return t;
   }
-
   t0->key = t->key;
   t0->data = t->data;
   Node *x = t->right;
@@ -330,7 +283,6 @@ int BST<TKey, TData>::CalcHeight(Node *t)
 
   int leftHeight = CalcHeight(t->left);
   int rightHeight = CalcHeight(t->right);
-
   return 1 + (leftHeight > rightHeight ? leftHeight : rightHeight);
 }
 
@@ -340,13 +292,10 @@ void BST<TKey, TData>::CalcBalance(Node *t)
 {
   if (t == nullptr)
     return;
-
   CalcBalance(t->left);
   CalcBalance(t->right);
-
   int leftHeight = CalcHeight(t->left);
   int rightHeight = CalcHeight(t->right);
-
   t->balance = rightHeight - leftHeight;
 }
 
@@ -374,9 +323,7 @@ void BST<TKey, TData>::ShowRec(Node *t, int level)
 {
   if (t == nullptr)
     return;
-
   ShowRec(t->right, level + 1);
-
   for (int i = 0; i < 3 * level; i++)
     cout << " ";
 

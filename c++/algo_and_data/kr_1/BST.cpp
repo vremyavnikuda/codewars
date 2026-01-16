@@ -35,10 +35,8 @@ void IteratorMenu(BST<int, string> *tree)
         cout << "5. Изменить значение через оператор *" << endl; // Улучшенное описание
         cout << "6. Оператор ++" << endl;
         cout << "0. Выход из итератора" << endl;
-
         int choice;
         cin >> choice;
-
         switch (choice)
         {
         case 1:
@@ -108,16 +106,13 @@ int main()
     setlocale(LC_ALL, "ru_RU.UTF-8");
     // Создание дерева с ключами типа int и данными типа string
     BST<int, string> tree;
-
     ShowMenu();
-
     bool exit = false;
     while (!exit)
     {
         cout << "\nВведите номер операции: ";
         int choice;
         cin >> choice;
-
         switch (choice)
         {
         // Вставка
