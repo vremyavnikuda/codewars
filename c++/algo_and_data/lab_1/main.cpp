@@ -1,202 +1,345 @@
-// main.cpp
-// ЛР1: Хеш-таблица (вариант 7)
-// Открытая адресация + свёртка (folding) + модульное хеширование + квадратичное зондирование
-//
-// Ключ: натуральное число ~ [1_000_000_000; 3_000_000_000] (используем uint64_t)
-// Поведение Insert: если ключ уже есть — значение ОБНОВЛЯЕТСЯ, а функция возвращает false (не "новая вставка").
-//
-// Компилировать (пример):
-
 #include <iostream>
 #include <string>
-#include <clocale>
-#include <cstdlib>
+#include <random>
+#include <iomanip>
+#include <ctime>
+#include <memory>
 #include <limits>
-#include <stdexcept>
+
 #include "HashTable.h"
 
-using std::cin;
-using std::cout;
+using namespace std;
 
-static constexpr std::uint64_t kMinKey = 1000000000ULL;
-static constexpr std::uint64_t kMaxKey = 3000000000ULL;
-
-static void clear_input_line()
+// cin значений
+template <typename T>
+void safeInput(T &var, const string &prompt)
 {
-    cin.clear();
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    while (true)
+    {
+        cout << prompt;
+        if (cin >> var)
+        {
+            break;
+        }
+        else
+        {
+            cout << ">>> Ошибка ввода! Пожалуйста, введите число." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), ' ');
+        }
+    }
+}
+
+uint32_t genkey()
+{
+    static random_device rd;
+    static mt19937 gen(rd());
+    static uniform_int_distribution<uint32_t> dist(1000000000u, 3000000000u);
+    return dist(gen);
+}
+
+void run_efficiency_test(size_t max_table_elements, double alpha)
+{
+    if (alpha <= 0 || alpha >= 1.0)
+    {
+        cout << ">>> ОШИБКА: Для открытой адресации alpha должно быть (0, 1)." << endl;
+        return;
+    }
+    HashTable<uint32_t, int> temp(max_table_elements, 1000000000u, 3000000000u);
+    size_t actual_capacity = temp.get_capacity();
+    int k = static_cast<int>(actual_capacity * alpha);
+    if (k == 0)
+        k = 1;
+    HashTable<uint32_t, int> table(max_table_elements, 1000000000u, 3000000000u);
+    vector<uint32_t> m;
+    m.reserve(k);
+    cout << ">>> Подготовка к тесту..." << endl;
+    cout << "    Ёмкость (M): " << actual_capacity << endl;
+    cout << "    Целевое кол-во (k): " << k << endl;
+    while (static_cast<int>(m.size()) < k)
+    {
+        uint32_t key = genkey();
+        if (table.insert(key, 1) == InsertResult::SUCCESS_NEW)
+        {
+            m.push_back(key);
+        }
+    }
+    cout << ">>> Заполнение завершено." << endl;
+    cout << "    Items count: " << table.size() << endl;
+    cout << "    Current Alpha: " << (double)table.size() / table.get_capacity() << endl;
+    double sum_I = 0, sum_D = 0, sum_S = 0;
+    int operations_count = k / 2;
+    if (operations_count < 100)
+        operations_count = 100;
+    cout << ">>> Запуск потока из " << operations_count << " операций..." << endl;
+    for (int i = 0; i < operations_count; ++i)
+    {
+        // 10% промахи
+        if (i % 10 == 0)
+        {
+            uint32_t trash_key = genkey();
+            table.remove(trash_key);
+            sum_D += table.get_last_probes();
+            if (!m.empty())
+            {
+                uint32_t existing_key = m[rand() % m.size()];
+                table.insert(existing_key, 1);
+                sum_I += table.get_last_probes();
+            }
+            table.find(genkey());
+            sum_S += table.get_last_probes();
+        }
+        else
+        {
+            if (!m.empty())
+            {
+                int ind = rand() % m.size();
+                uint32_t key_to_del = m[ind];
+                table.remove(key_to_del);
+                sum_D += table.get_last_probes();
+                uint32_t new_key = genkey();
+                while (table.find(new_key) != nullptr)
+                {
+                    new_key = genkey();
+                }
+                table.insert(new_key, 1);
+                sum_I += table.get_last_probes();
+                m[ind] = new_key;
+                uint32_t key_to_find = m[rand() % m.size()];
+                table.find(key_to_find);
+                sum_S += table.get_last_probes();
+            }
+        }
+    }
+
+    cout << string(50, '-') << endl;
+    cout << "РЕЗУЛЬТАТЫ ЭКСПЕРИМЕНТА:" << endl;
+    cout << "Items count end: " << table.size() << endl;
+    double final_alpha = (double)table.size() / table.get_capacity();
+    cout << "Alpha end:       " << fixed << setprecision(4) << final_alpha << endl;
+    cout << string(50, '-') << endl;
+    cout << "Теор. Успех (BigO):    " << HashTable<uint32_t, int>::BigO_Success(alpha) << endl;
+    cout << "Теор. Неуспех (BigO):  " << HashTable<uint32_t, int>::BigO_Unsuccess(alpha) << endl;
+    cout << string(50, '-') << endl;
+    cout << "Exp. ср. ВСТАВКА (I):  " << sum_I / operations_count << endl;
+    cout << "Exp. ср. УДАЛЕНИЕ (D): " << sum_D / operations_count << endl;
+    cout << "Exp. ср. ПОИСК (S):    " << sum_S / operations_count << endl;
+    cout << string(50, '-') << endl;
 }
 
 int main()
 {
-    system("chcp 65001 > nul");
-    setlocale(LC_ALL, "ru_RU.UTF-8");
-
-    std::size_t n_max = 0;
-    while (true)
+    setlocale(LC_ALL, "Russian");
+    srand(static_cast<unsigned int>(time(0)));
+    size_t max_elem;
+    safeInput(max_elem, "Введите предельное количество элементов (N): ");
+    HashTable<uint32_t, string> ht(max_elem, 1000000000u, 3000000000u);
+    cout << ">>> Таблица создана." << endl;
+    unique_ptr<HashTable<uint32_t, string>::Iterator> stepIterator = nullptr;
+    bool iteratorActive = false;
+    int choice;
+    uint32_t key;
+    string value;
+    do
     {
+        cout << "" << string(55, '=') << endl;
+        cout << "                   МЕНЮ ОПЕРАЦИЙ" << endl;
+        cout << string(55, '=') << endl;
+        cout << " [Базовые операции]" << endl;
+        cout << "  1.  Количество элементов" << endl;
+        cout << "  2.  Ёмкость таблицы" << endl;
+        cout << "  3.  Проверка на пустоту" << endl;
+        cout << "  4.  Очистка таблицы" << endl;
+        cout << "  5.  Поиск элемента по ключу" << endl;
+        cout << "  6.  Вставка элемента" << endl;
+        cout << "  7.  Удаление элемента" << endl;
+        cout << "  8.  Вывод структуры" << endl;
+        cout << string(55, '-') << endl;
+        cout << " [Статистика]" << endl;
+        cout << "  9.  Опрос последнего хеш-значения" << endl;
+        cout << " 10.  Опрос числа проб" << endl;
+        cout << " 11.  Опрос последнего индекса" << endl;
+        cout << string(55, '-') << endl;
+        cout << " [Тестирование]" << endl;
+        cout << " 12.  Тест качества (Хи-квадрат)" << endl;
+        cout << " 13.  ТЕСТ ТРУДОЕМКОСТИ" << endl;
+        cout << string(55, '-') << endl;
+        cout << " [ПОШАГОВЫЙ ИТЕРАТОР]" << endl;
+        cout << " 20.  Создать итератор (begin)" << endl;
+        cout << " 21.  Показать текущий элемент (*)" << endl;
+        cout << " 22.  Перейти к следующему (++)" << endl;
+        cout << " 23.  Изменить данные текущего элемента" << endl;
+        cout << string(55, '-') << endl;
+        cout << "  0.  Выход" << endl;
+        cout << string(55, '=') << endl;
+        if (iteratorActive)
+            cout << " >>> [Итератор АКТИВЕН]" << endl;
+        safeInput(choice, "Выберите действие: ");
         try
         {
-            cout << "Введите n_max (планируемое максимальное количество элементов): ";
-            cout.flush();
-            long long n_max_in;
-            if (!(cin >> n_max_in))
-                throw std::invalid_argument("Invalid n_max.");
-            if (n_max_in <= 0)
-                throw std::out_of_range("n_max must be > 0.");
-            if (static_cast<unsigned long long>(n_max_in) > std::numeric_limits<std::size_t>::max())
-                throw std::out_of_range("n_max is too large.");
-            n_max = static_cast<std::size_t>(n_max_in);
-            break;
-        }
-        catch (const std::exception &e)
-        {
-            std::cerr << "Error: " << e.what() << "\n";
-            clear_input_line();
-        }
-    }
-
-    HashTable<std::uint64_t, std::string> ht(n_max);
-
-    while (true)
-    {
-        try
-        {
-            cout << "\n МЕНЮ\n"
-                 << "1) Вставить (ключ, значение)\n"
-                 << "2) Найти (ключ)\n"
-                 << "3) Удалить (ключ)\n"
-                 << "4) Вывести таблицу\n"
-                 << "5) Информация о таблице (размер/ёмкость/последний хеш/зондирования)\n"
-                 << "6) Итерировать по занятым элементам\n"
-                 << "7) Эксперимент хи-квадрат (качество хеша)\n"
-                 << "0) Выход\n"
-                 << "Выберите: ";
-            cout.flush();
-
-            int cmd;
-            cin >> cmd;
-            if (!cin)
-                throw std::invalid_argument("Invalid command input.");
-            if (cmd < 0 || cmd > 7)
-                throw std::out_of_range("Unknown command. Use 0..7.");
-
-            if (cmd == 0)
+            switch (choice)
+            {
+            case 1:
+                cout << ">>> Элементов: " << ht.size() << endl;
                 break;
-
-            if (cmd == 1)
-            {
-                long long key_in;
-                std::string value;
-                cout << "ключ (uint64): ";
-                cin >> key_in;
-                if (!cin)
-                    throw std::invalid_argument("Invalid key input.");
-                if (key_in < static_cast<long long>(kMinKey) || key_in > static_cast<long long>(kMaxKey))
-                    throw std::out_of_range("Key out of range [1000000000; 3000000000].");
-                std::uint64_t key = static_cast<std::uint64_t>(key_in);
-                cout << "значение : ";
-                cin >> value;
-                if (!cin)
-                    throw std::invalid_argument("Invalid value input.");
-                bool inserted = ht.Insert(key, value);
-                cout << (inserted ? "Вставлен НОВЫЙ элемент.\n" : "Обновлено существующее или не удалось вставить.\n");
-                cout << "хеш = " << ht.LastHash() << " зондирования = " << ht.LastProbes() << "\n";
-            }
-            else if (cmd == 2)
-            {
-                long long key_in;
-                cout << "ключ: ";
-                cin >> key_in;
-                if (!cin)
-                    throw std::invalid_argument("Invalid key input.");
-                if (key_in < static_cast<long long>(kMinKey) || key_in > static_cast<long long>(kMaxKey))
-                    throw std::out_of_range("Key out of range [1000000000; 3000000000].");
-                std::uint64_t key = static_cast<std::uint64_t>(key_in);
-                auto *p = ht.Find(key);
-                if (p)
+            case 2:
+                cout << ">>> Ёмкость: " << ht.get_capacity() << endl;
+                break;
+            case 3:
+                cout << ">>> Таблица " << (ht.empty() ? "пуста" : "содержит элементы") << endl;
+                break;
+            case 4:
+                ht.clear();
+                cout << ">>> Таблица очищена." << endl;
+                if (iteratorActive)
                 {
-                    cout << "Найдено. значение = " << *p << "\n";
+                    stepIterator->invalidate();
+                    iteratorActive = false;
+                    cout << ">>> Итератор инвалидирован." << endl;
+                }
+                break;
+            case 5:
+                safeInput(key, "Ключ для поиска: ");
+                if (auto *v = ht.find(key))
+                {
+                    cout << ">>> НАЙДЕНО: " << *v << endl;
+                    cout << "    Индекс: " << ht.get_last_index()
+                         << ", Проб: " << ht.get_last_probes() << endl;
                 }
                 else
                 {
-                    cout << "Не найдено.\n";
+                    cout << ">>> НЕ НАЙДЕНО." << endl;
+                    cout << "    Проб: " << ht.get_last_probes() << endl;
                 }
-                cout << "хеш = " << ht.LastHash() << " зондирования = " << ht.LastProbes() << "\n";
-            }
-            else if (cmd == 3)
-            {
-                long long key_in;
-                cout << "ключ: ";
-                cin >> key_in;
-                if (!cin)
-                    throw std::invalid_argument("Invalid key input.");
-                if (key_in < static_cast<long long>(kMinKey) || key_in > static_cast<long long>(kMaxKey))
-                    throw std::out_of_range("Key out of range [1000000000; 3000000000].");
-                std::uint64_t key = static_cast<std::uint64_t>(key_in);
-                bool ok = ht.Erase(key);
-                cout << (ok ? "Удалено.\n" : "Ключ не найден.\n");
-                cout << "хеш = " << ht.LastHash() << " зондирования = " << ht.LastProbes() << "\n";
-            }
-            else if (cmd == 4)
-            {
-                ht.Print(std::cout);
-                cout << "последний хеш =" << ht.LastHash()
-                     << " последнее зондирование =" << ht.LastProbes() << "\n";
-            }
-            else if (cmd == 5)
-            {
-                cout << "размер =" << ht.Size()
-                     << " ёмкость =" << ht.Capacity()
-                     << " пусто =" << (ht.Empty() ? "истина" : "ложь") << "\n";
-                cout << "последний хеш =" << ht.LastHash()
-                     << " последнее зондирование =" << ht.LastProbes() << "\n";
-            }
-            else if (cmd == 6)
-            {
-                cout << "Занятые элементы:\n";
-                for (auto it = ht.Begin(); it != ht.End(); ++it)
+                break;
+            case 6:
+                safeInput(key, "Ключ: ");
+                cout << "Значение: ";
+                cin >> value;
                 {
-                    cout << "индекс = " << it.index() << " ключ = " << it.key() << " значение = " << *it << "\n";
+                    if (ht.find(key))
+                        throw overflow_error("Такой элемент уже существует!");
+
+                    InsertResult res = ht.insert(key, value);
+                    switch (res)
+                    {
+                    case InsertResult::SUCCESS_NEW:
+                        cout << ">>> УСПЕХ: Новый элемент добавлен." << endl;
+                        break;
+                    case InsertResult::SUCCESS_UPDATE:
+                        cout << ">>> УСПЕХ: Элемент обновлен." << endl;
+                        break;
+                    case InsertResult::ERR_KEY_RANGE:
+                        cout << ">>> ОШИБКА: Ключ вне диапазона!" << endl;
+                        break;
+                    case InsertResult::ERR_TABLE_FULL:
+                        cout << ">>> ОШИБКА: Таблица переполнена! (Достигнут capacity)" << endl;
+                        break;
+                    }
+                    cout << "    Индекс: " << ht.get_last_index()
+                         << ", Проб: " << ht.get_last_probes() << endl;
+
+                    if (iteratorActive && (res == InsertResult::SUCCESS_NEW))
+                    {
+                        stepIterator->invalidate();
+                        iteratorActive = false;
+                        cout << ">>> Итератор инвалидирован (структура изменена)." << endl;
+                    }
                 }
-            }
-            else if (cmd == 7)
+                break;
+            case 7:
+                safeInput(key, "Ключ для удаления: ");
+                if (ht.remove(key))
+                {
+                    cout << ">>> УСПЕХ: Элемент удален." << endl;
+                    cout << "    Индекс: " << ht.get_last_index()
+                         << ", Проб: " << ht.get_last_probes() << endl;
+
+                    if (iteratorActive)
+                    {
+                        stepIterator->invalidate();
+                        iteratorActive = false;
+                        cout << ">>> Итератор инвалидирован." << endl;
+                    }
+                    if (ht.size() == 0)
+                        ht.clear();
+                }
+                else
+                {
+                    cout << ">>> ОШИБКА: Ключ не найден." << endl;
+                    cout << "    Проб: " << ht.get_last_probes() << endl;
+                }
+                break;
+            case 8:
+                ht.show();
+                break;
+            case 9:
+                cout << ">>> Последнее хеш-значение: " << ht.get_last_hash() << endl;
+                break;
+            case 10:
+                cout << ">>> Число проб: " << ht.get_last_probes() << endl;
+                break;
+            case 11:
+                cout << ">>> Последний индекс: " << ht.get_last_index() << endl;
+                break;
+            case 12:
+                cout << ">>> Вычисление Хи-квадрат..." << endl;
+                cout << ">>> Результат: " << ht.compute_chi_square(100, 1000) << endl;
+                break;
+            case 13:
             {
-                std::size_t m = ht.Capacity();
-                std::size_t N = 20 * m;
-                int trials = 5;
-                cout << "Текущая ёмкость m = " << m << "\n";
-                cout << "По умолчанию N=20*m = " << N << "\n";
-                cout << "Введите N (0 для сохранения по умолчанию): ";
-                long long N_in;
-                cin >> N_in;
-                if (!cin)
-                    throw std::invalid_argument("Invalid N input.");
-                if (N_in < 0)
-                    throw std::out_of_range("N must be >= 0.");
-                if (N_in != 0)
-                    N = static_cast<std::size_t>(N_in);
-                cout << "Введите количество испытаний (например, 5 или 10): ";
-                long long trials_in;
-                cin >> trials_in;
-                if (!cin)
-                    throw std::invalid_argument("Invalid trials input.");
-                if (trials_in <= 0 || trials_in > std::numeric_limits<int>::max())
-                    throw std::out_of_range("Trials must be a positive int.");
-                trials = static_cast<int>(trials_in);
-                chi_square_for_capacity(m, N, trials);
+                double a;
+                safeInput(a, "Введите alpha (0.1 - 0.99): ");
+                if (a > 0 && a < 1)
+                    run_efficiency_test(ht.get_capacity(), a);
+                else
+                    cout << ">>> ОШИБКА: Некорректный alpha!" << endl;
+                break;
+            }
+            case 20:
+                stepIterator = make_unique<HashTable<uint32_t, string>::Iterator>(ht.begin());
+                iteratorActive = true;
+                if (stepIterator->isEnd())
+                    cout << ">>> Итератор создан (end)." << endl;
+                else
+                    cout << ">>> Итератор создан. Указывает на первый элемент." << endl;
+                break;
+            case 21:
+                if (!iteratorActive || !stepIterator)
+                    throw runtime_error("Iter not created");
+                if (stepIterator->isEnd())
+                    throw out_of_range("Iter at end");
+                cout << ">>> KEY: " << stepIterator->key()
+                     << ", VAL: " << **stepIterator << endl;
+                break;
+            case 22:
+                if (!iteratorActive || !stepIterator)
+                    throw runtime_error("Iter not created");
+                if (stepIterator->isEnd())
+                    throw out_of_range("Iter at end");
+                ++(*stepIterator);
+                cout << ">>> Сдвиг выполнен." << (stepIterator->isEnd() ? " (Теперь END)" : "") << endl;
+                break;
+            case 23:
+                if (!iteratorActive || !stepIterator || stepIterator->isEnd())
+                    throw out_of_range("Cannot edit");
+                cout << "Val: ";
+                cin >> value;
+                **stepIterator = value;
+                cout << ">>> Updated." << endl;
+                break;
+            case 0:
+                cout << "Выход." << endl;
+                break;
+            default:
+                cout << ">>> Неверная команда." << endl;
             }
         }
-        catch (const std::exception &e)
+        catch (const exception &e)
         {
-            std::cerr << "Error: " << e.what() << "\n";
-            clear_input_line();
+            cerr << ">>> EXCEPTION: " << e.what() << endl;
         }
-        catch (...)
-        {
-            std::cerr << "Unknown error.\n";
-            clear_input_line();
-        }
-    }
+
+    } while (choice != 0);
     return 0;
 }

@@ -32,7 +32,7 @@ void IteratorMenu(BST<int, string> *tree)
         cout << "2. Переход к следующему" << endl;
         cout << "3. Проверка состояния" << endl;
         cout << "4. Получить данные" << endl;
-        cout << "5. Изменить значение через оператор *" << endl; // Улучшенное описание
+        cout << "5. Изменить значение через оператор *" << endl;
         cout << "6. Оператор ++" << endl;
         cout << "0. Выход из итератора" << endl;
 
@@ -66,7 +66,7 @@ void IteratorMenu(BST<int, string> *tree)
             }
             break;
 
-        case 5: // ИЗМЕНЕНИЕ ЗНАЧЕНИЯ ЧЕРЕЗ OPERATOR*
+        case 5:
             try
             {
                 if (it.IsOff())
@@ -76,9 +76,9 @@ void IteratorMenu(BST<int, string> *tree)
                 }
                 string newValue;
                 cout << "Введите новое значение для текущего узла: ";
-                cin.ignore();           // игнорируем остаток строки после cin >> choice
-                getline(cin, newValue); // поддержка пробелов
-                *it = newValue;         // Присваивание через operator*
+                cin.ignore();
+                getline(cin, newValue);
+                *it = newValue;
                 cout << "Значение успешно изменено!" << endl;
             }
             catch (BSTException &e)
@@ -106,18 +106,14 @@ int main()
 {
     system("chcp 65001 > nul");
     setlocale(LC_ALL, "ru_RU.UTF-8");
-    // Создание дерева с ключами типа int и данными типа string
     BST<int, string> tree;
-
     ShowMenu();
-
     bool exit = false;
     while (!exit)
     {
         cout << "\nВведите номер операции: ";
         int choice;
         cin >> choice;
-
         switch (choice)
         {
         // Вставка
@@ -149,7 +145,6 @@ int main()
             int key;
             cout << "Введите ключ для поиска: ";
             cin >> key;
-
             try
             {
                 string data = tree.Search(key);

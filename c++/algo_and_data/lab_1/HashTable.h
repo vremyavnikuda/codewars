@@ -1,320 +1,325 @@
-#ifndef HASHTABLE_H
-#define HASHTABLE_H
+#pragma once
 
-#include <iostream>
 #include <vector>
-#include <string>
-#include <optional>
-#include <random>
-#include <limits>
-#include <cstdint>
 #include <cmath>
+#include <limits>
+#include <algorithm>
+#include <random>
+#include <stdexcept>
+#include <iostream>
 #include <iomanip>
 
-static bool is_prime(std::size_t x)
+// Статусы результатов вставки
+enum class InsertResult
 {
-    if (x < 2)
-        return false;
-    if (x % 2 == 0)
-        return x == 2;
-    for (std::size_t d = 3; d * d <= x; d += 2)
-    {
-        if (x % d == 0)
-            return false;
-    }
-    return true;
-}
+    SUCCESS_NEW,
+    SUCCESS_UPDATE,
+    ERR_KEY_RANGE,
+    ERR_TABLE_FULL
+};
 
-static std::size_t next_prime(std::size_t x)
-{
-    if (x <= 2)
-        return 2;
-    if (x % 2 == 0)
-        ++x;
-    while (!is_prime(x))
-        x += 2;
-    return x;
-}
-
-template <class K, class V>
+// ШАБЛОННЫЙ КЛАСС ХЕШ-ТАБЛИЦЫ С ОТКРЫТОЙ АДРЕСАЦИЕЙ
+template <typename KeyType, typename T>
 class HashTable
 {
-public:
-    enum class State
+private:
+    enum State
     {
-        FREE,
-        BUSY,
+        EMPTY,
+        OCCUPIED,
         DELETED
     };
-    struct Cell
+    struct Slot
     {
-        K key{};
-        V value{};
-        State state{State::FREE};
+        KeyType key{};
+        T value{};
+        State state = EMPTY;
     };
+    std::vector<Slot> table;
+    size_t capacity{};
+    size_t num_elements = 0;
+    const double c1 = 0.0;
+    const double c2 = 1.0;
+    // Границы ключей
+    KeyType min_key{};
+    KeyType max_key{};
+    bool use_key_validation{false};
+    // Статистика последней операции
+    mutable uint32_t last_hash_value = 0;
+    mutable int last_probes_count = 0;
+    mutable size_t last_index = 0;
+    // Метод свёртки
+    uint32_t fold(KeyType k) const
+    {
+        uint32_t sum = 0;
+        uint64_t key_val = static_cast<uint64_t>(k);
+        while (key_val > 0)
+        {
+            sum += static_cast<uint32_t>(key_val % 1000);
+            key_val /= 1000;
+        }
+        return sum;
+    }
+    // Хеш-функция (модульная)
+    size_t hash_func(KeyType k) const
+    {
+        return fold(k) % capacity;
+    }
+    // Поиск индекса (Классическое квадратичное пробирование: h + i^2)
+    size_t find_index(KeyType k, bool &found) const
+    {
+        size_t h = hash_func(k);
+        last_hash_value = static_cast<uint32_t>(h);
+        last_probes_count = 0;
+        found = false;
+        size_t first_deleted = capacity;
+        size_t limit = std::min(static_cast<size_t>(10), capacity);
+        for (size_t i = 0; i < limit; ++i)
+        {
+            last_probes_count++;
+            size_t idx = (h + i * i) % capacity;
+            if (table[idx].state == EMPTY)
+            {
+                last_index = (first_deleted != capacity) ? first_deleted : idx;
+                return last_index;
+            }
+            if (table[idx].state == OCCUPIED && table[idx].key == k)
+            {
+                found = true;
+                last_index = idx;
+                return idx;
+            }
+            if (table[idx].state == DELETED && first_deleted == capacity)
+            {
+                first_deleted = idx;
+            }
+        }
+        last_index = (first_deleted != capacity) ? first_deleted : capacity;
+        return last_index;
+    }
+
+    // ВСПОМОГАТЕЛЬНЫЙ МЕТОД: Поиск числа Мерсенна (2^p - 1) >= n
+    size_t get_next_mersenne(size_t n)
+    {
+        if (n == 0)
+            return 1;
+
+        size_t mersenne = 1;
+        while (mersenne < n)
+        {
+            mersenne = (mersenne << 1) | 1;
+            if (mersenne == std::numeric_limits<size_t>::max())
+                break;
+        }
+        return mersenne;
+    }
+
+public:
+    // Конструктор: max_elements - предельное количество элементов
+    HashTable(size_t max_elements, KeyType min_k = 0, KeyType max_k = 0)
+        : min_key(min_k), max_key(max_k), use_key_validation(min_k < max_k)
+    {
+        size_t required_size = max_elements * 2;
+        if (required_size == 0)
+            required_size = 1;
+
+        capacity = get_next_mersenne(required_size);
+        table.resize(capacity);
+    }
+    size_t size() const { return num_elements; }
+    size_t get_capacity() const { return capacity; }
+    bool empty() const { return num_elements == 0; }
+    void clear()
+    {
+        for (auto &slot : table)
+            slot.state = EMPTY;
+        num_elements = 0;
+    }
+    T *find(KeyType k)
+    {
+        bool found = false;
+        size_t idx = find_index(k, found);
+        return found ? &table[idx].value : nullptr;
+    }
+    InsertResult insert(KeyType k, const T &val)
+    {
+        if (use_key_validation && (k < min_key || k > max_key))
+        {
+            return InsertResult::ERR_KEY_RANGE;
+        }
+        bool found = false;
+        size_t idx = find_index(k, found);
+        if (idx != capacity)
+        {
+            if (num_elements >= capacity)
+            {
+                return InsertResult::ERR_TABLE_FULL;
+            }
+            table[idx].key = k;
+            table[idx].value = val;
+            table[idx].state = OCCUPIED;
+            num_elements++;
+            return InsertResult::SUCCESS_NEW;
+        }
+        return InsertResult::ERR_TABLE_FULL;
+    }
+
+    bool remove(KeyType k)
+    {
+        bool found = false;
+        size_t idx = find_index(k, found);
+        if (found)
+        {
+            table[idx].state = DELETED;
+            num_elements--;
+            return true;
+        }
+        return false;
+    }
+
+    void show() const
+    {
+        std::cout << "[Индекс] | Статус   | Ключ           | Значение\n";
+        std::cout << "------------------------------------------------\n";
+        for (size_t i = 0; i < capacity; ++i)
+        {
+            std::cout << " [" << std::setw(6) << i << "] | ";
+            if (table[i].state == OCCUPIED)
+                std::cout << "OCCUPIED | " << std::setw(12) << table[i].key << " | " << table[i].value;
+            else if (table[i].state == DELETED)
+                std::cout << "DELETED  | -            | -";
+            else
+                std::cout << "EMPTY    | -            | -";
+            std::cout << "\n";
+        }
+    }
+
+    uint32_t get_last_hash() const { return last_hash_value; }
+    int get_last_probes() const { return last_probes_count; }
+    size_t get_last_index() const { return last_index; }
+    static double BigO_Success(double alpha)
+    {
+        if (alpha <= 0)
+            return 1.0;
+        if (alpha >= 1.0)
+            alpha = 0.99;
+        return (1.0 / alpha) * std::log(1.0 / (1.0 - alpha));
+    }
+
+    static double BigO_Unsuccess(double alpha)
+    {
+        if (alpha >= 1.0)
+            alpha = 0.99;
+        return 1.0 / (1.0 - alpha);
+    }
+
+    // ИТЕРАТОР
     class Iterator
     {
+    private:
+        HashTable *ht;
+        size_t pos;
+        bool is_valid;
+        void advance()
+        {
+            while (pos < ht->capacity && ht->table[pos].state != OCCUPIED)
+            {
+                pos++;
+            }
+        }
+
     public:
-        Iterator(HashTable *ht, std::size_t start) : ht_(ht), pos_(start)
+        Iterator(HashTable *h, size_t p) : ht(h), pos(p), is_valid(true)
         {
-            advance_to_busy();
+            if (ht != nullptr && pos < ht->capacity)
+            {
+                advance();
+            }
         }
-        V &operator*() const
+        bool isValid() const { return is_valid && ht != nullptr; }
+        bool isEnd() const { return ht == nullptr || pos >= ht->capacity; }
+        const T &operator*() const
         {
-            return ht_->table_[pos_].value;
+            if (!is_valid)
+                throw std::logic_error("Ошибка: Итератор инвалидирован.");
+            if (ht == nullptr || pos >= ht->capacity)
+                throw std::out_of_range("Ошибка: Разыменование end-итератора.");
+            if (ht->table[pos].state != OCCUPIED)
+                throw std::runtime_error("Ошибка: Итератор указывает на незанятую ячейку.");
+            return ht->table[pos].value;
         }
+        T &operator*()
+        {
+            if (!is_valid)
+                throw std::logic_error("Ошибка: Итератор инвалидирован.");
+            if (ht == nullptr || pos >= ht->capacity)
+                throw std::out_of_range("Ошибка: Разыменование end-итератора.");
+            if (ht->table[pos].state != OCCUPIED)
+                throw std::runtime_error("Ошибка: Итератор указывает на незанятую ячейку.");
+            return ht->table[pos].value;
+        }
+        const KeyType &key() const
+        {
+            if (!is_valid)
+                throw std::logic_error("Ошибка: Итератор инвалидирован.");
+            if (ht == nullptr || pos >= ht->capacity)
+                throw std::out_of_range("Ошибка: Доступ к ключу end-итератора.");
+            return ht->table[pos].key;
+        }
+        size_t index() const { return pos; }
         Iterator &operator++()
         {
-            ++pos_;
-            advance_to_busy();
+            if (!is_valid)
+                throw std::logic_error("Ошибка: Инкремент инвалидированного итератора.");
+            if (ht == nullptr || pos >= ht->capacity)
+                throw std::out_of_range("Ошибка: Инкремент end-итератора невозможен.");
+            pos++;
+            advance();
             return *this;
+        }
+        Iterator operator++(int)
+        {
+            Iterator tmp = *this;
+            ++(*this);
+            return tmp;
         }
         bool operator==(const Iterator &other) const
         {
-            return ht_ == other.ht_ && pos_ == other.pos_;
+            if (isEnd() && other.isEnd())
+                return true;
+            return ht == other.ht && pos == other.pos;
         }
         bool operator!=(const Iterator &other) const
         {
             return !(*this == other);
         }
-        std::size_t index() const { return pos_; }
-        const K &key() const { return ht_->table_[pos_].key; }
-
-    private:
-        HashTable *ht_{nullptr};
-        std::size_t pos_{0};
-        void advance_to_busy()
-        {
-            if (!ht_)
-                return;
-            while (pos_ < ht_->m_ && ht_->table_[pos_].state != State::BUSY)
-            {
-                ++pos_;
-            }
-        }
+        void invalidate() { is_valid = false; }
     };
 
-    explicit HashTable(std::size_t n_max)
+    Iterator begin() { return Iterator(this, 0); }
+    Iterator end() { return Iterator(this, capacity); }
+    double compute_chi_square(int num_experiments, int N) const
     {
-        // Для open addressing α=0.5 => m >= 2*n_max
-        // Берём ближайшее простое сверху для стабильности зондирования.
-        m_ = next_prime(std::max<std::size_t>(5, 2 * n_max));
-        table_.assign(m_, Cell{});
-        n_ = 0;
-        last_hash_ = 0;
-        last_probes_ = 0;
-    }
+        if (capacity == 0)
+            return 0.0;
 
-    std::size_t Size() const { return n_; }
-    std::size_t Capacity() const { return m_; }
-    bool Empty() const { return n_ == 0; }
-    void Clear()
-    {
-        for (auto &c : table_)
-            c.state = State::FREE;
-        n_ = 0;
-        last_hash_ = 0;
-        last_probes_ = 0;
-    }
-
-    bool Insert(const K &key, const V &value)
-    {
-        reset_last_stats();
-        if ((n_ + 1) * 2 > m_)
+        double total_chi2 = 0.0;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        KeyType range_min = use_key_validation ? min_key : static_cast<KeyType>(1000000000);
+        KeyType range_max = use_key_validation ? max_key : static_cast<KeyType>(3000000000);
+        std::uniform_int_distribution<KeyType> dist(range_min, range_max);
+        for (int exp = 0; exp < num_experiments; ++exp)
         {
-            last_probes_ = 0;
-            return false;
+            std::vector<int> freq(capacity, 0);
+            for (int i = 0; i < N; ++i)
+                freq[hash_func(dist(gen))]++;
+            double expected = static_cast<double>(N) / capacity;
+            double chi2 = 0.0;
+            for (int f : freq)
+                chi2 += std::pow(f - expected, 2) / expected;
+            total_chi2 += chi2;
         }
-        bool found = false;
-        std::size_t idx = find_slot(key, true, found);
-        if (idx == npos)
-            return false;
-        if (found)
-        {
-            table_[idx].value = value;
-            return false;
-        }
-        table_[idx].key = key;
-        table_[idx].value = value;
-        table_[idx].state = State::BUSY;
-        ++n_;
-        return true;
-    }
-
-    V *Find(const K &key)
-    {
-        reset_last_stats();
-        bool found = false;
-        std::size_t idx = find_slot(key, false, found);
-        if (idx == npos || !found)
-            return nullptr;
-        return &table_[idx].value;
-    }
-
-    bool Erase(const K &key)
-    {
-        reset_last_stats();
-        bool found = false;
-        std::size_t idx = find_slot(key, false, found);
-        if (idx == npos || !found)
-            return false;
-        table_[idx].state = State::DELETED;
-        --n_;
-        return true;
-    }
-
-    void Print(std::ostream &out) const
-    {
-        for (std::size_t i = 0; i < m_; ++i)
-        {
-            out << std::left << std::setw(8) << i;
-            if (table_[i].state == State::BUSY)
-            {
-                out << std::setw(16) << table_[i].value;
-            }
-            else
-            {
-                out << std::setw(16) << "";
-            }
-            if (table_[i].state == State::FREE)
-            {
-                out << "f";
-            }
-            else if (table_[i].state == State::DELETED)
-            {
-                out << "d";
-            }
-            else
-            {
-                out << "b";
-            }
-            out << "\n";
-        }
-    }
-    std::size_t LastHash() const { return last_hash_; }
-    std::size_t LastProbes() const { return last_probes_; }
-    Iterator Begin() { return Iterator(this, 0); }
-    Iterator End() { return Iterator(this, m_); }
-    std::size_t HashIndexOnly(const K &key) const
-    {
-        std::size_t h0 = static_cast<std::size_t>(fold_key(key) % m_);
-        return h0;
-    }
-
-private:
-    static constexpr std::size_t npos = std::numeric_limits<std::size_t>::max();
-    std::vector<Cell> table_;
-    std::size_t m_{0};
-    std::size_t n_{0};
-    std::size_t last_hash_{0};
-    std::size_t last_probes_{0};
-    void reset_last_stats()
-    {
-        last_hash_ = 0;
-        last_probes_ = 0;
-    }
-    static std::uint64_t fold_key(std::uint64_t k)
-    {
-        std::uint64_t sum = 0;
-        while (k > 0)
-        {
-            sum += (k % 1000ULL);
-            k /= 1000ULL;
-        }
-        return sum;
-    }
-    // Квадратичное зондирование: (h + i + i^2) mod m
-    std::size_t probe(std::size_t h, std::size_t i) const
-    {
-        // i + i^2 может переполниться при огромных i, но i <= m в нашем проходе.
-        std::size_t offset = i + i * i;
-        return (h + offset) % m_;
-    }
-    // - false: ищем только ключ, останавливаемся на FREE (значит "не найдено").
-    // - true : ищем место вставки (первый DELETED можно использовать, но если ключ встретили — это "found").
-    std::size_t find_slot(const K &key, bool for_insert, bool &found)
-    {
-        found = false;
-        // ключ натуральный => ожидаем uint64_t
-        static_assert(std::is_same<K, std::uint64_t>::value,
-                      "Для варианта 7 ожидается K = uint64_t.");
-        std::size_t h0 = static_cast<std::size_t>(fold_key(key) % m_);
-        last_hash_ = h0;
-        std::size_t first_deleted = npos;
-        for (std::size_t i = 0; i < m_; ++i)
-        {
-            ++last_probes_;
-            std::size_t idx = probe(h0, i);
-            const auto st = table_[idx].state;
-            if (st == State::BUSY)
-            {
-                if (table_[idx].key == key)
-                {
-                    found = true;
-                    return idx;
-                }
-                continue;
-            }
-            if (st == State::DELETED)
-            {
-                if (for_insert && first_deleted == npos)
-                    first_deleted = idx;
-                continue;
-            }
-            // FREE
-            if (!for_insert)
-            {
-                // "не найдено" (found=false)
-                return idx;
-            }
-            // вставка: если был DELETED — используем его, иначе этот FREE
-            return (first_deleted != npos) ? first_deleted : idx;
-        }
-        if (for_insert && first_deleted != npos)
-            return first_deleted;
-        return npos;
+        return total_chi2 / num_experiments;
     }
 };
-
-static double chi_square_for_capacity(std::size_t m,
-                                      std::size_t N,
-                                      int trials,
-                                      std::uint64_t key_min = 1'000'000'000ULL,
-                                      std::uint64_t key_max = 3'000'000'000ULL)
-{
-    std::mt19937_64 rng(std::random_device{}());
-    std::uniform_int_distribution<std::uint64_t> dist(key_min, key_max);
-    double sum = 0.0;
-    for (int t = 1; t <= trials; ++t)
-    {
-        std::vector<std::size_t> count(m, 0);
-        // Используем ту же формулу индекса, что и в таблице: fold(key)%m
-        for (std::size_t i = 0; i < N; ++i)
-        {
-            std::uint64_t k = dist(rng);
-            std::uint64_t kk = 0;
-            std::uint64_t tmp = k;
-            while (tmp > 0)
-            {
-                kk += (tmp % 1000ULL);
-                tmp /= 1000ULL;
-            }
-            std::size_t j = static_cast<std::size_t>(kk % m);
-            count[j]++;
-        }
-        const double E = static_cast<double>(N) / static_cast<double>(m);
-        double chi2 = 0.0;
-        for (std::size_t j = 0; j < m; ++j)
-        {
-            double diff = static_cast<double>(count[j]) - E;
-            chi2 += (diff * diff) / E;
-        }
-        std::cout << "Trial " << t << ": chi^2 = " << chi2 << "\n";
-        sum += chi2;
-    }
-    double avg = sum / static_cast<double>(trials);
-    std::cout << "Average chi^2 over " << trials << " trials: " << avg << "\n";
-    return avg;
-}
-
-#endif
