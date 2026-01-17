@@ -21,7 +21,7 @@ enum class InsertResult
     ERR_TABLE_FULL  // Ошибка: таблица переполнена
 };
 
-// --- Утилита для безопасного ввода чисел ---
+// Утилита для безопасного ввода чисел
 template <typename T>
 void safeInput(T &var, const string &prompt)
 {
@@ -137,7 +137,7 @@ private:
         return last_index;
     }
 
-    // --- ВСПОМОГАТЕЛЬНЫЙ МЕТОД: Поиск числа Мерсенна ---
+    // ВСПОМОГАТЕЛЬНЫЙ МЕТОД: Поиск числа Мерсенна
     size_t get_next_mersenne(size_t n)
     {
         if (n == 0)
@@ -164,18 +164,16 @@ public:
     HashTable(size_t max_elements, KeyType min_k = 0, KeyType max_k = 0)
         : min_key(min_k), max_key(max_k), use_key_validation(min_k < max_k)
     {
-        // --- ИСПРАВЛЕНИЕ: Расчет емкости ---
-        // 1. Берем необходимый размер с запасом (коэффициент 2)
+        // Берем необходимый размер с запасом (коэффициент 2)
         size_t required_size = max_elements * 2;
         if (required_size == 0)
             required_size = 1;
 
-        // 2. Ищем ближайшее число Мерсенна
+        // Ищем ближайшее число Мерсенна
         capacity = get_next_mersenne(required_size);
 
         table.resize(capacity);
 
-        // Для отладки можно раскомментировать
         // cout << "[DEBUG] Запрошено: " << max_elements
         //      << ", Target: " << required_size
         //      << ", Mersenne Capacity: " << capacity << endl;
@@ -472,14 +470,14 @@ void run_efficiency_test(size_t max_table_elements, double alpha)
         // Условие промаха (неуспеха) - 10% случаев
         if (i % 10 == 0)
         {
-            // 1. Неуспешное удаление (удаляем случайный ключ, которого скорее всего нет)
+            // Неуспешное удаление (удаляем случайный ключ, которого скорее всего нет)
             uint32_t trash_key = genkey();
             // Шанс что trash_key случайно совпадет с m[...] есть, но мал.
             // В задании сказано "промахом считается удаление значения, отсутствующего в коллекции"
             table.remove(trash_key);
             sum_D += table.get_last_probes();
 
-            // 2. Неуспешная вставка (вставляем дубликат)
+            // Неуспешная вставка (вставляем дубликат)
             if (!m.empty())
             {
                 uint32_t existing_key = m[rand() % m.size()];
@@ -487,7 +485,7 @@ void run_efficiency_test(size_t max_table_elements, double alpha)
                 sum_I += table.get_last_probes();
             }
 
-            // 3. Неуспешный поиск
+            // Неуспешный поиск
             table.find(genkey());
             sum_S += table.get_last_probes();
         }
@@ -496,14 +494,14 @@ void run_efficiency_test(size_t max_table_elements, double alpha)
             // 90% Успешных операций
             if (!m.empty())
             {
-                // 1. Успешное удаление
+                // Успешное удаление
                 int ind = rand() % m.size();
                 uint32_t key_to_del = m[ind];
 
                 table.remove(key_to_del);
                 sum_D += table.get_last_probes();
 
-                // 2. Успешная вставка (восстанавливаем баланс)
+                // Успешная вставка (восстанавливаем баланс)
                 uint32_t new_key = genkey();
                 // Гарантируем уникальность для чистоты эксперимента
                 while (table.find(new_key) != nullptr)
@@ -517,7 +515,7 @@ void run_efficiency_test(size_t max_table_elements, double alpha)
                 // Обновляем массив m, так как key_to_del удален, а new_key добавлен
                 m[ind] = new_key;
 
-                // 3. Успешный поиск
+                // Успешный поиск
                 uint32_t key_to_find = m[rand() % m.size()];
                 table.find(key_to_find);
                 sum_S += table.get_last_probes();
@@ -525,7 +523,6 @@ void run_efficiency_test(size_t max_table_elements, double alpha)
         }
     }
 
-    // --- Вывод результатов по заданию ---
     cout << string(50, '-') << endl;
     cout << "РЕЗУЛЬТАТЫ ЭКСПЕРИМЕНТА:" << endl;
     cout << "Items count end: " << table.size() << endl;
@@ -570,7 +567,6 @@ int main()
     {
         cout << "" << string(55, '=') << endl;
         cout << "                   МЕНЮ ОПЕРАЦИЙ" << endl;
-        // ... (Меню осталось тем же, код main идентичен кроме вывода выше)
         cout << string(55, '=') << endl;
         cout << " [Базовые операции]" << endl;
         cout << "  1.  Количество элементов" << endl;
