@@ -24,13 +24,11 @@ impl Solution {
                     let y3 = *bj.get_unchecked(1);
                     let x4 = *tj.get_unchecked(0);
                     let y4 = *tj.get_unchecked(1);
-                    let w = if x2 < x4 { x2 } else { x4 }
-                        - if x1 > x3 { x1 } else { x3 };
+                    let w = if x2 < x4 { x2 } else { x4 } - if x1 > x3 { x1 } else { x3 };
                     if w <= best {
                         continue;
                     }
-                    let h = if y2 < y4 { y2 } else { y4 }
-                        - if y1 > y3 { y1 } else { y3 };
+                    let h = if y2 < y4 { y2 } else { y4 } - if y1 > y3 { y1 } else { y3 };
                     if h <= best {
                         continue;
                     }

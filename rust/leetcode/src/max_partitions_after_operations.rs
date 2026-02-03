@@ -5,17 +5,17 @@ pub struct Solution;
 impl Solution {
     pub fn max_partitions_after_operations(s: String, k: i32) -> i32 {
         use std::collections::HashMap;
-        
+
         if k == 26 {
             return 1;
         }
-        
+
         let s_bytes = s.as_bytes();
         let n = s_bytes.len();
         let k = k as u32;
-        
+
         let mut memo: HashMap<u64, i32> = HashMap::new();
-        
+
         fn dfs(
             index: usize,
             char_mask: u32,
@@ -23,12 +23,13 @@ impl Solution {
             s_bytes: &[u8],
             n: usize,
             k: u32,
-            memo: &mut HashMap<u64, i32>
+            memo: &mut HashMap<u64, i32>,
         ) -> i32 {
             if index >= n {
                 return 1;
             }
-            let state_key = ((index as u64) << 32) | ((char_mask as u64) << 1) | (can_change as u64);
+            let state_key =
+                ((index as u64) << 32) | ((char_mask as u64) << 1) | (can_change as u64);
             if let Some(&result) = memo.get(&state_key) {
                 return result;
             }
@@ -59,15 +60,20 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let s1 = "accca".to_string();
     let k1 = 2;
     println!("Input: s = {}, k = {}", s1, k1);
-    println!("Result: {}", Solution::max_partitions_after_operations(s1, k1));
-    
+    println!(
+        "Result: {}",
+        Solution::max_partitions_after_operations(s1, k1)
+    );
+
     let s2 = "aabaab".to_string();
     let k2 = 3;
     println!("\nInput: s = {}, k = {}", s2, k2);
-    println!("Result: {}", Solution::max_partitions_after_operations(s2, k2));
+    println!(
+        "Result: {}",
+        Solution::max_partitions_after_operations(s2, k2)
+    );
 }

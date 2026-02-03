@@ -89,7 +89,7 @@ impl Solution {
 
         for candidate in words {
             let mut buckets = [0; 7];
-            
+
             for other in words {
                 if candidate != other {
                     let matches = Self::count_matches(candidate, other) as usize;
@@ -160,8 +160,8 @@ fn main() {
 
     println!("Secret word: {}", secret);
     println!("Word list: {:?}", words);
-    
+
     Solution::find_secret_word(words, &master);
-    
+
     println!("Total guesses: {}", master.get_guesses());
 }

@@ -34,7 +34,7 @@ fn main() {
     let nums1 = vec![1, 2, 3, 4];
     println!("Input: {:?}", nums1);
     println!("Result: {}", Solution::minimum_operations(nums1));
-    
+
     let nums2 = vec![3, 6, 9];
     println!("\nInput: {:?}", nums2);
     println!("Result: {}", Solution::minimum_operations(nums2));

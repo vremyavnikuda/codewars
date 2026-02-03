@@ -31,7 +31,12 @@ mod tests {
         assert_eq!(Solution::final_value_after_operations(operations2), 3);
 
         // Example 3
-        let operations3 = vec!["X++".to_string(), "++X".to_string(), "--X".to_string(), "X--".to_string()];
+        let operations3 = vec![
+            "X++".to_string(),
+            "++X".to_string(),
+            "--X".to_string(),
+            "X--".to_string(),
+        ];
         assert_eq!(Solution::final_value_after_operations(operations3), 0);
     }
 }
@@ -40,11 +45,25 @@ mod tests {
 fn main() {
     // Example usage
     let operations1 = vec!["--X".to_string(), "X++".to_string(), "X++".to_string()];
-    println!("Result 1: {}", Solution::final_value_after_operations(operations1)); // Should print 1
-    
+    println!(
+        "Result 1: {}",
+        Solution::final_value_after_operations(operations1)
+    ); // Should print 1
+
     let operations2 = vec!["++X".to_string(), "++X".to_string(), "X++".to_string()];
-    println!("Result 2: {}", Solution::final_value_after_operations(operations2)); // Should print 3
-    
-    let operations3 = vec!["X++".to_string(), "++X".to_string(), "--X".to_string(), "X--".to_string()];
-    println!("Result 3: {}", Solution::final_value_after_operations(operations3)); // Should print 0
+    println!(
+        "Result 2: {}",
+        Solution::final_value_after_operations(operations2)
+    ); // Should print 3
+
+    let operations3 = vec![
+        "X++".to_string(),
+        "++X".to_string(),
+        "--X".to_string(),
+        "X--".to_string(),
+    ];
+    println!(
+        "Result 3: {}",
+        Solution::final_value_after_operations(operations3)
+    ); // Should print 0
 }

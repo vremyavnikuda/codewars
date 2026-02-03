@@ -35,11 +35,11 @@ fn main() {
     let digits1 = "23".to_string();
     println!("Input: {}", digits1);
     println!("Result: {:?}", Solution::letter_combinations(digits1));
-    
+
     let digits2 = "".to_string();
     println!("\nInput: {}", digits2);
     println!("Result: {:?}", Solution::letter_combinations(digits2));
-    
+
     let digits3 = "2".to_string();
     println!("\nInput: {}", digits3);
     println!("Result: {:?}", Solution::letter_combinations(digits3));

@@ -61,7 +61,7 @@ fn main() {
     let result = Solution::find_lex_smallest_string(s.clone(), a, b);
     println!("Input: s = {}, a = {}, b = {}", s, a, b);
     println!("Result: {}", result);
-    
+
     let s2 = "74".to_string();
     let a2 = 5;
     let b2 = 1;

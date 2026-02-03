@@ -18,10 +18,13 @@ impl Solution {
 
 fn main() {
     println!("=== K Length Apart ===\n");
-    
-    let test1 = Solution::k_length_apart(vec![1,0,0,0,1,0,0,1], 2);
-    println!("Test 1: [1,0,0,0,1,0,0,1], k=2 => {} (expected true)", test1);
-    
-    let test2 = Solution::k_length_apart(vec![1,0,0,1,0,1], 2);
+
+    let test1 = Solution::k_length_apart(vec![1, 0, 0, 0, 1, 0, 0, 1], 2);
+    println!(
+        "Test 1: [1,0,0,0,1,0,0,1], k=2 => {} (expected true)",
+        test1
+    );
+
+    let test2 = Solution::k_length_apart(vec![1, 0, 0, 1, 0, 1], 2);
     println!("Test 2: [1,0,0,1,0,1], k=2 => {} (expected false)", test2);
 }

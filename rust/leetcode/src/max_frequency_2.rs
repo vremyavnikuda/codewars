@@ -25,11 +25,16 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let nums1 = vec![1, 4, 5];
     let k1 = 1;
     let num_operations1 = 2;
-    println!("Input: nums = {:?}, k = {}, numOperations = {}", nums1, k1, num_operations1);
-    println!("Result: {}", Solution::max_frequency(nums1, k1, num_operations1));
+    println!(
+        "Input: nums = {:?}, k = {}, numOperations = {}",
+        nums1, k1, num_operations1
+    );
+    println!(
+        "Result: {}",
+        Solution::max_frequency(nums1, k1, num_operations1)
+    );
 }

@@ -30,12 +30,11 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let nums1 = vec![2, 5, 4, 3];
     println!("Input: {:?}", nums1);
     println!("Result: {}", Solution::longest_balanced(nums1));
-    
+
     let nums2 = vec![3, 2, 2, 5, 4];
     println!("\nInput: {:?}", nums2);
     println!("Result: {}", Solution::longest_balanced(nums2));

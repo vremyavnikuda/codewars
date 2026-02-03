@@ -30,7 +30,7 @@ fn main() {
     let num_rows = 3;
     println!("Input: s = {}, numRows = {}", s, num_rows);
     println!("Result: {}", Solution::convert(s, num_rows));
-    
+
     let s2 = "PAYPALISHIRING".to_string();
     let num_rows2 = 4;
     println!("\nInput: s = {}, numRows = {}", s2, num_rows2);

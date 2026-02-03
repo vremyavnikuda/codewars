@@ -26,7 +26,7 @@ fn main() {
     let nums1 = vec![1, 0, 2, 0, 3];
     println!("Input: {:?}", nums1);
     println!("Result: {}", Solution::count_valid_selections(nums1));
-    
+
     let nums2 = vec![2, 3, 4, 0, 4, 1, 0];
     println!("\nInput: {:?}", nums2);
     println!("Result: {}", Solution::count_valid_selections(nums2));

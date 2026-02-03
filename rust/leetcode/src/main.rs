@@ -1,15 +1,20 @@
 mod adjacent_increasing_subarrays;
+mod convert;
+mod count_palindromic_subsequence;
 mod count_unguarded;
 mod count_valid_selections;
+mod final_value_after_operations;
 mod find_itinerary;
 mod find_lex_smallest_string;
 mod guess_the_word;
 mod has_same_digits;
 mod int_to_roman;
+mod k_length_apart;
 mod kth_largest_element;
 mod letter_combinations;
 mod longest_balanced_abc;
 mod longest_balanced_substring;
+mod longest_palindrome;
 mod max_frequency;
 mod max_frequency_2;
 mod max_partitions_after_operations;
@@ -22,7 +27,9 @@ mod modified_list;
 mod next_beautiful_number;
 mod num_water_bottles;
 mod number_of_beams;
+mod number_of_substrings;
 mod process_queries;
+mod range_add_queries;
 mod regex_matching;
 mod remove_duplicates;
 mod remove_element;
@@ -36,32 +43,53 @@ mod sum_divisible_by_k;
 mod sum_frequency_divisible;
 mod total_money;
 mod type_of_triangle;
-mod range_add_queries;
-mod number_of_substrings;
-mod convert;
-mod k_length_apart;
-mod count_palindromic_subsequence;
-mod longest_palindrome;
-mod final_value_after_operations;
 
-fn main(){
+fn main() {
     // adjacent_increasing_subarrays
-    println!("Test: {}", adjacent_increasing_subarrays::Solution::max_increasing_subarrays(vec![1, 2, 3, 4, 4, 4, 4, 5, 6, 7]));
+    println!(
+        "Test: {}",
+        adjacent_increasing_subarrays::Solution::max_increasing_subarrays(vec![
+            1, 2, 3, 4, 4, 4, 4, 5, 6, 7
+        ])
+    );
 
     // convert
-    println!("Test: {}", convert::Solution::convert("PAYPALISHIRING".to_string(), 3));
+    println!(
+        "Test: {}",
+        convert::Solution::convert("PAYPALISHIRING".to_string(), 3)
+    );
 
     // count_palindromic_subsequence
-    println!("Test: {}", count_palindromic_subsequence::Solution::count_palindromic_subsequence("aabca".to_string()));
+    println!(
+        "Test: {}",
+        count_palindromic_subsequence::Solution::count_palindromic_subsequence("aabca".to_string())
+    );
 
     // count_unguarded
-    println!("Test: {}", count_unguarded::Solution::count_unguarded(2, 2, vec![vec![0, 0], vec![0, 1]], vec![vec![0, 0], vec![1, 1]]));
+    println!(
+        "Test: {}",
+        count_unguarded::Solution::count_unguarded(
+            2,
+            2,
+            vec![vec![0, 0], vec![0, 1]],
+            vec![vec![0, 0], vec![1, 1]]
+        )
+    );
 
     // count_valid_selections
-    println!("Test: {}", count_valid_selections::Solution::count_valid_selections(vec![1, 2, 3, 4, 5]));
+    println!(
+        "Test: {}",
+        count_valid_selections::Solution::count_valid_selections(vec![1, 2, 3, 4, 5])
+    );
 
     // final_value_after_operations
-    println!("Test: {}", final_value_after_operations::Solution::final_value_after_operations(vec!["--X++".to_string(), "++X++".to_string()]));
+    println!(
+        "Test: {}",
+        final_value_after_operations::Solution::final_value_after_operations(vec![
+            "--X++".to_string(),
+            "++X++".to_string()
+        ])
+    );
 
     // find_itinerary
     let tickets = vec![
@@ -70,5 +98,8 @@ fn main(){
         vec!["SFO".to_string(), "SJC".to_string()],
         vec!["LHR".to_string(), "SFO".to_string()],
     ];
-    println!("Test: {:?}", find_itinerary::Solution::find_itinerary(tickets));
+    println!(
+        "Test: {:?}",
+        find_itinerary::Solution::find_itinerary(tickets)
+    );
 }

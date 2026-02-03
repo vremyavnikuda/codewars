@@ -13,10 +13,15 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let num_bottles = 9;
     let num_exchange = 3;
-    println!("Input: numBottles = {}, numExchange = {}", num_bottles, num_exchange);
-    println!("Result: {}", Solution::num_water_bottles(num_bottles, num_exchange));
+    println!(
+        "Input: numBottles = {}, numExchange = {}",
+        num_bottles, num_exchange
+    );
+    println!(
+        "Result: {}",
+        Solution::num_water_bottles(num_bottles, num_exchange)
+    );
 }

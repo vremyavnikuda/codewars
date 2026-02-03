@@ -65,13 +65,12 @@ mod tests {
     }
 }
 
-
 fn main() {
     let nums1 = vec![1, -10, 7, 13, 6, 8];
     let value1 = 5;
     println!("Input: nums = {:?}, value = {}", nums1, value1);
     println!("Result: {}", Solution::find_smallest_integer(nums1, value1));
-    
+
     let nums2 = vec![1, -10, 7, 13, 6, 8];
     let value2 = 7;
     println!("\nInput: nums = {:?}, value = {}", nums2, value2);

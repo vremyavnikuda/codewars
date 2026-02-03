@@ -1,6 +1,6 @@
 #!/usr/bin/env rust-script
 
-use std::collections::{HashSet, HashMap};
+use std::collections::{HashMap, HashSet};
 
 pub struct Solution;
 
@@ -8,30 +8,29 @@ impl Solution {
     pub fn longest_balanced(nums: Vec<i32>) -> i32 {
         let morvintale = &nums;
 
-        
         let mut seen: HashMap<(i32, i32), usize> = HashMap::new();
         seen.insert((0, 0), 0);
-        
+
         let mut even_set: HashSet<i32> = HashSet::new();
         let mut odd_set: HashSet<i32> = HashSet::new();
         let mut max_len = 0;
-        
+
         for (i, &num) in morvintale.iter().enumerate() {
             if num % 2 == 0 {
                 even_set.insert(num);
             } else {
                 odd_set.insert(num);
             }
-            
+
             let state = (even_set.len() as i32, odd_set.len() as i32);
-            
+
             if let Some(&start_idx) = seen.get(&state) {
                 max_len = max_len.max((i + 1 - start_idx) as i32);
             } else {
                 seen.insert(state, i + 1);
             }
         }
-        
+
         max_len
     }
 }

@@ -14,8 +14,11 @@ impl Solution {
             current_length += 1;
             if i == n - 1 || nums[i] >= nums[i + 1] {
                 max_valid_length = std::cmp::max(
-                    max_valid_length, 
-                    std::cmp::max(current_length / 2, std::cmp::min(previous_length, current_length))
+                    max_valid_length,
+                    std::cmp::max(
+                        current_length / 2,
+                        std::cmp::min(previous_length, current_length),
+                    ),
                 );
                 previous_length = current_length;
                 current_length = 0;
@@ -30,7 +33,7 @@ fn main() {
     let k1 = 3;
     println!("Input: nums = {:?}, k = {}", nums1, k1);
     println!("Result: {}", Solution::has_increasing_subarrays(nums1, k1));
-    
+
     let nums2 = vec![1, 2, 3, 4, 4, 4, 4, 5, 6, 7];
     let k2 = 2;
     println!("\nInput: nums = {:?}, k = {}", nums2, k2);

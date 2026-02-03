@@ -7,7 +7,7 @@ pub struct Solution;
 impl Solution {
     pub fn sum_of_ancestors(n: i32, edges: Vec<Vec<i32>>, nums: Vec<i32>) -> i64 {
         let n = n as usize;
-        
+
         let mut graph = vec![Vec::new(); n];
         for edge in edges {
             let u = edge[0] as usize;
@@ -15,13 +15,13 @@ impl Solution {
             graph[u].push(v);
             graph[v].push(u);
         }
-        
+
         let signatures: Vec<i32> = nums.iter().map(|&x| Self::get_signature(x)).collect();
-        
+
         let mut total = 0i64;
-        
+
         let mut stack = vec![(0, None, 0, HashMap::new())];
-        
+
         while let Some((node, parent, phase, mut sig_counts)) = stack.pop() {
             if phase == 0 {
                 if node != 0 {
@@ -29,9 +29,9 @@ impl Solution {
                     let count = sig_counts.get(&current_sig).unwrap_or(&0);
                     total += *count as i64;
                 }
-                
+
                 *sig_counts.entry(signatures[node]).or_insert(0) += 1;
-                
+
                 for &child in &graph[node] {
                     if Some(child) != parent {
                         stack.push((child, Some(node), 0, sig_counts.clone()));
@@ -39,14 +39,14 @@ impl Solution {
                 }
             }
         }
-        
+
         total
     }
-    
+
     pub fn get_signature(mut num: i32) -> i32 {
         let mut signature = 1;
         let mut d = 2;
-        
+
         while d * d <= num {
             let mut count = 0;
             while num % d == 0 {
@@ -58,11 +58,11 @@ impl Solution {
             }
             d += 1;
         }
-        
+
         if num > 1 {
             signature *= num;
         }
-        
+
         signature
     }
 }
@@ -128,7 +128,6 @@ mod tests {
         assert_eq!(Solution::sum_of_ancestors(n, edges, nums), 0);
     }
 }
-
 
 fn main() {
     let n = 6;

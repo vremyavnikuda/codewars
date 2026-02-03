@@ -53,7 +53,7 @@ fn main() {
     let result = Solution::count_palindromic_subsequence(s.clone());
     println!("Input: {}", s);
     println!("Result: {}", result);
-    
+
     let s2 = "bbcbaba".to_string();
     let result2 = Solution::count_palindromic_subsequence(s2.clone());
     println!("\nInput: {}", s2);

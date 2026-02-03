@@ -10,16 +10,16 @@ impl Solution {
         let target_idx = n - k as usize;
         Self::quick_select(&mut nums, 0, n - 1, target_idx)
     }
-    
+
     #[inline]
     fn quick_select(nums: &mut [i32], mut left: usize, mut right: usize, target_idx: usize) -> i32 {
         loop {
             if left == right {
                 return nums[left];
             }
-            
+
             let pivot_idx = Self::partition(nums, left, right);
-            
+
             match pivot_idx.cmp(&target_idx) {
                 Ordering::Equal => return nums[pivot_idx],
                 Ordering::Greater => right = pivot_idx - 1,
@@ -27,30 +27,30 @@ impl Solution {
             }
         }
     }
-    
+
     #[inline]
     fn partition(nums: &mut [i32], left: usize, right: usize) -> usize {
         let pivot_idx = Self::median_of_three(nums, left, right);
         nums.swap(pivot_idx, right);
         let pivot = nums[right];
-        
+
         let mut i = left;
-        
+
         for j in left..right {
             if nums[j] < pivot {
                 nums.swap(i, j);
                 i += 1;
             }
         }
-        
+
         nums.swap(i, right);
         i
     }
-    
+
     #[inline]
     fn median_of_three(nums: &[i32], left: usize, right: usize) -> usize {
         let mid = left + (right - left) / 2;
-        
+
         if nums[left] > nums[mid] {
             if nums[mid] > nums[right] {
                 mid
@@ -69,13 +69,12 @@ impl Solution {
     }
 }
 
-
 fn main() {
     println!("=== Kth Largest Element ===\n");
-    
+
     let test1 = Solution::find_kth_largest(vec![3, 2, 1, 5, 6, 4], 2);
     println!("Test 1: [3,2,1,5,6,4], k=2 => {} (expected 5)", test1);
-    
+
     let test2 = Solution::find_kth_largest(vec![3, 2, 3, 1, 2, 4, 5, 5, 6], 4);
     println!("Test 2: [3,2,3,1,2,4,5,5,6], k=4 => {} (expected 4)", test2);
 }
@@ -125,23 +124,17 @@ mod tests {
 
     #[test]
     fn test_negative_numbers() {
-        assert_eq!(
-            Solution::find_kth_largest(vec![-1, -2, -3, -4, -5], 2),
-            -2
-        );
+        assert_eq!(Solution::find_kth_largest(vec![-1, -2, -3, -4, -5], 2), -2);
     }
 
     #[test]
     fn test_mixed_numbers() {
-        assert_eq!(
-            Solution::find_kth_largest(vec![-5, 0, 5, -3, 3], 3),
-            0
-        );
+        assert_eq!(Solution::find_kth_largest(vec![-5, 0, 5, -3, 3], 3), 0);
     }
 
     #[test]
     fn test_large_array() {
-        let nums: Vec<i32> = (1..=1000).rev(). collect();
+        let nums: Vec<i32> = (1..=1000).rev().collect();
         assert_eq!(Solution::find_kth_largest(nums, 500), 501);
     }
 

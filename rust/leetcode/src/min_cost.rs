@@ -25,7 +25,6 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let colors = "abaac".to_string();
     let needed_time = vec![1, 2, 3, 4, 5];

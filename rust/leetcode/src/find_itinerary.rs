@@ -9,7 +9,10 @@ impl Solution {
         for ticket in &tickets {
             let from = &ticket[0];
             let to = &ticket[1];
-            graph.entry(from.clone()).or_insert_with(Vec::new).push(to.clone());
+            graph
+                .entry(from.clone())
+                .or_insert_with(Vec::new)
+                .push(to.clone());
         }
 
         for destinations in graph.values_mut() {
@@ -47,7 +50,7 @@ mod tests {
             vec!["MUC".to_string(), "LHR".to_string()],
             vec!["JFK".to_string(), "MUC".to_string()],
             vec!["SFO".to_string(), "SJC".to_string()],
-            vec!["LHR".to_string(), "SFO".to_string()]
+            vec!["LHR".to_string(), "SFO".to_string()],
         ];
         let result = Solution::find_itinerary(tickets);
         assert_eq!(result, vec!["JFK", "MUC", "LHR", "SFO", "SJC"]);
@@ -60,7 +63,7 @@ mod tests {
             vec!["JFK".to_string(), "ATL".to_string()],
             vec!["SFO".to_string(), "ATL".to_string()],
             vec!["ATL".to_string(), "JFK".to_string()],
-            vec!["ATL".to_string(), "SFO".to_string()]
+            vec!["ATL".to_string(), "SFO".to_string()],
         ];
         let result = Solution::find_itinerary(tickets);
         assert_eq!(result, vec!["JFK", "ATL", "JFK", "SFO", "ATL", "SFO"]);
@@ -72,7 +75,7 @@ fn main() {
         vec!["MUC".to_string(), "LHR".to_string()],
         vec!["JFK".to_string(), "MUC".to_string()],
         vec!["SFO".to_string(), "SJC".to_string()],
-        vec!["LHR".to_string(), "SFO".to_string()]
+        vec!["LHR".to_string(), "SFO".to_string()],
     ];
     println!("Input: {:?}", tickets);
     println!("Result: {:?}", Solution::find_itinerary(tickets));

@@ -170,7 +170,6 @@ mod tests {
     }
 }
 
-
 fn main() {
     let secret = "acckzz".to_string();
     let words = vec![
@@ -180,11 +179,11 @@ fn main() {
         "abcczz".to_string(),
     ];
     let master = Master::new(secret.clone());
-    
+
     println!("Secret word: {}", secret);
     println!("Word list: {:?}", words);
-    
+
     Solution::find_secret_word(words, &master);
-    
+
     println!("Total guesses: {}", master.get_guesses());
 }

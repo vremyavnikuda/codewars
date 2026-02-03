@@ -15,7 +15,7 @@ impl Solution {
                 dp[0][j] = dp[0][j - 2];
             }
         }
-        
+
         for i in 1..=m {
             for j in 1..=n {
                 if p[j - 1] == b'*' {
@@ -54,12 +54,18 @@ mod tests {
 
     #[test]
     fn test_complex_1() {
-        assert_eq!(Solution::is_match("aab".to_string(), "c*a*b".to_string()), true);
+        assert_eq!(
+            Solution::is_match("aab".to_string(), "c*a*b".to_string()),
+            true
+        );
     }
 
     #[test]
     fn test_complex_2() {
-        assert_eq!(Solution::is_match("mississippi".to_string(), "mis*is*p*.".to_string()), false);
+        assert_eq!(
+            Solution::is_match("mississippi".to_string(), "mis*is*p*.".to_string()),
+            false
+        );
     }
 
     #[test]
@@ -69,22 +75,27 @@ mod tests {
 
     #[test]
     fn test_star_at_start() {
-        assert_eq!(Solution::is_match("ab".to_string(), ".*c".to_string()), false);
+        assert_eq!(
+            Solution::is_match("ab".to_string(), ".*c".to_string()),
+            false
+        );
     }
 
     #[test]
     fn test_multiple_stars() {
-        assert_eq!(Solution::is_match("aaa".to_string(), "a*a".to_string()), true);
+        assert_eq!(
+            Solution::is_match("aaa".to_string(), "a*a".to_string()),
+            true
+        );
     }
 }
-
 
 fn main() {
     let s1 = "aa".to_string();
     let p1 = "a".to_string();
     println!("Input: s = {}, p = {}", s1, p1);
     println!("Result: {}", Solution::is_match(s1, p1));
-    
+
     let s2 = "aa".to_string();
     let p2 = "a*".to_string();
     println!("\nInput: s = {}, p = {}", s2, p2);

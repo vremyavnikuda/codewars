@@ -15,14 +15,13 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let test1 = Solution::total_money(4);
     println!("Test 1: n=4, total = {} (expected 10)", test1);
-    
+
     let test2 = Solution::total_money(10);
     println!("Test 2: n=10, total = {} (expected 37)", test2);
-    
+
     let test3 = Solution::total_money(20);
     println!("Test 3: n=20, total = {} (expected 96)", test3);
 }

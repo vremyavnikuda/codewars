@@ -15,13 +15,12 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let nums1 = vec![2, 4, 6];
     let k1 = 2;
     println!("Input: nums = {:?}, k = {}", nums1, k1);
     println!("Result: {}", Solution::missing_multiple(nums1, k1));
-    
+
     let nums2 = vec![1, 3, 5, 7];
     let k2 = 2;
     println!("\nInput: nums = {:?}, k = {}", nums2, k2);

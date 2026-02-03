@@ -56,7 +56,10 @@ mod tests {
     }
     #[test]
     fn test_all_increasing() {
-        assert_eq!(Solution::max_increasing_subarrays(vec![1, 2, 3, 4, 5, 6]), 3);
+        assert_eq!(
+            Solution::max_increasing_subarrays(vec![1, 2, 3, 4, 5, 6]),
+            3
+        );
     }
     #[test]
     fn test_decreasing_array() {
@@ -111,7 +114,7 @@ fn main() {
     let nums1 = vec![2, 5, 7, 8, 9, 2, 3, 4, 3, 1];
     println!("Input: {:?}", nums1);
     println!("Result: {}", Solution::max_increasing_subarrays(nums1));
-    
+
     let nums2 = vec![1, 2, 3, 4, 4, 4, 4, 5, 6, 7];
     println!("\nInput: {:?}", nums2);
     println!("Result: {}", Solution::max_increasing_subarrays(nums2));

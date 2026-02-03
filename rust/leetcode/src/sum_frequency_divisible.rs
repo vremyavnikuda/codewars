@@ -30,7 +30,10 @@ mod tests {
 
     #[test]
     fn test_example_from_problem() {
-        assert_eq!(Solution::sum_divisible_by_k(vec![1, 2, 2, 3, 3, 3, 3, 4], 2), 16);
+        assert_eq!(
+            Solution::sum_divisible_by_k(vec![1, 2, 2, 3, 3, 3, 3, 4], 2),
+            16
+        );
     }
 
     #[test]
@@ -65,12 +68,18 @@ mod tests {
 
     #[test]
     fn test_multiple_elements_divisible() {
-        assert_eq!(Solution::sum_divisible_by_k(vec![2, 2, 3, 3, 3, 5, 5, 5], 2), 4);
+        assert_eq!(
+            Solution::sum_divisible_by_k(vec![2, 2, 3, 3, 3, 5, 5, 5], 2),
+            4
+        );
     }
 
     #[test]
     fn test_negative_numbers() {
-        assert_eq!(Solution::sum_divisible_by_k(vec![-1, -1, -1, 2, 2, 2], 3), 3);
+        assert_eq!(
+            Solution::sum_divisible_by_k(vec![-1, -1, -1, 2, 2, 2], 3),
+            3
+        );
     }
 
     #[test]
@@ -100,13 +109,12 @@ mod tests {
     }
 }
 
-
 fn main() {
     let nums1 = vec![1, 2, 3, 4, 5];
     let k1 = 3;
     println!("Input: nums = {:?}, k = {}", nums1, k1);
     println!("Result: {}", Solution::sum_divisible_by_k(nums1, k1));
-    
+
     let nums2 = vec![5, 5, 5, 5];
     let k2 = 1;
     println!("\nInput: nums = {:?}, k = {}", nums2, k2);

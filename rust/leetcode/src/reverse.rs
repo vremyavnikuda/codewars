@@ -46,11 +46,11 @@ fn main() {
     let x1 = 123;
     println!("Input: {}", x1);
     println!("Result: {}", Solution::reverse(x1));
-    
+
     let x2 = -123;
     println!("\nInput: {}", x2);
     println!("Result: {}", Solution::reverse(x2));
-    
+
     let x3 = 120;
     println!("\nInput: {}", x3);
     println!("Result: {}", Solution::reverse(x3));

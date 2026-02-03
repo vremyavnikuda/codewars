@@ -39,7 +39,6 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let queries = vec![vec![1, 1, 2, 2], vec![0, 0, 1, 1]];
     let result = Solution::range_add_queries(3, queries);

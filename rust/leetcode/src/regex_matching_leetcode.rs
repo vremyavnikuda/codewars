@@ -15,7 +15,7 @@ impl Solution {
                 dp[0][j] = dp[0][j - 2];
             }
         }
-        
+
         for i in 1..=m {
             for j in 1..=n {
                 if p[j - 1] == b'*' {
@@ -29,18 +29,17 @@ impl Solution {
                 }
             }
         }
-        
+
         dp[m][n]
     }
 }
-
 
 fn main() {
     let s1 = "aa".to_string();
     let p1 = "a".to_string();
     println!("Input: s = {}, p = {}", s1, p1);
     println!("Result: {}", Solution::is_match(s1, p1));
-    
+
     let s2 = "aa".to_string();
     let p2 = "a*".to_string();
     println!("\nInput: s = {}, p = {}", s2, p2);

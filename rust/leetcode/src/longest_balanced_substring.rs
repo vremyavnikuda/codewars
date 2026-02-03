@@ -9,28 +9,28 @@ impl Solution {
         let bytes = s.as_bytes();
         let n = bytes.len();
         let mut max_len = 0;
-        
+
         for i in 0..n {
             let mut freq: HashMap<u8, usize> = HashMap::new();
-            
+
             for j in i..n {
                 *freq.entry(bytes[j]).or_insert(0) += 1;
-                
+
                 if Self::is_balanced(&freq) {
                     max_len = max_len.max(j - i + 1);
                 }
             }
         }
-        
+
         max_len as i32
     }
-    
+
     #[inline]
     fn is_balanced(freq: &HashMap<u8, usize>) -> bool {
         if freq.is_empty() {
             return false;
         }
-        
+
         let first_count = *freq.values().next().unwrap();
         freq.values().all(|&count| count == first_count)
     }
@@ -101,12 +101,11 @@ mod tests {
     }
 }
 
-
 fn main() {
     let s1 = "cabbacc".to_string();
     println!("Input: {}", s1);
     println!("Result: {}", Solution::longest_balanced(s1));
-    
+
     let s2 = "aabbbcc".to_string();
     println!("\nInput: {}", s2);
     println!("Result: {}", Solution::longest_balanced(s2));

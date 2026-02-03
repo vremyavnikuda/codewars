@@ -20,13 +20,12 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let nums1 = vec![1, 2, 3, 4, 5];
     let k1 = 3;
     println!("Input: nums = {:?}, k = {}", nums1, k1);
     println!("Result: {}", Solution::sum_divisible_by_k(nums1, k1));
-    
+
     let nums2 = vec![5, 5, 5, 5];
     let k2 = 1;
     println!("\nInput: nums = {:?}, k = {}", nums2, k2);

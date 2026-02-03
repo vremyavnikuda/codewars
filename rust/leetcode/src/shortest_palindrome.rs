@@ -52,11 +52,13 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let test1 = Solution::shortest_palindrome("aacecaaa".to_string());
-    println!("Test 1: \"aacecaaa\" => \"{}\" (expected \"aaacecaaa\")", test1);
-    
+    println!(
+        "Test 1: \"aacecaaa\" => \"{}\" (expected \"aaacecaaa\")",
+        test1
+    );
+
     let test2 = Solution::shortest_palindrome("abcd".to_string());
     println!("Test 2: \"abcd\" => \"{}\" (expected \"dcbabcd\")", test2);
 }

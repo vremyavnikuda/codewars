@@ -19,10 +19,7 @@ impl Solution {
             while j < n && (cnt0 as i64) * (cnt0 as i64) <= n as i64 {
                 let cnt1 = nxt[j + 1] as i32 - i as i32 - cnt0;
                 if cnt1 >= cnt0 * cnt0 {
-                    ans += std::cmp::min(
-                        (nxt[j + 1] - j) as i32,
-                        cnt1 - cnt0 * cnt0 + 1
-                    );
+                    ans += std::cmp::min((nxt[j + 1] - j) as i32, cnt1 - cnt0 * cnt0 + 1);
                 }
                 j = nxt[j + 1];
                 cnt0 += 1;
@@ -32,11 +29,10 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let test1 = Solution::number_of_substrings("00011".to_string());
     println!("Test 1: \"00011\" => {}", test1);
-    
+
     let test2 = Solution::number_of_substrings("101101".to_string());
     println!("Test 2: \"101101\" => {}", test2);
 }

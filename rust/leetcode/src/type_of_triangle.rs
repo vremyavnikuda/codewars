@@ -5,11 +5,11 @@ pub struct Solution;
 impl Solution {
     pub fn triangle_type(nums: Vec<i32>) -> String {
         let (a, b, c) = (nums[0], nums[1], nums[2]);
-        
+
         if a + b <= c || a + c <= b || b + c <= a {
             return "none".to_string();
         }
-        
+
         if a == b && b == c {
             "equilateral".to_string()
         } else if a == b || b == c || a == c {
@@ -88,12 +88,11 @@ mod tests {
     }
 }
 
-
 fn main() {
     let nums1 = vec![3, 3, 3];
     println!("Input: {:?}", nums1);
     println!("Result: {}", Solution::triangle_type(nums1));
-    
+
     let nums2 = vec![3, 4, 5];
     println!("\nInput: {:?}", nums2);
     println!("Result: {}", Solution::triangle_type(nums2));

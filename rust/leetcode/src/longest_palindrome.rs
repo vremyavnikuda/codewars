@@ -39,12 +39,11 @@ impl Solution {
     }
 }
 
-
 fn main() {
     let s1 = "babad".to_string();
     println!("Input: {}", s1);
     println!("Result: {}", Solution::longest_palindrome(s1));
-    
+
     let s2 = "cbbd".to_string();
     println!("\nInput: {}", s2);
     println!("Result: {}", Solution::longest_palindrome(s2));
