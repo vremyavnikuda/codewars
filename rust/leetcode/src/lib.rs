@@ -34,6 +34,7 @@ pub mod num_water_bottles;
 pub mod number_of_beams;
 pub mod number_of_substrings;
 pub mod process_queries;
+pub mod q2_robotSim;
 pub mod range_add_queries;
 pub mod regex_matching;
 pub mod regex_matching_leetcode;
