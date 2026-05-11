@@ -1,0 +1,1 @@
+int*separateDigits(int*nums,int numsSize,int*returnSize){int n=0,i,j,x;for(i=0;i<numsSize;i++){x=nums[i];if(x==0)n++;else for(;x;x/=10)n++;}int*ans=malloc(n*sizeof(int));j=0;for(i=0;i<numsSize;i++){x=nums[i];if(x==0){ans[j++]=0;continue;}int t=x,d[10],k=0;for(;t>0;t/=10)d[k++]=t%10;for(;k>0;)ans[j++]=d[--k];}*returnSize=n;return ans;}
