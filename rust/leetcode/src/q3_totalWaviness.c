@@ -1,4 +1,37 @@
 #include <string.h>
+
+/*
+ * Problem: totalWaviness(a, b) — sum of "waviness" of all numbers in [a, b].
+ * Waviness of a number = count of positions i where digits form a peak or valley:
+ *   (d[i-1] > d[i] < d[i+1]) or (d[i-1] < d[i] > d[i+1])
+ * for any three consecutive digits.
+ *
+ * L          — typedef for long long
+ * _n         — number of digits of N
+ * _d[20]     — digit array of N (most significant first)
+ * _mC / _mS  — memo for count / sum per state (pos, pp, pr, st)
+ * _mV        — visited flag for memo
+ * _tc / _ts  — result of the last _b call (count / sum)
+ *
+ * _b(pos, pp, pr, st, ti) parameters
+ * pos        — current position (index into _d)
+ * pp         — digit at position pos-2 (10 = no digit yet)
+ * pr         — digit at position pos-1 (10 = no digit yet)
+ * st         — 1 if number has started (non-zero digit seen)
+ * ti         — 1 if upper bound = _d[pos] (tight)
+ *
+ * _b local variables
+ * h          — max digit at current position (9 or _d[pos] if tight)
+ * c / s      — accumulated count / sum for current node
+ * d          — current digit being tried (0..h)
+ * ns         — st for next step (st || d != 0)
+ * npp / np   — pp / pr for next step
+ * a          — 1 if triple (pp, pr, d) adds waviness
+ *
+ * F(N)
+ * Extracts digits of N, resets memo, calls _b, returns _ts.
+ * Answer: F(b) - F(a-1).
+ */
 typedef long long L;
 static int _n, _d[20];
 static L _mC[20][11][11][2], _mS[20][11][11][2];
@@ -54,6 +87,7 @@ static void _b(int p, int pp, int pr, int st, int ti)
     _tc = c;
     _ts = s;
 }
+
 static L F(L N)
 {
     if (N < 0)
@@ -80,4 +114,5 @@ static L F(L N)
     _b(0, 10, 10, 0, 1);
     return _ts;
 }
+
 long long totalWaviness(long long a, long long b) { return F(b) - F(a - 1); }
