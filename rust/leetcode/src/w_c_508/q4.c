@@ -113,6 +113,7 @@ long long *minTimeMaxPower(int n, int **edges, int edgesSize, int *edgesColSize,
         }
         if (bestTime >= 0 || p < cost[u])
             continue;
+        p -= cost[u];
         for (e = head[u]; e != -1; e = next[e])
         {
             int ns = to[e] * stride + p;
