@@ -35,6 +35,7 @@ pub mod number_of_beams;
 pub mod number_of_substrings;
 pub mod process_queries;
 pub mod q2_robotSim;
+pub mod q2_sum_and_multiply;
 pub mod range_add_queries;
 pub mod regex_matching;
 pub mod regex_matching_leetcode;
