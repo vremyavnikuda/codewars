@@ -1,3 +1,5 @@
+
+pub mod q3_max_active_sections_after_trade;
 pub mod adjacent_increasing_subarrays;
 pub mod convert;
 pub mod count_palindromic_subsequence;
@@ -99,5 +101,58 @@ mod longest_balanced_tests {
         let nums3 = vec![1, 2, 3, 2];
         let result3 = Solution::longest_balanced(nums3);
         assert_eq!(result3, 3);
+    }
+}
+
+#[cfg(test)]
+mod q3_max_active_sections_tests {
+    use crate::q3_max_active_sections_after_trade::Solution;
+
+    #[test]
+    fn test_example_1() {
+        let s = "01".to_string();
+        let queries = vec![vec![0, 1]];
+        let result = Solution::max_active_sections_after_trade(s, queries);
+        assert_eq!(result, vec![1]);
+    }
+
+    #[test]
+    fn test_example_2() {
+        let s = "0100".to_string();
+        let queries = vec![vec![0, 3], vec![1, 3], vec![2, 3]];
+        let result = Solution::max_active_sections_after_trade(s, queries);
+        assert_eq!(result, vec![4, 1, 1]);
+    }
+
+    #[test]
+    fn test_all_ones() {
+        let s = "1111".to_string();
+        let queries = vec![vec![0, 3]];
+        let result = Solution::max_active_sections_after_trade(s, queries);
+        assert_eq!(result, vec![4]);
+    }
+
+    #[test]
+    fn test_no_ones() {
+        let s = "0000".to_string();
+        let queries = vec![vec![0, 3]];
+        let result = Solution::max_active_sections_after_trade(s, queries);
+        assert_eq!(result, vec![0]);
+    }
+
+    #[test]
+    fn test_single_group() {
+        let s = "1001".to_string();
+        let queries = vec![vec![0, 3], vec![1, 2]];
+        let result = Solution::max_active_sections_after_trade(s, queries);
+        assert_eq!(result, vec![2, 2]);
+    }
+
+    #[test]
+    fn test_multiple_queries() {
+        let s = "01010".to_string();
+        let queries = vec![vec![0, 4], vec![1, 3], vec![0, 2]];
+        let result = Solution::max_active_sections_after_trade(s, queries);
+        assert_eq!(result, vec![4, 2, 4]);
     }
 }
