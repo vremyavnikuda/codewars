@@ -1,5 +1,3 @@
-
-pub mod q3_max_active_sections_after_trade;
 pub mod adjacent_increasing_subarrays;
 pub mod convert;
 pub mod count_palindromic_subsequence;
@@ -36,10 +34,16 @@ pub mod num_water_bottles;
 pub mod number_of_beams;
 pub mod number_of_substrings;
 pub mod process_queries;
-pub mod q2_robotSim;
-pub mod q2_unique_xor_triplets;
+#[path = "q2/q2_predict_the_winner.rs"]
 pub mod q2_predict_the_winner;
+#[path = "q2/q2_robotSim.rs"]
+pub mod q2_robotSim;
+#[path = "q2/q2_sum_and_multiply.rs"]
 pub mod q2_sum_and_multiply;
+#[path = "q2/q2_unique_xor_triplets.rs"]
+pub mod q2_unique_xor_triplets;
+#[path = "q3/q3_max_active_sections_after_trade.rs"]
+pub mod q3_max_active_sections_after_trade;
 pub mod range_add_queries;
 pub mod regex_matching;
 pub mod regex_matching_leetcode;
