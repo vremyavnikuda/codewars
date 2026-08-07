@@ -44,6 +44,8 @@ pub mod q2_sum_and_multiply;
 pub mod q2_unique_xor_triplets;
 #[path = "q3/q3_max_active_sections_after_trade.rs"]
 pub mod q3_max_active_sections_after_trade;
+#[path = "q3/q3_smallest_number.rs"]
+pub mod q3_smallest_number;
 pub mod range_add_queries;
 pub mod regex_matching;
 pub mod regex_matching_leetcode;
@@ -62,6 +64,20 @@ pub mod test_final_value;
 pub mod test_longest_balanced_q4;
 pub mod total_money;
 pub mod type_of_triangle;
+
+#[cfg(test)]
+mod q3_smallest_number_tests {
+    use crate::q3_smallest_number::Solution;
+
+    #[test]
+    fn test_examples() {
+        assert_eq!(Solution::smallest_number("1234".into(), 256), "1488");
+        assert_eq!(Solution::smallest_number("12355".into(), 50), "12355");
+        assert_eq!(Solution::smallest_number("11111".into(), 26), "-1");
+        assert_eq!(Solution::smallest_number("10".into(), 1), "11");
+        assert_eq!(Solution::smallest_number("121".into(), 10), "125");
+    }
+}
 
 #[cfg(test)]
 mod tests {
