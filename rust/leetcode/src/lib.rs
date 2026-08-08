@@ -42,6 +42,8 @@ pub mod q2_robotSim;
 pub mod q2_sum_and_multiply;
 #[path = "q2/q2_unique_xor_triplets.rs"]
 pub mod q2_unique_xor_triplets;
+#[path = "q2/q2_valid_sequence.rs"]
+pub mod q2_valid_sequence;
 #[path = "q3/q3_max_active_sections_after_trade.rs"]
 pub mod q3_max_active_sections_after_trade;
 #[path = "q3/q3_smallest_number.rs"]
