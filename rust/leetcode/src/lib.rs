@@ -34,6 +34,8 @@ pub mod num_water_bottles;
 pub mod number_of_beams;
 pub mod number_of_substrings;
 pub mod process_queries;
+#[path = "q2/q2_max_subarray_length.rs"]
+pub mod q2_max_subarray_length;
 #[path = "q2/q2_predict_the_winner.rs"]
 pub mod q2_predict_the_winner;
 #[path = "q2/q2_robotSim.rs"]
