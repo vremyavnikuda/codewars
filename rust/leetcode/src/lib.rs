@@ -46,6 +46,8 @@ pub mod q2_sum_and_multiply;
 pub mod q2_unique_xor_triplets;
 #[path = "q2/q2_valid_sequence.rs"]
 pub mod q2_valid_sequence;
+#[path = "q3/q3_longest_repeating.rs"]
+pub mod q3_longest_repeating;
 #[path = "q3/q3_max_active_sections_after_trade.rs"]
 pub mod q3_max_active_sections_after_trade;
 #[path = "q3/q3_smallest_number.rs"]
@@ -68,6 +70,23 @@ pub mod test_final_value;
 pub mod test_longest_balanced_q4;
 pub mod total_money;
 pub mod type_of_triangle;
+
+#[cfg(test)]
+mod q3_longest_repeating_tests {
+    use crate::q3_longest_repeating::Solution;
+
+    #[test]
+    fn test_examples() {
+        assert_eq!(
+            Solution::longest_repeating("babacc".into(), "bcb".into(), vec![1, 3, 3]),
+            vec![3, 3, 4]
+        );
+        assert_eq!(
+            Solution::longest_repeating("abyzz".into(), "aa".into(), vec![2, 1]),
+            vec![2, 3]
+        );
+    }
+}
 
 #[cfg(test)]
 mod q3_smallest_number_tests {
