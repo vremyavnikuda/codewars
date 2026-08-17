@@ -26,7 +26,10 @@ mod tests {
 
     #[test]
     fn t1() {
-        assert_eq!(Solution::max_subarray_length(vec![1, 2, 3, 1, 2, 3, 1, 2], 2), 6);
+        assert_eq!(
+            Solution::max_subarray_length(vec![1, 2, 3, 1, 2, 3, 1, 2], 2),
+            6
+        );
     }
 
     #[test]

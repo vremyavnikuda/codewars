@@ -41,27 +41,42 @@ mod tests {
 
     #[test]
     fn t1() {
-        assert_eq!(Solution::valid_sequence("aab".into(), "ab".into()), vec![0, 1]);
+        assert_eq!(
+            Solution::valid_sequence("aab".into(), "ab".into()),
+            vec![0, 1]
+        );
     }
 
     #[test]
     fn t2() {
-        assert_eq!(Solution::valid_sequence("ab".into(), "aa".into()), vec![0, 1]);
+        assert_eq!(
+            Solution::valid_sequence("ab".into(), "aa".into()),
+            vec![0, 1]
+        );
     }
 
     #[test]
     fn t3() {
-        assert_eq!(Solution::valid_sequence("abcde".into(), "axe".into()), vec![0, 1, 4]);
+        assert_eq!(
+            Solution::valid_sequence("abcde".into(), "axe".into()),
+            vec![0, 1, 4]
+        );
     }
 
     #[test]
     fn t4() {
-        assert_eq!(Solution::valid_sequence("bc".into(), "ab".into()), Vec::new());
+        assert_eq!(
+            Solution::valid_sequence("bc".into(), "ab".into()),
+            Vec::new()
+        );
     }
 
     #[test]
     fn t5() {
-        assert_eq!(Solution::valid_sequence("ba".into(), "ab".into()), Vec::new());
+        assert_eq!(
+            Solution::valid_sequence("ba".into(), "ab".into()),
+            Vec::new()
+        );
     }
 
     #[test]
