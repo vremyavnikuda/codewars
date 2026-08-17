@@ -32,32 +32,3 @@ fn handle_parsing_errors(input: &str) {
         Err(e) => println!("Другая ошибка: {:?}", e),
     }
 }
-let program = vec![
-    Statement::Assign(
-        Identifier("x".to_string()),
-        Expression::Add(
-            Box::new(Expression::Number(Number(5))),
-            Box::new(Expression::Number(Number(3)))
-        )
-    ),
-    Statement::If(
-        Box::new(
-            Expression::Comp(
-                Box::new(Expression::Identifier(Identifier("x".to_string()))),
-                Box::new(Expression::Number(Number(8)))
-            )
-        ),
-        Box::new(
-            Statement::Print(
-                Expression::Mul(
-                    Box::new(Expression::Identifier(Identifier("x".to_string()))),
-                    Box::new(Expression::Number(Number(2)))
-                )
-            )
-        ),
-        Some(Box::new(Statement::Print(Expression::Number(Number(0)))))
-    )
-];
-for stmt in program {
-    compile_program(stmt);
-}
