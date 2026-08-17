@@ -1,0 +1,8 @@
+[workspace]
+resolver = "3"
+members = [
+    "rust/leetcode",
+    "rust/overcoming_the_sorting_barrier",
+    "rust/rust_task",
+    "rust/src",
+]
