@@ -3,7 +3,6 @@ impl Solution {
         let q1 = s.as_bytes();
         let q2 = k.max(1) as usize;
         const MAX: usize = 1_000_001;
-
         let mut a1 = [0usize; 26];
         for &q3 in q1 {
             a1[(q3 - b'a') as usize] += 1;

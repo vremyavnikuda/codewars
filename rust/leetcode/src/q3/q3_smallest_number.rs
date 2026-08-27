@@ -13,7 +13,6 @@ impl Solution {
         [3, 0, 0, 0],
         [0, 2, 0, 0],
     ];
-
     pub fn smallest_number(num: String, t: i64) -> String {
         let (q1, q2) = Self::z1(t);
         if !q2 {
@@ -25,7 +24,6 @@ impl Solution {
             Self::z4(&a1, &mut s);
             return s;
         }
-
         let mut q3 = Self::z2(&num);
         let mut a2 = num.find('0');
         if a2.is_none() {
@@ -55,14 +53,12 @@ impl Solution {
                 }
             }
         }
-
         let a6 = Self::z3(&q1);
         let mut s = String::with_capacity(q4 + 1);
         s.extend(std::iter::repeat('1').take(q4 + 1 - Self::z5(&a6) as usize));
         Self::z4(&a6, &mut s);
         s
     }
-
     fn z1(mut t: i64) -> ([i32; 4], bool) {
         let mut q = [0; 4];
         for (i, p) in [2i64, 3, 5, 7].iter().enumerate() {
@@ -73,7 +69,6 @@ impl Solution {
         }
         (q, t == 1)
     }
-
     fn z2(n: &str) -> [i32; 4] {
         let mut q = [0; 4];
         for c in n.bytes() {
@@ -83,7 +78,6 @@ impl Solution {
         }
         q
     }
-
     fn z3(c: &[i32; 4]) -> [i32; 10] {
         let q1 = c[0] / 3;
         let q2 = c[0] % 3;
@@ -105,7 +99,6 @@ impl Solution {
         }
         [0, 0, q6, q4, q5, c[2], q7, c[3], q1, q3]
     }
-
     fn z4(f: &[i32; 10], s: &mut String) {
         for d in 2..10 {
             for _ in 0..f[d] {
@@ -113,11 +106,9 @@ impl Solution {
             }
         }
     }
-
     fn z5(f: &[i32; 10]) -> i32 {
         f.iter().sum()
     }
-
     fn z6(mut a: [i32; 4], b: [i32; 4]) -> [i32; 4] {
         for i in 0..4 {
             a[i] = (a[i] - b[i]).max(0);

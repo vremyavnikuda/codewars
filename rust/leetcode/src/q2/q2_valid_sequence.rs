@@ -5,8 +5,6 @@ impl Solution {
         let a1 = word1.as_bytes();
         let a2 = word2.as_bytes();
         let mut q1 = vec![-1i32; a2.len()];
-        // ponytail: q1 doubles as scratch for `last[]` (C++), the required output
-        // allocation — reads at q1[j+1] always stay ahead of writes at q1[j]
         let mut q2 = a2.len() as isize - 1;
         let mut q3 = a1.len() as isize - 1;
         while q3 >= 0 && q2 >= 0 {

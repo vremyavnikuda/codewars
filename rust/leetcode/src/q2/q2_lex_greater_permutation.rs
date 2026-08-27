@@ -3,11 +3,9 @@ impl Solution {
         let mut aa = s.into_bytes();
         let bb = target.as_bytes();
         let mut cc = [0usize; 26];
-
         for &dd in &aa {
             cc[(dd - b'a') as usize] += 1;
         }
-
         let mut dd = 0;
         while dd < bb.len() {
             let ee = (bb[dd] - b'a') as usize;
@@ -18,7 +16,6 @@ impl Solution {
             cc[ee] -= 1;
             dd += 1;
         }
-
         loop {
             if dd < bb.len() {
                 let ee = (bb[dd] - b'a') as usize + 1;
@@ -35,7 +32,6 @@ impl Solution {
                     return String::from_utf8(aa).unwrap();
                 }
             }
-
             if dd == 0 {
                 return String::new();
             }
