@@ -1,25 +1,32 @@
 #include <stdlib.h>
-typedef struct {
+typedef struct
+{
   long long v;
   int r, c;
 } E;
-static int O(const void *a, const void *b) {
+static int O(const void *a, const void *b)
+{
   return (((E *)a)->v > ((E *)b)->v) - (((E *)a)->v < ((E *)b)->v);
 }
-static int F(E *e, int n, long long d, int v, int z) {
+static int F(E *e, int n, long long d, int v, int z)
+{
   int l = 0, h = n;
-  while (l < h) {
+  while (l < h)
+  {
     int m = l + h >> 1;
     e[m].v < d ? l = m + 1 : (h = m);
   }
-  for (; l < n && e[l].v == d; l++) {
+  for (; l < n && e[l].v == d; l++)
+  {
     int x = z >> 1 ? e[l].c : e[l].r;
     if (z & 1 ? x <= v : x > v)
       return 1;
   }
   return 0;
 }
-bool canPartitionGrid(int **grid, int gridSize, int *gridColSize) {
+
+bool canPartitionGrid(int **grid, int gridSize, int *gridColSize)
+{
   int m = gridSize, n = *gridColSize, N = m * n, i, j, k;
   long long T = 0, s, d;
   E *e = malloc(N * sizeof *e);
@@ -27,7 +34,8 @@ bool canPartitionGrid(int **grid, int gridSize, int *gridColSize) {
     for (j = 0; j < n; j++)
       e[k++] = (E){grid[i][j], i, j}, T += grid[i][j];
   qsort(e, N, sizeof *e, O);
-  for (s = 0, i = 0; i < m - 1; i++) {
+  for (s = 0, i = 0; i < m - 1; i++)
+  {
     for (j = 0; j < n; j++)
       s += grid[i][j];
     if (s + s == T)
@@ -42,7 +50,8 @@ bool canPartitionGrid(int **grid, int gridSize, int *gridColSize) {
                         n < 2 && (grid[0][0] == d || grid[i][0] == d))
       return free(e), 1;
   }
-  for (s = 0, j = 0; j < n - 1; j++) {
+  for (s = 0, j = 0; j < n - 1; j++)
+  {
     for (i = 0; i < m; i++)
       s += grid[i][j];
     if (s + s == T)
