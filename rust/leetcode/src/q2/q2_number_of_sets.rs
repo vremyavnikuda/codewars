@@ -3,7 +3,6 @@ pub struct Solution;
 impl Solution {
     #[inline(always)]
     pub fn number_of_sets(n: i32, k: i32) -> i32 {
-        // ponytail: k <= n-1 <= 999 per constraints, so fixed stack buffers — zero heap.
         let (aa, bb) = (1_000_000_007i64, k as usize);
         let (mut cc, mut dd) = ([0i64; 1000], [0i64; 1000]);
         cc[0] = 1;
