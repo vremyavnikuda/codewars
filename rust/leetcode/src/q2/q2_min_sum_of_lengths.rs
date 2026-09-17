@@ -3,8 +3,6 @@ pub struct Solution;
 impl Solution {
     #[inline(always)]
     pub fn min_sum_of_lengths(arr: Vec<i32>, target: i32) -> i32 {
-        // ponytail: arr[i] >= 1 => prefix sums strictly increase, so two pointers replace the hash map.
-        // Single Vec<i32> scratch is the only allocation (prefix-min of the best window ending before i).
         let aa = arr.len();
         let bb = 1i32 << 30;
         let mut cc = vec![bb; aa + 1];
