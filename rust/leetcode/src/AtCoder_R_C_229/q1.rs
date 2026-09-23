@@ -2,7 +2,7 @@ use std::io::{self, Read, Write};
 
 fn main() {
     let mut q1 = String::new();
-    stdin().read_to_string(&mut q1).unwrap();
+    io::stdin().read_to_string(&mut q1).unwrap();
     let q2: usize = q1.trim().parse().unwrap();
     let q3 = (1..=25).find(|a1| a1 * a1 >= q2).unwrap();
     let q4 = q2 / q3;

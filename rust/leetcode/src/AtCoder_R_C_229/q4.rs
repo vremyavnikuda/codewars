@@ -2,7 +2,7 @@ use std::io::{self, Read, Write};
 
 fn main() {
     let mut q1 = String::new();
-    stdin().read_to_string(&mut q1).unwrap();
+    io::stdin().read_to_string(&mut q1).unwrap();
     let mut q2 = q1
         .split_ascii_whitespace()
         .map(|a1| a1.parse::<i64>().unwrap());
