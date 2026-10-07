@@ -15,7 +15,6 @@ impl Solution {
             }
             if bb == aa.len() {
                 let ii = std::str::from_utf8(&aa[..cc]).unwrap();
-                // ponytail: linear dedup avoids extra heap; use HashSet if outputs grow.
                 if !hh.iter().any(|jj| jj == ii) {
                     hh.push(ii.to_owned());
                 }
