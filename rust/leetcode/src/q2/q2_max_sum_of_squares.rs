@@ -3,7 +3,6 @@ impl Solution {
         if i64::from(num) * 9 < i64::from(sum) {
             return String::new();
         }
-
         let mut aa = vec![b'0'; num as usize];
         let bb = (sum / 9) as usize;
         aa[..bb].fill(b'9');
@@ -17,7 +16,6 @@ impl Solution {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn maximizes_digits_and_handles_boundaries() {
         for (aa, bb, cc) in [
