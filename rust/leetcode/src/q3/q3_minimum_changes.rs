@@ -32,3 +32,15 @@ impl Solution {
         ff[bb][cc]
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Solution;
+
+    #[test]
+    fn examples() {
+        assert_eq!(Solution::minimum_changes("abcac".into(), 2), 1);
+        assert_eq!(Solution::minimum_changes("abcdef".into(), 2), 2);
+        assert_eq!(Solution::minimum_changes("aabbaa".into(), 3), 0);
+    }
+}
